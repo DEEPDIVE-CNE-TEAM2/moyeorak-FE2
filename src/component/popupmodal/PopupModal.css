@@ -1,0 +1,136 @@
+/* 블러 배경 */
+.popup-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(4px);
+  background-color: rgba(214, 214, 214, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* 팝업 본체 */
+.popup-container {
+  width: 360px;
+  height: 320px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 1px solid #737373;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40px;
+  gap: 24px;
+}
+
+.popup-text-box {
+  width: 320px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+
+.popup-text-line1 {
+  color: #000;
+  font-family: Inter, sans-serif;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -1px;
+  text-align: center;
+}
+
+.popup-text-line2 span {
+  font-family: Inter, sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -1px;
+}
+
+.popup-text-line2 .blue {
+  color: #3096E6;
+}
+
+.popup-text-line2 span:not(.blue) {
+  color: #000;
+}
+
+.popup-text-line3 {
+  color: #000;
+  font-family: Inter, sans-serif;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -1px;
+  text-align: center;
+  padding-top: 26px;
+  margin-bottom: -15px;
+}
+
+.popup-text-line4 {
+  color: #000;
+  font-family: Inter, sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -1px;
+  text-align: center;
+  padding-top: 16px;
+}
+
+
+/* 드롭다운 */
+.popup-dropdown {
+  display: flex;
+  width : 300px;
+  height: 40px;
+  align-items: center;
+  gap: 6px;
+
+  border-radius: 8px;
+  border: 1px solid #d1d1d1;
+  background: #ffffff;
+
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  color: #737373;
+
+  outline: none;
+}
+
+
+/*드롭다운 hover시 파란색으로 통일시키려면 
+react-select 라이브러리 등 사용해야 함, 일단 기본상태로 둠*/
+
+
+/* 확인 버튼 */
+.popup-confirm-button {
+  width: 150px;
+  height: 40px;
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+
+  border: none;
+  border-radius: 8px;
+  background: #3096E6;
+  color: white;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
