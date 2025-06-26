@@ -1,15 +1,18 @@
-import React from 'react'
-import PopupModal from '../component/popupmodal/PopupModal'
-
+import React from 'react';
+import Navbar from "../components/Navbar/Navbar";
+import PromotionBanner from "../components/PromotionBanner/PromotionBanner";
+import RecommendProgramSection from '../components/RecommendProgramSection/RecommendProgramSection';
+import PopupModal from '../component/popupmodal/PopupModal';
 
 const Home = () => {
   return (
-    <>
-    <div>Home
+    <div>
+      <Navbar />
+      <PromotionBanner />
+      <RecommendProgramSection />
+      <PopupModal />
     </div>
-    <PopupModal />
-  </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
