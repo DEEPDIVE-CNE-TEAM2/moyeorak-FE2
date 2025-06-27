@@ -1,8 +1,13 @@
 import React from 'react'
+import Navbar from '../components/Navbar/Navbar.jsx';
 
 const Announcement = () => {
   return (
-    <div>Announcement</div>
+    <>
+    <Navbar />
+        <div>Announcement</div>
+    </>
+
   )
 }
 

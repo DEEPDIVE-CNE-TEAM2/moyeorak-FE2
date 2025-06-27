@@ -1,5 +1,5 @@
 import React from 'react'
-import Card from '../component/card/Card'
+import Card from '../components/card/Card'
 import img from '../img/testimg.jpg'
 
 const JoinMembership = () => {
