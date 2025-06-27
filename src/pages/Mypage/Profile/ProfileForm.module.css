@@ -1,0 +1,103 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding-top: 50px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  width: 330px;
+  gap: 6px;
+}
+
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width : 355px;
+}
+
+.label {
+  color: #212121;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.6px;
+}
+
+.input {
+  width: 330px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  border: 1px solid #9A9A9A;
+  background: #FFF;
+  padding: 0 12px;
+  font-size: 16px;
+  outline: none;
+}
+
+.genderWrapper {
+  display: flex;
+  width: 358px;
+  gap: 17px;
+}
+
+.genderButton {
+  width: 170px;
+  height: 40px;
+  border-radius: 5px;
+  background: #fff;
+  border: 1px solid #9A9A9A;
+  cursor: pointer;
+
+  color: #212121;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 200;
+  line-height: normal;
+  letter-spacing: -0.6px;
+}
+
+.selected {
+  background: #DBDBDB;
+}
+
+.editButton {
+  width: 50px;
+  height: 20px;
+  background: #D7D7D7;
+  border: 1px solid #9A9A9A;
+  border-radius: 5px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #212121;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  letter-spacing: -0.6px;
+}
+
+.withdraw {
+  color: #898989;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.6px;
+  margin-top: 40px;
+  cursor: pointer;
+}
