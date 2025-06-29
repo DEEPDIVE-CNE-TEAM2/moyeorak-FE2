@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './ProfileForm.module.css';
+import styles from './Userform.module.css';
 
 const ProfileForm = () => {
   const [gender, setGender] = useState('남');

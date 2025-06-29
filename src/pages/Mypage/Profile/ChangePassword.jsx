@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 
 import Navbar from '../../../components/Navbar/Navbar.jsx';
-import styles from './ChangePassword.module.css';
+//import styles from './ChangePassword.module.css';
+import styles from './Userform.module.css';
 import lock from '../../../img/ic_outline-lock-person.svg';
 
 const ChangePassword = () => {
