@@ -49,6 +49,13 @@
   cursor: pointer;
 }
 
+.menuLink.active,
+.submenuLink.active,
+.activeMenu {
+  color: #3096E6;
+  font-weight: 600;
+}
+
 .locationWrapper {
   position: relative;
   margin-right: 70px;
@@ -70,7 +77,8 @@
   border: none;
 }
 
-.locationDisplay:hover, .locationDisplay.active {
+.locationDisplay:hover,
+.locationDisplay.active {
   background: #dbe9fc;
   box-shadow: 0 4px 12px rgba(48, 150, 230, 0.2);
   color: #1a2a57;
@@ -137,7 +145,6 @@
   top: 2px;
 }
 
-
 .divider {
   width: 1px;
   height: 22px;
@@ -145,7 +152,6 @@
   margin: 0 4px;
   align-self: center;
 }
-
 
 .mypageWrapper {
   position: relative;
@@ -165,22 +171,10 @@
   z-index: 9;
 }
 
-.mypageWrapper:hover .submenuBar {
-  display: flex;
-}
-
 .submenuLink {
   color: inherit;
   text-decoration: none;
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
-}
-
-.menuLink.active,
-.submenuLink.active {
-  color: #3096E6;
-.activeMenu {
-  color: #3096E6;
-  font-weight: 600;
 }
