@@ -20,6 +20,8 @@ import Seongdong from './pages/Area/Seongdong';
 import JungFacility from './components/Facility/JungFacility';
 import SongpaFacility from "./components/Facility/SongpaFacility";
 import SeongdongFacility from "./components/Facility/SeongdongFacility";
+import ForgotPassword from "./pages/ForgotPassword";
+import VerifyPhone from "./pages/VerifyPhone";
 
 
 const App = () => {
@@ -45,6 +47,9 @@ const App = () => {
         <Route path="/jung/place" element={<JungFacility />} />
         <Route path="/songpa/place" element={<SongpaFacility />} />
         <Route path="/seongdong/place" element={<SeongdongFacility />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/verify-phone" element={<VerifyPhone />} />
+
         
 
       </Routes>
