@@ -1,0 +1,127 @@
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(64, 64, 64, 0.47);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal {
+  width: 429px;
+  height: 524px;
+  border-radius: 5px;
+  background: #fdfdfd;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.header {
+  width: 429px;
+  height: 55px;
+  border-radius: 5px 5px 0px 0px;
+  background: #3096e6;
+  color: #fff;
+  font-family: Inter;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.closeIcon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+}
+
+.content {
+  padding: 20px 18px;
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  margin: 9px 0;
+  padding-left: 15px;
+}
+
+.left {
+  flex: 3;
+  text-align: left;
+  color: #2c2c2c;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -1px;
+}
+
+.right {
+  flex: 7;
+  text-align: left;
+  color: #000;
+  font-family: Inter;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -1px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+.divider {
+  width: 392px;
+  height: 1px;
+  background: #c4c4c4;
+  margin-top: 4px;
+}
+
+.confirmText {
+  text-align: center;
+  color: #1f1f1f;
+  font-family: Inter;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -1px;
+  margin: 20px 0 16px;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.confirmBtn {
+  width: 168px;
+  height: 39px;
+  border-radius: 5px;
+  background: #3096e6;
+  color: #fff;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -1px;
+  border: none;
+  cursor: pointer;
+}
