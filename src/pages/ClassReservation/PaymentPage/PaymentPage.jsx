@@ -1,11 +1,26 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import logo from '../../../img/아이콘최종.png';
 import select from '../../../img/Select.svg';
 import './PaymentPage.css';
 
 const PaymentPage = () => {
   const navigate = useNavigate();
+    const { id } = useParams();
+
+  const popupData = {
+    title: '어린이 야구교실',
+    center: '마포체육센터',
+    period: '2025.07.15~2025.08.31',
+    time: '매주 토/일 오전',
+    price: '50,000원',
+  };
+
+  const handlePayment = () => {
+    navigate(`/classReservation/${id}`, {
+      state: { showPopup2: true, popupData },
+    });
+  };
 
   return (
     <div className="payment-page">
@@ -45,7 +60,7 @@ const PaymentPage = () => {
           </div>
 
           {/* 결제 버튼 */}
-          <button className="pay-button" onClick={() => navigate('/')}>
+          <button className="pay-button" onClick={(handlePayment)}>
             결제하기
           </button>
         </div>

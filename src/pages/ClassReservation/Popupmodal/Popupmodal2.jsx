@@ -3,18 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import styles from './Popupmodal.module.css';
 import X from '../../../img/X.svg';
 
-const Popupmodal = ({ onClose, data, id }) => {
+const Popupmodal2 = ({ onClose, data, id }) => {
   const navigate = useNavigate();
 
   const handleConfirm = () => {
-    navigate(`/classReservation/${id}/payment`);
+    navigate(`/classReservation`);
   };
 
   return (
     <div className={styles.backdrop}>
-      <div className={styles.modal}>
+      <div className={styles.modal2}>
         <div className={styles.header}>
-          신청하기
+          신청완료
           <img
             src={X}
             alt="닫기"
@@ -41,10 +41,6 @@ const Popupmodal = ({ onClose, data, id }) => {
           ))}
         </div>
 
-        <div className={styles.confirmText}>
-          위 내용으로 신청하시겠습니까?
-        </div>
-
         <div className={styles.buttonWrapper}>
           <button className={styles.confirmBtn} onClick={handleConfirm}>확인</button>
         </div>
@@ -53,5 +49,5 @@ const Popupmodal = ({ onClose, data, id }) => {
   );
 };
 
-export default Popupmodal;
+export default Popupmodal2;
 

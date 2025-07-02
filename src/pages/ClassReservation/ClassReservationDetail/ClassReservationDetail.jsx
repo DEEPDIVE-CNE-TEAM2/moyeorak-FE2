@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../../../components/Navbar/Navbar';
 import testimg from '../../../img/testimg.jpg';
-import Popupmodal from '../Popupmodal/Popupmodal'; 
-
+import Popupmodal from '../Popupmodal/Popupmodal';
+import Popupmodal2 from '../Popupmodal/Popupmodal2';
 import styles from './ClassReservationDetail.module.css';
 
 const ClassReservationDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [showModal, setShowModal] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+  const [popupData, setPopupData] = useState(null);
 
   const dummyData = {
     1: {
@@ -32,6 +36,15 @@ const ClassReservationDetail = () => {
     null,
     null,
   ];
+
+  // ✅ 결제 페이지에서 돌아왔을 때 모달2 띄우기
+  useEffect(() => {
+    if (location.state?.showPopup2 && location.state.popupData) {
+      setPopupData(location.state.popupData);
+      setShowModal2(true);
+      window.history.replaceState({}, document.title); // URL 히스토리 초기화
+    }
+  }, [location.state]);
 
   return (
     <>
@@ -104,9 +117,11 @@ const ClassReservationDetail = () => {
         </div>
       </div>
 
+      {/* ✅ 기존 모달 */}
       {showModal && (
         <Popupmodal
           onClose={() => setShowModal(false)}
+          id={id}
           data={{
             title: data.title,
             center: '마포체육센터',
@@ -114,6 +129,14 @@ const ClassReservationDetail = () => {
             time: '매주 토/일 오전',
             price: data.details?.[2],
           }}
+        />
+      )}
+
+      {/* ✅ 결제 후 돌아왔을 때 뜨는 Popupmodal2 */}
+      {showModal2 && popupData && (
+        <Popupmodal2
+          onClose={() => setShowModal2(false)}
+          data={popupData}
         />
       )}
     </>

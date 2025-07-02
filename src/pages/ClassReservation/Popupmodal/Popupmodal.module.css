@@ -21,6 +21,16 @@
   overflow: hidden;
 }
 
+.modal2 {
+  width: 429px;
+  height: 470px;
+  border-radius: 5px;
+  background: #fdfdfd;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
 .header {
   width: 429px;
   height: 55px;
