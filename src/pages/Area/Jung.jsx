@@ -1,3 +1,4 @@
+// Jung.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,6 +10,12 @@ const districtToPath = {
   "중구": "jung",
   "송파구": "songpa",
   "성동구": "seongdong",
+};
+
+const districtToRentalPath = {
+  "중구": "/rental/jung",
+  "송파구": "/rental/songpa",
+  "성동구": "/rental/seongdong",
 };
 
 const Jung = () => {
@@ -32,6 +39,7 @@ const Jung = () => {
         onDistrictChange={handleDistrictChange}
         districts={districts}
         districtToPath={districtToPath}
+        districtToRentalPath={districtToRentalPath}
       />
       <PromotionBanner />
       <RecommendProgramSection />

@@ -58,7 +58,7 @@ const RecommendProgramListAfterLogin = () => {
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.heading}>최근 수강한 ‘요가 초급’과 비슷한 프로그램이에요!</h2>
+      <h2 className={styles.heading}>최근 수강한 ‘탁구 초급’과 비슷한 프로그램이에요!</h2>
       <div className={styles.cardContainer}>
         {recentPrograms.map((program, idx) => (
           <div key={idx} className={styles.card}>

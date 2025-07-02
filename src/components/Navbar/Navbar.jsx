@@ -10,6 +10,7 @@ const Navbar = ({
   onDistrictChange,
   districts,
   districtToPath,
+  districtToRentalPath,
   isLoggedIn,
   onLogout,
 }) => {
@@ -26,8 +27,7 @@ const Navbar = ({
     setDropdownOpen(false);
   };
 
-  // 방어적으로 접근 (districtToPath가 undefined일 수도 있으니)
-  const selectedPath = (districtToPath && districtToPath[selectedDistrict]) || '';
+  const selectedPath = (districtToPath && districtToPath[selectedDistrict]) || "";
 
   return (
     <>
@@ -37,7 +37,7 @@ const Navbar = ({
 
       <nav className={styles.navbar}>
         <div className={styles.leftSection}>
-          <Link to="/">
+          <Link to={`/${selectedPath}`}>
             <img src="/img/아이콘최종.png" alt="로고" className={styles.logo} />
           </Link>
 
@@ -83,8 +83,8 @@ const Navbar = ({
             </li>
             <li>
               <Link
-                to="/rental"
-                className={`${styles.menuLink} ${location.pathname === '/rental' ? styles.activeMenu : ''}`}
+                to={`/rental/${districtToRentalPath?.[selectedDistrict] || ""}`}
+                className={`${styles.menuLink} ${location.pathname.includes('/rental') ? styles.activeMenu : ''}`}
               >
                 대관신청
               </Link>

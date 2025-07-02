@@ -1,39 +1,131 @@
-.banner {
+/* 전체 가로 화면을 채우는 래퍼 */
+.fullWidthWrapper {
+  width: 100vw;
+  overflow: hidden;
+  background-color: #f4f4f4;
+  padding: 40px 0;
+}
+
+/* 슬라이더 전체 영역 */
+.sliderWrapper {
   position: relative;
   width: 100%;
-  max-width: 1200px;
   height: 500px;
-  margin: 0 auto;
-  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: none;
 }
 
+/* 중앙 배너 */
+.banner {
+  position: relative;
+  width: 60%;
+  height: 100%;
+  z-index: 2;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* 중앙 이미지 */
 .image {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  border-radius: 8px;
-  box-shadow: 0 0 30px rgba(0,0,0,0.05);
+  border-radius: 16px;
 }
 
+/* 양옆 이미지 */
+.sideImage {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) scale(0.9);
+  width: 25%;
+  height: 80%;
+  object-fit: cover;
+  opacity: 0.4;
+  filter: blur(2px);
+  z-index: 1;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.left {
+  left: 5%;
+}
+
+.right {
+  right: 5%;
+}
+
+/* 일반 배너 텍스트 */
+.bannerText {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 255, 0, 0.9);
+  padding: 12px 24px;
+  font-size: 30px;
+  font-weight: bold;
+  color: #333;
+  z-index: 3;
+  border-radius: 0;
+}
+
+/* 첫 번째 배너용 텍스트 */
+.welcomeText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 16px 32px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 36px;
+  font-weight: 700;
+  text-align: center;
+  z-index: 3;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.8s ease-in-out;
+  border-radius: 8px;
+}
+
+/* fade-in 효과 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* 화살표 */
 .arrows {
   position: absolute;
-  width: 100%;
   top: 50%;
-  transform: translateY(-50%);
+  left: 0;
+  right: 0;
+  padding: 0 20px;
   display: flex;
   justify-content: space-between;
-  padding: 0 20px;
-  z-index: 2;
+  transform: translateY(-50%);
+  z-index: 4;
 }
 
 .arrowIcon {
-  font-size: 40px;
+  font-size: 48px;
   color: white;
   opacity: 0.8;
   cursor: pointer;
+  transition: 0.2s;
+}
+
+.arrowIcon:hover {
+  opacity: 1;
 }

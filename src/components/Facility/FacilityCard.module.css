@@ -2,7 +2,7 @@
   display: flex;
   width: 100%;
   max-width: 810px;
-  height: 200px;
+  height: 215px;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
   overflow: hidden;
@@ -12,14 +12,14 @@
 
 .image {
   width: 425px;
-  height: 200px;
+  height: 215px;
   object-fit: cover;
   border-top-left-radius: 12px;
   border-bottom-left-radius: 12px;
 }
 
 .info {
-  padding: 10px 30px 12px 45px; /* 위 오른쪽 아래 왼쪽 */
+  padding: 0px 30px 12px 45px; /* 위 오른쪽 아래 왼쪽 */
   flex-grow: 1;
 }
 
