@@ -1,5 +1,5 @@
 .container {
-  width: 360px;
+  width: 380px; 
   margin: 0 auto;
   font-family: 'Noto Sans KR', sans-serif;
   color: #333;
@@ -8,12 +8,13 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  font-size: 15px;
 }
 
 .logo {
   display: block;
-  margin: 0 auto 10px auto;
-  width: 150px;
+  margin: 0 auto 14px auto; 
+  width: 160px; 
   height: auto;
 }
 
@@ -25,21 +26,21 @@
 
 .label {
   font-weight: 500;
-  margin-top: 20px;
-  margin-bottom: 4px;
-  font-size: 14px;
+  margin-top: 22px; 
+  margin-bottom: 6px;
+  font-size: 15px; 
 }
 
 .inputWithIcon {
   position: relative;
   width: 100%;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .inputWithIcon input {
   width: 100%;
-  padding: 8px 36px 8px 12px;
-  font-size: 14px;
+  padding: 10px 40px 10px 14px;
+  font-size: 15px; 
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
@@ -51,18 +52,18 @@
   top: 50%;
   transform: translateY(-50%);
   color: #888;
-  font-size: 22px;
+  font-size: 24px; 
   pointer-events: none;
 }
 
 .forgotPassword {
   text-align: right;
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: 10px; 
+  margin-bottom: 10px; 
 }
 
 .forgotPassword a {
-  font-size: 12px;
+  font-size: 13px; 
   color: #888;
   text-decoration: none;
 }
@@ -74,14 +75,14 @@
 .submitBtn {
   background-color: #2196f3;
   color: white;
-  padding: 11px 12px;
+  padding: 14px 16px;
   border: none;
   border-radius: 4px;
   font-weight: 600;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 17px;
   transition: background-color 0.3s;
-  margin-bottom: 20px;
+  margin-bottom: 24px; 
 }
 
 .submitBtn:hover {
@@ -89,7 +90,7 @@
 }
 
 .signUpLink {
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .signUpLink a {

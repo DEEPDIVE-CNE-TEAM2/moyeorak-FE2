@@ -7,13 +7,13 @@ import { FaRegCheckCircle } from "react-icons/fa";
 
 import logo from '../img/아이콘최종.png';
 
-
 const JoinMembership = () => {
   const [form, setForm] = useState({
     email: "",
     password: "",
     passwordConfirm: "",
     name: "",
+    age: "",  
     address: "",
     gender: "",
     phone: "",
@@ -94,7 +94,6 @@ const JoinMembership = () => {
             {isPasswordMatch && (
               <FaRegCheckCircle className={styles.passwordMatchIcon} />
             )}
-
           </div>
         </div>
 
@@ -107,6 +106,20 @@ const JoinMembership = () => {
           value={form.name}
           onChange={handleChange}
           className={styles.input}
+          required
+        />
+
+        {/* 나이 (숫자 스피너 제거) */}
+        <label className={styles.label}>나이</label>
+        <input
+          type="number"
+          name="age"
+          placeholder="나이 입력"
+          value={form.age}
+          onChange={handleChange}
+          className={styles.input}
+          min="0"
+          max="120"
           required
         />
 

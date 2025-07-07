@@ -1,5 +1,5 @@
 .container {
-  width: 360px;
+  width: 380px; 
   margin: 0 auto;
   font-family: 'Noto Sans KR', sans-serif;
   color: #333;
@@ -8,12 +8,13 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  font-size: 15px; 
 }
 
 .logo {
   display: block;
-  margin: 0 auto 10px auto;
-  width: 150px;
+  margin: 0 auto 14px auto; 
+  width: 160px; 
   height: auto;
 }
 
@@ -25,9 +26,9 @@
 
 .label {
   font-weight: 500;
-  margin-top: 15px;
-  margin-bottom: 4px;
-  font-size: 14px;
+  margin-top: 18px; 
+  margin-bottom: 6px;
+  font-size: 15px; 
 }
 
 .emailRow,
@@ -35,14 +36,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .emailInput,
 .phoneInput {
   flex: 1;
-  padding: 8px 12px;
-  font-size: 14px;
+  padding: 10px 14px;
+  font-size: 15px; 
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
@@ -50,9 +51,9 @@
 }
 
 .duplicateBtn {
-  height: 38px;
+  height: 42px; 
   width: 90px;
-  font-size: 14px;
+  font-size: 15px; 
   border: none;
   border-radius: 4px;
   background-color: #e0e0e0;
@@ -60,28 +61,36 @@
   cursor: pointer;
 }
 
-/* 공통 입력 칸 스타일 */
 .input {
   width: 100%;
-  padding: 8px 12px;
-  font-size: 14px;
+  padding: 10px 14px; 
+  font-size: 15px; 
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
-/* 아이콘이 들어간 입력 칸 */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .inputWithIcon {
   position: relative;
   width: 100%;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .inputWithIcon input {
   width: 100%;
-  padding: 8px 36px 8px 12px;
-  font-size: 14px;
+  padding: 10px 40px 10px 14px; 
+  font-size: 15px; 
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
@@ -93,16 +102,15 @@
   top: 40%;
   transform: translateY(-50%);
   color: #888;
-  font-size: 22px;
+  font-size: 24px;
   pointer-events: none;
 
-  height: 22px;
-  width: 22px;
+  height: 24px;
+  width: 24px;
   line-height: 1;
   vertical-align: middle;
 }
 
-/* 비밀번호 확인 칸 (체크 아이콘) */
 .passwordConfirmRow {
   display: flex;
   align-items: center;
@@ -112,16 +120,9 @@
   margin-bottom: 0px;
 }
 
-.passwordConfirmOuterIcon {
-  margin-left: 8px;
-  display: flex;
-  align-items: center;
-}
-
-/* 비밀번호 불일치 시 X 아이콘 */
 .passwordMismatchIcon {
   color: red;
-  font-size: 24px;
+  font-size: 26px; 
   position: absolute;
   right: 12px;
   top: 40%;
@@ -130,25 +131,23 @@
 
 .passwordMatchIcon {
   color: #4caf50;
-  font-size: 21px;
+  font-size: 24px;
   position: absolute;
   right: 12px;
   top: 40%;
   transform: translateY(-50%);
 }
 
-
-/* 성별 선택 */
 .genderWrapper {
   display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 10px; 
+  margin-bottom: 14px;
 }
 
 .genderBtn {
   flex: 1;
-  padding: 8px;
-  font-size: 14px;
+  padding: 10px; 
+  font-size: 15px; 
   background-color: #e0e0e0;
   border: none;
   border-radius: 4px;
@@ -160,18 +159,17 @@
   color: white;
 }
 
-/* 회원가입 버튼 */
 .submitBtn {
   background-color: #2196f3;
   color: white;
-  padding: 11px 12px;
+  padding: 14px 16px; 
   border: none;
   border-radius: 4px;
   font-weight: 600;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 17px; 
   transition: background-color 0.3s;
-  margin-top: 20px;
+  margin-top: 24px; 
 }
 
 .submitBtn:hover {
