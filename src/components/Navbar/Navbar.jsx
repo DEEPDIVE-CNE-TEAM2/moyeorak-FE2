@@ -133,7 +133,7 @@ const Navbar = ({
                 }}
                 className={`${styles.menuLink} ${location.pathname === '/announcement' ? styles.activeMenu : ''}`}
               >
-                이용안내
+                공지사항
               </a>
             </li>
             <li
