@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import Navbar from '../../components/Navbar/Navbar.jsx';
 import './Announcement.css';
 
@@ -14,6 +16,7 @@ const PAGE_GROUP_SIZE = 5;
 
 const Announcement = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
 
   const sortedAnnouncements = [...dummyAnnouncements].sort(
     (a, b) => new Date(b.date) - new Date(a.date)
@@ -48,7 +51,12 @@ const Announcement = () => {
                 <td style={{ flex: 1, textAlign: 'center' }}>
                   {sortedAnnouncements.length - ((currentPage - 1) * ITEMS_PER_PAGE + index)}
                 </td>
-                <td style={{ flex: 6, textAlign: 'left' }}>{item.title}</td>
+                <td
+                  style={{ flex: 6, textAlign: 'left', cursor: 'pointer' }}
+                  onClick={() => navigate(`/announcement/${item.id}`)}
+                >
+                  {item.title}
+                </td>
                 <td style={{ flex: 2, textAlign: 'center' }}>{item.date}</td>
                 <td style={{ flex: 1, textAlign: 'center' }}>{item.views}</td>
               </tr>
@@ -62,15 +70,17 @@ const Announcement = () => {
               &lt;
             </button>
           )}
-          {Array.from({ length: groupEnd - groupStart + 1 }, (_, i) => groupStart + i).map(page => (
-            <button
-              key={page}
-              className={`page-btn ${currentPage === page ? 'active' : ''}`}
-              onClick={() => setCurrentPage(page)}
-            >
-              {page}
-            </button>
-          ))}
+          {Array.from({ length: groupEnd - groupStart + 1 }, (_, i) => groupStart + i).map(
+            (page) => (
+              <button
+                key={page}
+                className={`page-btn ${currentPage === page ? 'active' : ''}`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            )
+          )}
           {groupEnd < totalPages && (
             <button className="page-btn" onClick={() => setCurrentPage(groupEnd + 1)}>
               &gt;

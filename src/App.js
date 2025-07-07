@@ -27,6 +27,8 @@ import VerifyPhone from "./pages/VerifyPhone";
 import JungRental from "./pages/Rental/JungRental";
 import SongpaRental from "./pages/Rental/SongpaRental";
 import SeongdongRental from "./pages/Rental/SeongdongRental";
+import AnnouncementDetail from './pages/Announcement/AnnouncementDetail/AnnouncementDetail';
+
 
 const App = () => {
   return (
@@ -41,6 +43,7 @@ const App = () => {
         <Route path='/classReservation/:id/payment' element={<Payment/>}/>
         <Route path='/rental' element={<Rental/>} />
         <Route path='/announcement' element={<Announcement/>} />
+        <Route path="/announcement/:id" element={<AnnouncementDetail />} />
         <Route path='/mypage/classes' element={<Classes/>} />
         <Route path='/mypage/profile' element={<Profile/>} />
         <Route path='/mypage/rentals' element={<Rentals/>} />
