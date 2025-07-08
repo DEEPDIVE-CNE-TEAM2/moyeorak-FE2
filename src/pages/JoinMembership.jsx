@@ -6,14 +6,15 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 import { FaRegCheckCircle } from "react-icons/fa";
 
 import logo from '../img/아이콘최종.png';
+import { signup, checkEmailDuplicate, checkPhoneDuplicate } from '../Api';
 
 const JoinMembership = () => {
   const [form, setForm] = useState({
     email: "",
     password: "",
-    passwordConfirm: "",
+    confirmPassword: "",
     name: "",
-    age: "",  
+    birth: "",
     address: "",
     gender: "",
     phone: "",
@@ -28,20 +29,66 @@ const JoinMembership = () => {
     setForm((prev) => ({ ...prev, gender }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // 회원가입 처리 로직
+  const handleCheckEmail = async () => {
+    try {
+      const res = await checkEmailDuplicate(form.email);
+      alert(res.isDuplicate ? "이미 사용 중인 이메일입니다." : "사용 가능한 이메일입니다.");
+    } catch (err) {
+      console.error(err);
+      alert("이메일 중복 확인 중 오류가 발생했습니다.");
+    }
   };
 
-  const isPasswordMatch = form.password && form.password === form.passwordConfirm;
+  const handleCheckPhone = async () => {
+    try {
+      const res = await checkPhoneDuplicate(form.phone);
+      alert(res.isDuplicate ? "이미 사용 중인 번호입니다." : "사용 가능한 번호입니다.");
+    } catch (err) {
+      console.error(err);
+      alert("휴대폰 중복 확인 중 오류가 발생했습니다.");
+    }
+  };
+
+  const isPasswordMatch = form.password && form.password === form.confirmPassword;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!isPasswordMatch) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
+    const genderMap = { 남: "MALE", 여: "FEMALE" };
+    const genderForApi = genderMap[form.gender] || "";
+
+    const payload = {
+      email: form.email,
+      password: form.password,
+      confirmPassword: form.confirmPassword, // ✅ 필드명 맞춤
+      name: form.name,
+      birth: form.birth,
+      address: form.address,
+      gender: genderForApi,
+      phone: form.phone,
+    };
+
+    console.log("회원가입 요청 데이터:", payload);
+
+    try {
+      await signup(payload);
+      alert("회원가입 성공!");
+    } catch (err) {
+      console.error("회원가입 에러 전체:", err);
+      console.error("서버 응답 데이터:", err.response?.data);
+      alert("회원가입 실패: " + (err.response?.data?.message || JSON.stringify(err.response?.data) || err.message));
+    }
+  };
 
   return (
     <div className={styles.container}>
-      {/* 로고 */}
       <img src={logo} alt="모여락" className={styles.logo} />
-
       <form className={styles.form} onSubmit={handleSubmit}>
-        {/* 이메일 */}
         <label className={styles.label}>이메일</label>
         <div className={styles.emailRow}>
           <input
@@ -53,12 +100,11 @@ const JoinMembership = () => {
             className={styles.emailInput}
             required
           />
-          <button type="button" className={styles.duplicateBtn}>
+          <button type="button" className={styles.duplicateBtn} onClick={handleCheckEmail}>
             중복확인
           </button>
         </div>
 
-        {/* 비밀번호 */}
         <label className={styles.label}>비밀번호</label>
         <div className={styles.inputWithIcon}>
           <input
@@ -74,21 +120,20 @@ const JoinMembership = () => {
           <TbLockPassword className={styles.iconInside} />
         </div>
 
-        {/* 비밀번호 확인 */}
         <label className={styles.label}>비밀번호 확인</label>
         <div className={styles.passwordConfirmRow}>
           <div className={styles.inputWithIcon}>
             <input
               type="password"
-              name="passwordConfirm"
+              name="confirmPassword"
               placeholder="비밀번호 재입력"
-              value={form.passwordConfirm}
+              value={form.confirmPassword}
               onChange={handleChange}
               className={styles.input}
               autoComplete="new-password"
               required
             />
-            {form.passwordConfirm.length > 0 && !isPasswordMatch && (
+            {form.confirmPassword.length > 0 && !isPasswordMatch && (
               <IoMdCloseCircleOutline className={styles.passwordMismatchIcon} />
             )}
             {isPasswordMatch && (
@@ -97,7 +142,6 @@ const JoinMembership = () => {
           </div>
         </div>
 
-        {/* 이름 */}
         <label className={styles.label}>이름</label>
         <input
           type="text"
@@ -109,33 +153,28 @@ const JoinMembership = () => {
           required
         />
 
-        {/* 나이 (숫자 스피너 제거) */}
-        <label className={styles.label}>나이</label>
+        <label className={styles.label}>생일</label>
         <input
-          type="number"
-          name="age"
-          placeholder="나이 입력"
-          value={form.age}
+          type="date"
+          name="birth"
+          placeholder="생일 입력"
+          value={form.birth}
           onChange={handleChange}
           className={styles.input}
-          min="0"
-          max="120"
           required
         />
 
-        {/* 주소 */}
         <label className={styles.label}>주소</label>
         <input
           type="text"
           name="address"
-          placeholder="주소 입력"
+          placeholder="xx시 xx구"
           value={form.address}
           onChange={handleChange}
           className={styles.input}
           required
         />
 
-        {/* 성별 */}
         <label className={styles.label}>성별</label>
         <div className={styles.genderWrapper}>
           <button
@@ -154,24 +193,22 @@ const JoinMembership = () => {
           </button>
         </div>
 
-        {/* 휴대폰 번호 */}
         <label className={styles.label}>휴대폰 번호</label>
         <div className={styles.phoneRow}>
           <input
             type="tel"
             name="phone"
-            placeholder="휴대폰번호 입력"
+            placeholder="휴대폰 번호 입력"
             value={form.phone}
             onChange={handleChange}
             className={styles.phoneInput}
             required
           />
-          <button type="button" className={styles.duplicateBtn}>
+          <button type="button" className={styles.duplicateBtn} onClick={handleCheckPhone}>
             중복확인
           </button>
         </div>
 
-        {/* 회원가입 버튼 */}
         <button type="submit" className={styles.submitBtn}>
           회원가입
         </button>
