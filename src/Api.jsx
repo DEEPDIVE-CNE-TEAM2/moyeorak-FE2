@@ -74,6 +74,7 @@ import axios from 'axios';
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 
+
 // Access Token 저장 및 가져오기 헬퍼 함수
 export const setAccessToken = (token) => {
   localStorage.setItem("accessToken", token);
@@ -170,7 +171,7 @@ export const signup = async ({
       {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: undefined, // Authorization 제거
+          Authorization: undefined,
         },
       }
     );

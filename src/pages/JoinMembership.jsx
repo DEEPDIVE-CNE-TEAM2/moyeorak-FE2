@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import styles from "../styles/JoinMembership.module.css";
 
 import { TbLockPassword } from "react-icons/tb";
@@ -9,6 +10,8 @@ import logo from '../img/아이콘최종.png';
 import { signup, checkEmailDuplicate, checkPhoneDuplicate } from '../Api';
 
 const JoinMembership = () => {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -78,6 +81,8 @@ const JoinMembership = () => {
     try {
       await signup(payload);
       alert("회원가입 성공!");
+      navigate('/login');
+      
     } catch (err) {
       console.error("회원가입 에러 전체:", err);
       console.error("서버 응답 데이터:", err.response?.data);
@@ -198,7 +203,7 @@ const JoinMembership = () => {
           <input
             type="tel"
             name="phone"
-            placeholder="휴대폰 번호 입력"
+            placeholder="xxx-xxxx-xxxx"
             value={form.phone}
             onChange={handleChange}
             className={styles.phoneInput}
