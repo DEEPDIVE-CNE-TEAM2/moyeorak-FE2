@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import { PiSoccerBallFill } from "react-icons/pi";
@@ -200,6 +200,7 @@ const Rental = () => {
   useEffect(() => {
     const id = parseInt(localStorage.getItem("selectedRegionId"));
     setSelectedRegionId(id);
+    console.log("선택된 지역 ID:", selectedRegionId);
 
     if (id === 1) {
       setCurrentFacilities(jungFacilities);

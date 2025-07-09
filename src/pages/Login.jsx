@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "../styles/Login.module.css";
 import { FaUser } from "react-icons/fa";
 import { TbLockPassword } from "react-icons/tb";
@@ -23,6 +23,7 @@ const Login = () => {
 
     try {
       const response = await login(form.email, form.password);
+      console.log("서버 응답:", response.data);
       alert("로그인 성공!");
       navigate("/");
     } catch (error) {
