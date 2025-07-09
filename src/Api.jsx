@@ -159,3 +159,34 @@ export const getRegionList = async () => {
   }
 };
 
+// 대관신청
+export const getRentalFacilitiesByRegion = async (regionId) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/api/rentals/region/${regionId}`);
+    return response.data;
+  } catch (error) {
+    console.error("대관 시설 정보 가져오기 실패:", error);
+    return [];
+  }
+};
+
+export const createRentalApplication = async (data) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/api/rental-applications`, data);
+    return response.data;
+  } catch (error) {
+    console.error("대관 신청 실패:", error);
+    throw error;
+  }
+};
+
+// 대관신청 상세화면
+export const fetchRentalDetail = async (regionId, rentalId) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/${regionId}/${rentalId}`);
+    return response.data; // API가 반환하는 시설 상세 데이터
+  } catch (error) {
+    console.error("대관 상세 API 호출 실패:", error);
+    throw error;
+  }
+};

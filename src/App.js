@@ -55,6 +55,11 @@ const App = () => {
         <Route path="/rental/reserve/:id" element={<ReservePage />} />
         
 
+        
+        <Route path="/jung/:rentalId" element={<RentalDetailContainer />} />
+        <Route path="/seongdong/:rentalId" element={<RentalDetailContainer />} />
+        <Route path="/songpa/:rentalId" element={<RentalDetailContainer />} />
+
       </Routes>
     </BrowserRouter>
   )
