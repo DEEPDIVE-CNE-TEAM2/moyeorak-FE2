@@ -13,33 +13,33 @@ const Rentals = () => {
   const [selectedRowData, setSelectedRowData] = useState(null);
 
   const originalRows = [
-    {
-      facilityType: '수영장',
-      location: '구름 수영장',
-      period: '2025.05.20 - 2025.06.19',
-      time: '12:00 - 13:00',
-      applicant: '김구름',
+     {
+      facilityType: '축구장',
+      location: '중구 손기정 축구장',
+      period: '2025.07.10',
+      time: '17:00 - 18:00',
+      applicant: '이수빈',
       status: '사용중',
-      applyDate: '2025.05.20',
+      applyDate: '2025.07.10',
       inOrOut: '관내',
     },
     {
       facilityType: '수영장',
-      location: '구름 수영장',
-      period: '2025.05.21 - 2025.06.19',
+      location: '회현체육센터 수영장',
+      period: '2025.07.13',
       time: '12:00 - 13:00',
-      applicant: '김구름',
+      applicant: '이수빈',
       status: '취소',
-      applyDate: '2025.05.20',
+      applyDate: '2025.07.10',
     },
     {
-      facilityType: '수영장',
-      location: '구름 수영장',
-      period: '2025.05.19 - 2025.06.19',
+      facilityType: '테니스장',
+      location: '장충테니스장',
+      period: '2025.07.09',
       time: '12:00 - 13:00',
-      applicant: '김구름',
+      applicant: '이수빈',
       status: '종료',
-      applyDate: '2025.05.20',
+      applyDate: '2025.07.08',
     },
   ];
 

@@ -14,7 +14,7 @@
 
 .popup-container {
   width: 404px;
-  height: 483px;
+  min-height: 483px;
   border-radius: 10px;
   border: 1px solid #9A9A9A;
   background: #FFF;
