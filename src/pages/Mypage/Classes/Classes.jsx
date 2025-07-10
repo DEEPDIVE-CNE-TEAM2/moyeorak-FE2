@@ -12,46 +12,48 @@ const Classes = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState(null);
 
-  const originalRows = [
-    {
-      period: '2025.05.20 - 2025.06.19',
-      title: '수영 (중급반)',
-      schedule: '월/수/금 17:00~18:00',
-      facility: '구름 실내 수영장',
-      instructor: '김구름',
-      status: '수강중',
-      applyDate: '2025.05.20',
-      price: '23,600원',
-      inOrOut: '관내',
-      cancelAvailable: '불가',
-    },
-    {
-      period: '2025.05.21 - 2025.06.19',
-      title: '수영 (중급반)',
-      schedule: '월/수/금 17:00~18:00',
-      facility: '구름 실내 수영장',
-      instructor: '김구름',
-      status: '취소',
-    },
-    {
-      period: '2025.05.22 - 2025.06.19',
-      title: '수영 (중급반)',
-      schedule: '월/수/금 17:00~18:00',
-      facility: '구름 실내 수영장',
-      instructor: '김구름',
-      status: '종료',
-    },
-  ];
+  const [rows, setRows] = useState([
+  {
+    period: '2025.08.01-2025.08.10',
+    title: '어린이 축구교실',
+    schedule: '월/수/금 17:00~18:00',
+    facility: '손기정 축구장',
+    instructor: '이수빈',
+    status: '수강대기',
+    applyDate: '2025.07.10',
+    price: '23,600원',
+    inOrOut: '관내',
+    cancelAvailable: '불가',
+  },
+  {
+    period: '2025.05.21 - 2025.06.19',
+    title: '수영 (초급반)',
+    schedule: '월/수/금 17:00~18:00',
+    facility: '회현체육센터 수영장',
+    instructor: '이수빈',
+    status: '취소',
+  },
+  {
+    period: '2025.05.22 - 2025.06.19',
+    title: '테니스 (중급반)',
+    schedule: '월/수/금 17:00~18:00',
+    facility: '장충테니스장',
+    instructor: '이수빈',
+    status: '종료',
+  },
+]);
 
-  const sortedRows = [...originalRows].sort((a, b) => {
-    const aDate = new Date(a.period.split(' - ')[0]);
-    const bDate = new Date(b.period.split(' - ')[0]);
-    return sortOrder === 'desc' ? bDate - aDate : aDate - bDate;
-  });
+
+const sortedRows = [...rows].sort((a, b) => {
+  const aDate = new Date(a.period.split(' - ')[0].replaceAll('.', '-'));
+  const bDate = new Date(b.period.split(' - ')[0].replaceAll('.', '-'));
+  return sortOrder === 'desc' ? bDate - aDate : aDate - bDate;
+});
+
 
   const getStatusClass = (status) => {
     switch (status) {
-      case '수강중':
+      case '수강대기':
         return 'status-badge active';
       case '취소':
         return 'status-badge cancelled';
@@ -106,7 +108,7 @@ const Classes = () => {
             <tbody>
               {sortedRows.map((row, idx) => (
                 <React.Fragment key={idx}>
-                  <tr className="clickable-row" onClick={() => row.status === '수강중' && toggleRow(idx)}>
+                  <tr className="clickable-row" onClick={() => row.status === '수강대기' && toggleRow(idx)}>
                     <td align="center">{row.period}</td>
                     <td align="center">{row.title}</td>
                     <td align="center">{row.schedule}</td>
@@ -116,7 +118,7 @@ const Classes = () => {
                       <div className={getStatusClass(row.status)}>{row.status}</div>
                     </td>
                   </tr>
-                  {expandedRowIndex === idx && row.status === '수강중' && (
+                  {expandedRowIndex === idx && row.status === '수강대기' && (
                     <>
                       <tr className="detail-row">
                         <td align="center" className="mini-title">신청일</td>
@@ -151,13 +153,19 @@ const Classes = () => {
       </div>
 
       {isModalOpen && (
-        <Popupmodal
-          data={selectedRowData}
-          onClose={() => {
-            setIsModalOpen(false);
-            setSelectedRowData(null);
-          }}
-        />
+<Popupmodal
+  data={selectedRowData}
+  onClose={() => {
+    setIsModalOpen(false);
+    setSelectedRowData(null);
+    // 수강대기 → 취소 처리
+    setRows((prevRows) =>
+      prevRows.map((row) =>
+        row.status === '수강대기' ? { ...row, status: '취소' } : row
+      )
+    );
+  }}
+/>
       )}
     </>
   );

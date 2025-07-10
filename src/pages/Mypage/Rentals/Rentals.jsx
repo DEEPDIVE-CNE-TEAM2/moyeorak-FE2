@@ -12,42 +12,43 @@ const Rentals = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState(null);
 
-  const originalRows = [
-     {
-      facilityType: '축구장',
-      location: '중구 손기정 축구장',
-      period: '2025.07.10',
-      time: '17:00 - 18:00',
-      applicant: '이수빈',
-      status: '사용중',
-      applyDate: '2025.07.10',
-      inOrOut: '관내',
-    },
-    {
-      facilityType: '수영장',
-      location: '회현체육센터 수영장',
-      period: '2025.07.13',
-      time: '12:00 - 13:00',
-      applicant: '이수빈',
-      status: '취소',
-      applyDate: '2025.07.10',
-    },
-    {
-      facilityType: '테니스장',
-      location: '장충테니스장',
-      period: '2025.07.09',
-      time: '12:00 - 13:00',
-      applicant: '이수빈',
-      status: '종료',
-      applyDate: '2025.07.08',
-    },
-  ];
+const [rows, setRows] = useState([
+  {
+    facilityType: '축구장',
+    location: '중구 손기정 축구장',
+    period: '2025.07.10',
+    time: '17:00 - 18:00',
+    applicant: '이수빈',
+    status: '사용중',
+    applyDate: '2025.07.10',
+    inOrOut: '관내',
+  },
+  {
+    facilityType: '수영장',
+    location: '회현체육센터 수영장',
+    period: '2025.07.13',
+    time: '12:00 - 13:00',
+    applicant: '이수빈',
+    status: '취소',
+    applyDate: '2025.07.10',
+  },
+  {
+    facilityType: '테니스장',
+    location: '장충테니스장',
+    period: '2025.07.09',
+    time: '12:00 - 13:00',
+    applicant: '이수빈',
+    status: '종료',
+    applyDate: '2025.07.08',
+  },
+]);
 
-  const sortedRows = [...originalRows].sort((a, b) => {
-    const aDate = new Date(a.period.split(' - ')[0]);
-    const bDate = new Date(b.period.split(' - ')[0]);
-    return sortOrder === 'desc' ? bDate - aDate : aDate - bDate;
-  });
+const sortedRows = [...rows].sort((a, b) => {
+  const aDate = new Date(a.period.split(' - ')[0]);
+  const bDate = new Date(b.period.split(' - ')[0]);
+  return sortOrder === 'desc' ? bDate - aDate : aDate - bDate;
+});
+
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -146,13 +147,19 @@ const Rentals = () => {
       </div>
 
       {isModalOpen && (
-        <Popupmodal
-          data={selectedRowData}
-          onClose={() => {
-            setIsModalOpen(false);
-            setSelectedRowData(null);
-          }}
-        />
+<Popupmodal
+  data={selectedRowData}
+  onClose={() => {
+    setIsModalOpen(false);
+    setSelectedRowData(null);
+    // 사용중 → 취소 처리
+    setRows((prevRows) =>
+      prevRows.map((row) =>
+        row.status === '사용중' ? { ...row, status: '취소' } : row
+      )
+    );
+  }}
+/>
       )}
     </>
   );
