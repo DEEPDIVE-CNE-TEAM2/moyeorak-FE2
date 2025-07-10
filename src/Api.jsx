@@ -78,7 +78,7 @@ export const signup = async ({
   password,
   confirmPassword,
   name,
-  address,
+  regionId,
   gender,
   phone,
   birth,
@@ -91,7 +91,7 @@ export const signup = async ({
         password,
         confirmPassword,
         name,
-        address,
+        regionId,
         gender,
         phone,
         birth,
@@ -158,6 +158,22 @@ export const getRegionList = async () => {
     throw error;
   }
 };
+
+// 내 정보 조회
+export const getUserInfo = async () => {
+  try {
+    const token = getAccessToken();
+    const response = await apiClient.get('/api/users/me', {
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 
 // 대관신청
 export const getRentalFacilitiesByRegion = async (regionId) => {

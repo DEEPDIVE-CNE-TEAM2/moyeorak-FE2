@@ -19,13 +19,12 @@ const JoinMembership = () => {
     confirmPassword: "",
     name: "",
     birth: "",
-    address: "",
     gender: "",
     phone: "",
     regionId: "", // 지역 id 저장
   });
 
-  // ✅ 지역 리스트 불러오기
+  // 지역 리스트 불러오기
   useEffect(() => {
     const fetchRegions = async () => {
       try {
@@ -35,7 +34,7 @@ const JoinMembership = () => {
         console.error('지역 불러오기 실패', err);
       }
     };
-    fetchRegions(); // ← 호출 빠졌던 부분
+    fetchRegions();
   }, []);
 
   const handleChange = (e) => {
@@ -86,10 +85,9 @@ const JoinMembership = () => {
       confirmPassword: form.confirmPassword,
       name: form.name,
       birth: form.birth,
-      address: form.address,
       gender: genderForApi,
       phone: form.phone,
-      regionId: form.regionId, // ✅ 백엔드로 보낼 지역 ID
+      regionId: form.regionId,
     };
 
     console.log("회원가입 요청 데이터:", payload);
