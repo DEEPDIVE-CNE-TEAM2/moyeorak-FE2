@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './SelectPanel.module.css';
 import deleteIcon from '../../../../img/delete.svg';
 
@@ -20,9 +20,7 @@ const sportOptions = [
 
 const statusOptions = ['접수 중', '접수 마감'];
 
-const SelectPanel = ({ selectedSport, setSelectedSport }) => {
-  const [selectedStatus, setSelectedStatus] = useState(null);
-
+const SelectPanel = ({ selectedSport, setSelectedSport, selectedStatus, setSelectedStatus }) => {
   const toggleSelect = (value, selectedValue, setter) => {
     setter(value === selectedValue ? null : value);
   };
