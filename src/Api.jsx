@@ -174,6 +174,26 @@ export const getUserInfo = async () => {
   }
 };
 
+// 비밀번호 확인
+export const verifyPassword = async (password) => {
+  try {
+    const token = getAccessToken();
+    const response = await apiClient.post(
+      '/api/users/verify-password',
+      { password },
+      {
+        headers: {
+          Authorization: `${token}`,
+        },
+      }
+    );
+    return response.data; // { matched: true } 형태
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 
 // 대관신청
 export const getRentalFacilitiesByRegion = async (regionId) => {
