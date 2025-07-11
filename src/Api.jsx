@@ -215,23 +215,6 @@ export const changePassword = async ({ currentPassword, newPassword, confirmNewP
   }
 };
 
-
-/*
-export const getUserInfo = async () => {
-  try {
-    const token = getAccessToken();
-    const response = await apiClient.get('/api/users/me', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-*/
-
 // 비밀번호 확인
 export const verifyPassword = async (password) => {
   try {

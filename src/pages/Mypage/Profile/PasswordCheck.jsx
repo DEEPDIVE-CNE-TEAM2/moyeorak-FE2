@@ -37,6 +37,11 @@ const PasswordCheck = ({ onVerify }) => {
           setPassword(e.target.value);
           setError("");
         }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleVerify();
+          }
+        }}
       />
       <button className={styles.submitButton} onClick={handleVerify}>
         확인
