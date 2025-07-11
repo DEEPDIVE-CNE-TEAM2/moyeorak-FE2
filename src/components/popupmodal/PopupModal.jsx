@@ -1,30 +1,42 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './PopupModal.css';
 
 const PopupModal = ({ onConfirm }) => {
   const [selected, setSelected] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setSelected(e.target.value);
   };
 
   const REGION_ID_MAP = {
-  '중구': 1,
-  '성동구': 2,
-  '송파구': 3,
-};
+    '중구': 1,
+    '성동구': 2,
+    '송파구': 3,
+  };
 
- const handleConfirm = () => {
-  if (selected) {
-    const selectedRegionId = REGION_ID_MAP[selected];
-    // 지역명과 지역 ID 함께 넘겨주기
-    onConfirm({ name: selected, id: selectedRegionId });
+  const REGION_ROUTE_MAP = {
+    '중구': '/jung',
+    '성동구': '/seongdong',
+    '송파구': '/songpa',
+  };
 
-    // 지역 ID를 localStorage에도 저장
-    localStorage.setItem("selectedRegionId", selectedRegionId);
-    localStorage.setItem("selectedRegionName", selected);
-  }
-};
+  const handleConfirm = () => {
+    if (selected) {
+      const selectedRegionId = REGION_ID_MAP[selected];
+      const route = REGION_ROUTE_MAP[selected];
+
+      // 지역 정보 넘겨주기
+      onConfirm({ name: selected, id: selectedRegionId });
+
+      // localStorage 저장
+      localStorage.setItem("selectedRegionId", selectedRegionId);
+      localStorage.setItem("selectedRegionName", selected);
+
+      navigate(route);
+    }
+  };
 
   return (
     <div className="popup-backdrop">
