@@ -332,3 +332,48 @@ export const getNoticeById = async (id) => {
     return null;
   }
 };
+
+// 내 대관 신청 목록 조회
+export const getMyRentalApplications = async () => {
+  try {
+    const response = await apiClient.get('/api/rental-applications/me');
+    return response.data; // 배열로 들어옴
+  } catch (error) {
+    console.error("내 대관 신청 목록 조회 실패:", error);
+    return [];
+  }
+};
+
+// 대관신청 취소
+export const cancelRentalApplication = async (applicationId) => {
+  try {
+    const response = await apiClient.delete(`/api/rental-applications/${applicationId}`);
+    return response.data;
+  } catch (error) {
+    console.error('대관 신청 취소 실패:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// 수강신청 목록 조회
+export const getMyEnrollments = async () => {
+  try {
+    const response = await apiClient.get('/api/enrollments/me');
+    return response.data; // 배열로 들어옴
+  } catch (error) {
+    console.error('내 수강신청 목록 조회 실패:', error);
+    return [];
+  }
+};
+
+// 수강신청 취소
+export const cancelEnrollment = async (enrollmentId) => {
+  try {
+    const response = await apiClient.delete(`/api/enrollments/${enrollmentId}`);
+    return response.data;
+  } catch (error) {
+    console.error('수강신청 취소 실패:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
