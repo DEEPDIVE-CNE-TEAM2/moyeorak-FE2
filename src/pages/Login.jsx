@@ -29,30 +29,21 @@ const handleSubmit = async (e) => {
     console.log("로그인 응답 accessToken:", getAccessToken());
 
     // 2. 로그인 성공 후 accessToken 저장됨
-    const userInfo = await getUserInfo();
+    await getUserInfo();  // userInfo는 필요 없으면 무시해도 됨
 
-    const serverRegionId = Number(userInfo.regionId);
-    const localRegionId = Number(localStorage.getItem("selectedRegionId"));
+    const localRegionId = Number(localStorage.getItem("selectedRegionId")) || 1; // 기본 1(중구)
 
-    console.log("서버 regionId:", serverRegionId);
-    console.log("로컬 regionId:", localRegionId);
+    alert("로그인 성공!");
 
-    // 3. regionId 비교
-    if (serverRegionId === localRegionId) {
-      alert("로그인 성공!");
+    const regionMap = {
+      1: "jung",
+      2: "seongdong",
+      3: "songpa",
+    };
 
-      const regionMap = {
-        1: "jung",
-        2: "seongdong",
-        3: "songpa",
-      };
+    const regionPath = regionMap[localRegionId] || "jung";
 
-      const regionPath = regionMap[serverRegionId] || "";
-      navigate(regionPath ? `/${regionPath}` : "/");
-    } else {
-      alert("선택한 지역과 회원의 등록 지역이 다릅니다.");
-      navigate("/");
-    }
+    navigate(`/${regionPath}`);
   } catch (error) {
     console.error("로그인 실패:", error.response?.data || error.message);
     alert(
@@ -61,6 +52,7 @@ const handleSubmit = async (e) => {
     );
   }
 };
+
 
 
 
