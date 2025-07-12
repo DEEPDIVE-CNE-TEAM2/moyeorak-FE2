@@ -8,9 +8,10 @@ const ProfileForm = () => {
   const [gender, setGender] = useState('남');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [birth, setBirth] = useState('');
   const [originalData, setOriginalData] = useState(null);
-  const [emailChecked, setEmailChecked] = useState(false); // 중복확인 여부 상태
-  const [emailDuplicate, setEmailDuplicate] = useState(false); // 중복 여부 상태
+  const [emailChecked, setEmailChecked] = useState(false);
+  const [emailDuplicate, setEmailDuplicate] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,15 +24,17 @@ const ProfileForm = () => {
         else setGender('남');
         setEmail(data.email || '');
         setPhone(data.phone || '');
+        setBirth(data.birth || '');
 
         setOriginalData({
           name: data.name || '',
           gender: data.gender === 'MALE' ? '남' : '여',
           email: data.email || '',
           phone: data.phone || '',
+          birth: data.birth || '',
         });
 
-        setEmailChecked(true); // 처음 불러온 이메일은 이미 확인된 상태로 간주
+        setEmailChecked(true);
         setEmailDuplicate(false);
       } catch (error) {
         console.error('회원 정보 불러오기 실패:', error);
@@ -41,14 +44,12 @@ const ProfileForm = () => {
     fetchUserInfo();
   }, []);
 
-  // 이메일이 변경될 때마다 중복확인 필요 플래그 변경
   const onEmailChange = (e) => {
     setEmail(e.target.value);
-    setEmailChecked(false);  // 이메일이 바뀌면 다시 중복확인해야 하므로 false
-    setEmailDuplicate(false); // 중복 여부 초기화
+    setEmailChecked(false);
+    setEmailDuplicate(false);
   };
 
-  // 이메일 중복 확인
   const handleCheckEmail = async () => {
     if (!email.trim()) {
       alert('이메일을 입력하세요.');
@@ -72,60 +73,69 @@ const ProfileForm = () => {
     }
   };
 
-    // 회원정보 수정
   const handleSubmit = async () => {
-    if (!name.trim() || !email.trim() || !phone.trim()) {
-      alert('이름, 이메일, 휴대폰 번호는 모두 입력해야 합니다.');
+  if (!name.trim() || !email.trim() || !phone.trim() || !birth.trim()) {
+    alert('이름, 이메일, 생년월일, 휴대폰 번호는 모두 입력해야 합니다.');
+    return;
+  }
+
+  if (
+    originalData &&
+    name === originalData.name &&
+    gender === originalData.gender &&
+    email === originalData.email &&
+    phone === originalData.phone &&
+    birth === originalData.birth
+  ) {
+    alert('수정된 정보가 없습니다.');
+    return;
+  }
+
+  if (!emailChecked) {
+    alert('이메일 중복 확인이 필요합니다.');
+    return;
+  }
+
+  if (emailDuplicate) {
+    alert('중복된 이메일이므로 다른 이메일을 사용해주세요.');
+    return;
+  }
+
+  try {
+    const payload = {
+      email,
+      name,
+      phone,
+      gender: gender === '남' ? 'MALE' : 'FEMALE',
+      birth,
+    };
+
+    // ✅ 콘솔 확인용 로그 추가
+    console.log('전송될 데이터 확인:', {
+      email,
+      name,
+      phone,
+      gender: gender === '남' ? 'MALE' : 'FEMALE',
+      birth,
+    });
+
+    await updateUserInfo(payload);
+
+    if (email !== originalData.email) {
+      alert('이메일이 변경되어 다시 로그인해야 합니다.');
+      navigate('/login');
       return;
     }
 
-    if (
-      originalData &&
-      name === originalData.name &&
-      gender === originalData.gender &&
-      email === originalData.email &&
-      phone === originalData.phone
-    ) {
-      alert('수정된 정보가 없습니다.');
-      return;
-    }
-
-    // 이메일 수정했으면 중복확인 했는지 검사
-    if (!emailChecked) {
-      alert('이메일 중복 확인이 필요합니다.');
-      return;
-    }
-
-    if (emailDuplicate) {
-      alert('중복된 이메일이므로 다른 이메일을 사용해주세요.');
-      return;
-    }
-
-    try {
-      const payload = {
-        email,
-        name,
-        phone,
-        gender: gender === '남' ? 'MALE' : 'FEMALE',
-      };
-
-      await updateUserInfo(payload);
-
-      if (email !== originalData.email) {
-        alert('이메일이 변경되어 다시 로그인해야 합니다.');
-        navigate('/login');
-        return;
-      }
-
-      alert('회원 정보가 수정되었습니다.');
-      setOriginalData({ name, gender, email, phone });
-      setEmailChecked(true);
-      setEmailDuplicate(false);
-    } catch (error) {
-      console.error('회원 정보 수정 실패:', error);
-      alert('회원 정보 수정 중 오류가 발생했습니다.');
-    }
-  };
+    alert('회원 정보가 수정되었습니다.');
+    setOriginalData({ name, gender, email, phone, birth });
+    setEmailChecked(true);
+    setEmailDuplicate(false);
+  } catch (error) {
+    console.error('회원 정보 수정 실패:', error);
+    alert('회원 정보 수정 중 오류가 발생했습니다.');
+  }
+};
 
 
   return (
@@ -160,6 +170,17 @@ const ProfileForm = () => {
             여
           </button>
         </div>
+      </div>
+
+      {/* 생년월일 */}
+      <div className={styles.field}>
+        <label className={styles.label}>생년월일</label>
+        <input
+          className={styles.input}
+          type="date"
+          value={birth}
+          onChange={(e) => setBirth(e.target.value)}
+        />
       </div>
 
       {/* 이메일 */}

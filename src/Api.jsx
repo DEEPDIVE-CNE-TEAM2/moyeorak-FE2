@@ -193,7 +193,9 @@ export const getUserInfo = async () => {
 export const updateUserInfo = async (userData) => {
   try {
     const response = await apiClient.put('/api/users/me', userData);
+        console.log('성공 :',response.data);
     return response.data; // 성공 시 응답 데이터 반환
+
   } catch (error) {
     console.error('내 정보 수정 실패:', error);
     throw error;
