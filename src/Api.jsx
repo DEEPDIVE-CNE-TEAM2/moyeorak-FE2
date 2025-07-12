@@ -249,7 +249,7 @@ export const deleteUser = async (password, confirmPassword) => {
 };
 
 
-// 대관신청
+// 대관신청 (GET)
 export const getRentalFacilitiesByRegion = async (regionId) => {
   try {
     const response = await apiClient.get(`/api/rentals/region/${regionId}`);
@@ -297,5 +297,27 @@ export const fetchRentalDetail = async (regionId, rentalId) => {
   } catch (error) {
     console.error("대관 상세 API 호출 실패:", error);
     throw error;
+  }
+};
+
+// 공지사항 목록 조회
+export const getNoticesByRegion = async (regionId) => {
+  try {
+    const response = await apiClient.get(`/api/notices/region/${regionId}`);
+    return response.data;
+  } catch (error) {
+    console.error("공지사항 정보 가져오기 실패:", error);
+    return [];
+  }
+};
+
+// 공지사항 단건 조회
+export const getNoticeById = async (id) => {
+  try {
+    const response = await apiClient.get(`/api/notices/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`공지사항 ID ${id} 조회 실패:`, error);
+    return null;
   }
 };

@@ -1,16 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar/Navbar.jsx';
+import { getNoticesByRegion } from '../../Api.jsx';
 import './Announcement.css';
 import down from '../../img/down.svg';
 import search from '../../img/search.svg';
-
-const dummyAnnouncements = Array.from({ length: 20 }, (_, i) => ({
-  id: i + 1,
-  title: `동작삼일수영장 ${i + 1}분기 아쿠아로빅 접수일정 안내`,
-  date: `2025.07.${(i + 1).toString().padStart(2, '0')}`,
-  views: Math.floor(Math.random() * 100),
-}));
 
 const ITEMS_PER_PAGE = 11;
 const PAGE_GROUP_SIZE = 5;
@@ -18,13 +12,34 @@ const PAGE_GROUP_SIZE = 5;
 const Announcement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [filteredAnnouncements, setFilteredAnnouncements] = useState(
-    [...dummyAnnouncements].sort((a, b) => new Date(b.date) - new Date(a.date))
-  );
+  const [originalAnnouncements, setOriginalAnnouncements] = useState([]);
+  const [filteredAnnouncements, setFilteredAnnouncements] = useState([]);
   const [searchType, setSearchType] = useState('제목');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const navigate = useNavigate();
+
+  // 공지사항 불러오기
+  useEffect(() => {
+    const fetchNotices = async () => {
+      const regionId = localStorage.getItem('selectedRegionId');
+      if (!regionId) return;
+
+      const data = await getNoticesByRegion(regionId);
+      const formatted = data.map((item) => ({
+        id: item.id,
+        title: item.title,
+        content: item.content,
+        date: new Date(item.createdAt).toISOString().split('T')[0].replace(/-/g, '.'),
+        views: item.viewCount,
+      }));
+      const sorted = [...formatted].sort((a, b) => new Date(b.date) - new Date(a.date));
+      setOriginalAnnouncements(sorted);
+      setFilteredAnnouncements(sorted);
+    };
+
+    fetchNotices();
+  }, []);
 
   const handleSearchTypeChange = (type) => {
     setSearchType(type);
@@ -34,18 +49,20 @@ const Announcement = () => {
   const handleSearch = () => {
     const keyword = searchKeyword.trim().toLowerCase();
     if (!keyword) {
-      setFilteredAnnouncements(
-        [...dummyAnnouncements].sort((a, b) => new Date(b.date) - new Date(a.date))
-      );
+      setFilteredAnnouncements(originalAnnouncements);
       return;
     }
 
-    const filtered = dummyAnnouncements.filter((item) =>
-      item.title.toLowerCase().includes(keyword) // 제목으로만 검색
-    );
-    setFilteredAnnouncements(
-      [...filtered].sort((a, b) => new Date(b.date) - new Date(a.date))
-    );
+    const filtered = originalAnnouncements.filter((item) => {
+      const title = item.title.toLowerCase();
+      const content = item.content.toLowerCase();
+      if (searchType === '제목') return title.includes(keyword);
+      if (searchType === '내용') return content.includes(keyword);
+      if (searchType === '제목/내용') return title.includes(keyword) || content.includes(keyword);
+      return false;
+    });
+
+    setFilteredAnnouncements(filtered);
     setCurrentPage(1);
   };
 
@@ -113,15 +130,8 @@ const Announcement = () => {
                 </td>
                 <td
                   style={{ flex: 6, textAlign: 'left', cursor: 'pointer', color: '#151515' }}
-                  onClick={() =>
-                    navigate(`/announcement/${item.id}`, {
-                      state: {
-                        title: item.title,
-                        date: item.date,
-                        views: item.views,
-                      },
-                    })
-                  }
+                  onClick={() => navigate(`/announcement/${item.id}`)}
+
                 >
                   {item.title}
                 </td>
