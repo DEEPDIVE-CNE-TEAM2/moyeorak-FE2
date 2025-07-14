@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import styles from "./ReservePage.module.css";
 import Navbar from "../../../components/Navbar/Navbar";
-import { fetchRentalDetail, createRentalApplication, getAccessToken } from "../../../Api"; // getAccessToken 추가
+import { fetchRentalDetail, createRentalApplication, getAccessToken } from "../../../Api";
 
 const ReservePage = () => {
   const { id, district } = useParams();
@@ -24,12 +24,10 @@ const ReservePage = () => {
   const [people, setPeople] = useState(1);
   const [disabledTimes, setDisabledTimes] = useState([]);
 
-  // 날짜 문자열 (YYYY-MM-DD) 생성
   const getKoreanDateString = (date) => {
     return date.toLocaleDateString("sv-SE", { timeZone: "Asia/Seoul" });
   };
 
-  // 시설 정보 API로 불러오기
   useEffect(() => {
     const fetchFacility = async () => {
       try {
@@ -43,7 +41,6 @@ const ReservePage = () => {
     if (regionId && id) fetchFacility();
   }, [regionId, id]);
 
-  // 날짜 선택 시 해당 날짜의 비활성화 시간 업데이트
   useEffect(() => {
     if (selectedDate && facility) {
       const dateStr = getKoreanDateString(selectedDate);
@@ -102,7 +99,6 @@ const ReservePage = () => {
 
   const handleApplyClick = async () => {
     const token = getAccessToken();
-    console.log("AccessToken (신청 시):", token);
     if (!token) {
       alert("로그인이 필요합니다.");
       navigate("/login");
@@ -133,16 +129,15 @@ const ReservePage = () => {
         const formattedDate = getKoreanDateString(selectedDate);
 
         await createRentalApplication({
-          rentalId: facility.id,
+          rentalId: parseInt(facility.id, 10),
           requestedDate: formattedDate,
           requestedStartTime: selectedTimes[0],
           requestedEndTime: selectedTimes[selectedTimes.length - 1],
-          note: "",
           peopleCount: people,
         });
 
         alert("신청되었습니다.");
-        navigate(`/${district}/rental`);
+        navigate(`/rental?selectedRegionId=${regionId}`);
       } catch (error) {
         alert("신청 중 오류가 발생했습니다. 다시 시도해주세요.");
         console.error(error);
