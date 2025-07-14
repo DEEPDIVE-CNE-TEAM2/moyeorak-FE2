@@ -21,10 +21,13 @@ const JoinMembership = () => {
     birth: "",
     gender: "",
     phone: "",
-    regionId: "", // 지역 id 저장
+    regionId: "",
   });
 
-  // 지역 리스트 불러오기
+  // ✅ 중복확인 여부 상태 추가
+  const [emailChecked, setEmailChecked] = useState(false);
+  const [phoneChecked, setPhoneChecked] = useState(false);
+
   useEffect(() => {
     const fetchRegions = async () => {
       try {
@@ -40,6 +43,10 @@ const JoinMembership = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+
+    // ✅ 이메일/전화번호 변경 시 중복확인 상태 초기화
+    if (name === "email") setEmailChecked(false);
+    if (name === "phone") setPhoneChecked(false);
   };
 
   const handleGenderSelect = (gender) => {
@@ -47,22 +54,34 @@ const JoinMembership = () => {
   };
 
   const handleCheckEmail = async () => {
+    if (!form.email.trim()) {
+      alert("이메일을 입력해주세요.");
+      return;
+    }
     try {
       const res = await checkEmailDuplicate(form.email);
       alert(res.isDuplicate ? "이미 사용 중인 이메일입니다." : "사용 가능한 이메일입니다.");
+      setEmailChecked(!res.isDuplicate); // 중복 아니면 true
     } catch (err) {
       console.error(err);
       alert("이메일 중복 확인 중 오류가 발생했습니다.");
+      setEmailChecked(false);
     }
   };
 
   const handleCheckPhone = async () => {
+    if (!form.phone.trim()) {
+      alert("휴대폰 번호를 입력해주세요.");
+      return;
+    }
     try {
       const res = await checkPhoneDuplicate(form.phone);
       alert(res.isDuplicate ? "이미 사용 중인 번호입니다." : "사용 가능한 번호입니다.");
+      setPhoneChecked(!res.isDuplicate); // 중복 아니면 true
     } catch (err) {
       console.error(err);
       alert("휴대폰 중복 확인 중 오류가 발생했습니다.");
+      setPhoneChecked(false);
     }
   };
 
@@ -70,6 +89,32 @@ const JoinMembership = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // ✅ 1. 빈 값 확인
+    if (
+      !form.email.trim() ||
+      !form.password.trim() ||
+      !form.confirmPassword.trim() ||
+      !form.name.trim() ||
+      !form.birth.trim() ||
+      !form.gender.trim() ||
+      !form.phone.trim() ||
+      !form.regionId.trim()
+    ) {
+      alert("모든 항목을 빠짐없이 입력해주세요.");
+      return;
+    }
+
+    // ✅ 2. 중복확인 여부 검사
+    if (!emailChecked) {
+      alert("이메일 중복 확인이 필요합니다.");
+      return;
+    }
+
+    if (!phoneChecked) {
+      alert("휴대폰 번호 중복 확인이 필요합니다.");
+      return;
+    }
 
     if (!isPasswordMatch) {
       alert("비밀번호가 일치하지 않습니다.");

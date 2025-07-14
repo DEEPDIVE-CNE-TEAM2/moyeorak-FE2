@@ -52,29 +52,35 @@ const Rentals = () => {
     }
   };
 
-  const handleCancel = async (row) => {
-    const confirmMsg = `
+const handleCancel = async (row) => {
+  const confirmMsg = `
 장소: ${row.location}
 사용일: ${row.requestedDate}
 시간: ${row.requestedTime}
 
 대관 신청을 취소하시겠습니까?
-    `.trim();
+  `.trim();
 
-    if (window.confirm(confirmMsg)) {
-      try {
-        await cancelRentalApplication(row.id);
-        alert(`${row.location} 대관 신청이 취소되었습니다.`);
-        // 최신 목록 다시 불러오기
-        const updated = await getMyRentalApplications();
-        setRentalRows(updated);
-        setExpandedRowIndex(null);
-      } catch (error) {
-        console.error("대관 신청 취소 실패:", error);
-        alert("대관 신청 취소 중 오류가 발생했습니다.");
-      }
+  if (window.confirm(confirmMsg)) {
+    try {
+      await cancelRentalApplication(row.id);
+      alert(`${row.location} 대관 신청이 취소되었습니다.`);
+
+      // 상태만 직접 수정
+      setRentalRows((prevRows) =>
+        prevRows.map((r) =>
+          r.id === row.id ? { ...r, statusLabel: '취소' } : r
+        )
+      );
+
+      setExpandedRowIndex(null);
+    } catch (error) {
+      console.error("대관 신청 취소 실패:", error);
+      alert("대관 신청 취소 중 오류가 발생했습니다.");
     }
-  };
+  }
+};
+
 
   return (
     <>
