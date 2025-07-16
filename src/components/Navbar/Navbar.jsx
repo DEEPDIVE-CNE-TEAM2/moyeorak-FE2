@@ -19,10 +19,9 @@ const districtToId = {
   "송파구": 3,
 };
 
-const Navbar = ({
-  onDistrictChange,
-  onLogoClick,
-}) => {
+// ... (생략된 import 부분은 동일)
+
+const Navbar = ({ onDistrictChange, onLogoClick }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showSubmenu, setShowSubmenu] = useState(false);
   const [submenuPinned, setSubmenuPinned] = useState(false);
@@ -140,7 +139,7 @@ const Navbar = ({
                   e.preventDefault();
                   navigate(`/rental?selectedRegionId=${selectedRegionId}`);
                 }}
-                className={`${styles.menuLink} ${location.pathname.includes('/rental') ? styles.activeMenu : ''}`}
+                className={`${styles.menuLink} ${location.pathname.startsWith('/rental') ? styles.activeMenu : ''}`}
               >
                 대관신청
               </a>
@@ -174,9 +173,12 @@ const Navbar = ({
                 setSubmenuPinned(!submenuPinned);
               }}
             >
-              <span className={styles.menuLink}>마이페이지</span>
+              <span
+                className={`${styles.menuLink} ${location.pathname.startsWith('/mypage') ? styles.activeMenu : ''}`}
+              >
+                마이페이지
+              </span>
             </li>
-
           </ul>
         </div>
 
@@ -280,7 +282,6 @@ const Navbar = ({
           </button>
         </div>
       )}
-
     </>
   );
 };

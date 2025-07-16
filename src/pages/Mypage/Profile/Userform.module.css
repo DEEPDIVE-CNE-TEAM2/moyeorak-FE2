@@ -74,65 +74,63 @@
 .genderButton {
   width: 170px;
   height: 40px;
-  border-radius: 5px;
-  background: #fff;
-  border: 1px solid #9A9A9A;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
 
-  color: #212121;
-  font-family: Inter;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 200;
+  color: #333;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
   line-height: normal;
-  letter-spacing: -0.6px;
+  letter-spacing: -0.4px;
 }
 
 .selected {
-  background: #DBDBDB;
+  background-color: #2196f3;
+  color: white;
 }
 
 /* 수정 버튼 */
 .editButton {
   width: 50px;
-  height: 20px;
-  background: #D7D7D7;
-  border: 1px solid #9A9A9A;
-  border-radius: 5px;
+  height: 25px;
+  background-color: #e0e0e0;
+  border: none;    
+  border-radius: 4px; 
   cursor: pointer;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  color: #212121;
-  font-family: Inter;
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 300;
+  color: #333;  
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
   line-height: normal;
-  letter-spacing: -0.6px;
+  letter-spacing: -0.4px;
 }
 
 .editButton2 {
   width: 75px;
-  height: 20px;
-  background: #D7D7D7;
-  border: 1px solid #9A9A9A;
-  border-radius: 5px;
+  height: 25px;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  color: #212121;
-  font-family: Inter;
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 300;
+  color: #333;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
   line-height: normal;
-  letter-spacing: -0.6px;
+  letter-spacing: -0.4px;
 }
 
 /* 탈퇴하기 버튼 */

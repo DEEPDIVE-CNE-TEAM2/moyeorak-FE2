@@ -27,8 +27,10 @@ const ProfileForm = () => {
         setName(data.name || '');
         setGender(data.gender === 'MALE' ? '남' : '여');
         setEmail(data.email || '');
-        setPhone(data.phone || '');
         setBirth(data.birth || '');
+
+        const phoneFromNav = location.state?.updatedPhone || data.phone;
+        setPhone(phoneFromNav);
 
         if (location.state?.updatedRegion && location.state?.updatedRegionId !== undefined) {
           setRegionName(location.state.updatedRegion);
@@ -169,18 +171,11 @@ const ProfileForm = () => {
 
   return (
     <div className={styles.wrapper}>
-      {/* 이름 */}
       <div className={styles.field}>
         <label className={styles.label}>이름</label>
-        <input
-          className={styles.input}
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+        <input className={styles.input} type="text" value={name} onChange={(e) => setName(e.target.value)} />
       </div>
 
-      {/* 성별 */}
       <div className={styles.field}>
         <label className={styles.label}>성별</label>
         <div className={styles.genderWrapper}>
@@ -201,18 +196,11 @@ const ProfileForm = () => {
         </div>
       </div>
 
-      {/* 생년월일 */}
       <div className={styles.field}>
         <label className={styles.label}>생년월일</label>
-        <input
-          className={styles.input}
-          type="date"
-          value={birth}
-          onChange={(e) => setBirth(e.target.value)}
-        />
+        <input className={styles.input} type="date" value={birth} onChange={(e) => setBirth(e.target.value)} />
       </div>
 
-      {/* 이메일 */}
       <div className={styles.field}>
         <div className={styles.labelRow}>
           <label className={styles.label}>이메일</label>
@@ -223,7 +211,6 @@ const ProfileForm = () => {
         <input className={styles.input} type="email" value={email} onChange={onEmailChange} />
       </div>
 
-      {/* 휴대폰 번호 */}
       <div className={styles.field}>
         <div className={styles.labelRow}>
           <label className={styles.label}>휴대폰 번호</label>
@@ -238,7 +225,6 @@ const ProfileForm = () => {
         <input className={styles.input} type="tel" value={phone} readOnly />
       </div>
 
-      {/* 주소 */}
       <div className={styles.field}>
         <div className={styles.labelRow}>
           <label className={styles.label}>주소</label>
