@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { getUserInfo, updateUserInfo } from '../../../Api';
 import Navbar from '../../../components/Navbar/Navbar.jsx';
 import styles from './Userform.module.css';
 
@@ -16,7 +17,7 @@ const ChangeRegion = () => {
 
   const [regionName, setRegionName] = useState(currentRegion);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!regionName.trim()) {
       alert('주소를 입력하세요.');
       return;
@@ -24,12 +25,28 @@ const ChangeRegion = () => {
 
     const regionId = regionMap[regionName] || null;
 
-    // ✅ 주소 수정 완료 알림
-    alert('주소가 수정되었습니다.');
+    try {
+      const currentUser = await getUserInfo();
 
-    navigate('/mypage/profile', {
-      state: { updatedRegion: regionName, updatedRegionId: regionId },
-    });
+      const payload = {
+        email: currentUser.email,
+        name: currentUser.name,
+        phone: currentUser.phone,
+        gender: currentUser.gender,
+        birth: currentUser.birth,
+        regionName,
+        regionId,
+      };
+
+      await updateUserInfo(payload);
+
+      alert('주소가 수정되었습니다.');
+
+      navigate('/mypage/profile');
+    } catch (error) {
+      console.error('주소 업데이트 실패:', error);
+      alert('주소 변경 중 오류가 발생했습니다.');
+    }
   };
 
   const handleCancel = () => {

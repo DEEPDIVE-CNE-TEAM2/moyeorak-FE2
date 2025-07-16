@@ -130,13 +130,11 @@ const ProfileForm = () => {
 
       console.log('전송될 데이터 확인:', payload);
 
-      await updateUserInfo(payload); // 서버로 정보 전송
+      await updateUserInfo(payload);
 
-      // 최신 regionId 재확인
       const updated = await getUserInfo();
       console.log('수정 후 최신 사용자 정보:', updated);
 
-      // 예시: 최신 regionId를 localStorage에 저장
       localStorage.setItem('regionId', updated.regionId);
 
       if (email !== originalData.email) {

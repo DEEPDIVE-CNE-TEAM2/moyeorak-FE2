@@ -62,29 +62,7 @@ const RentalDetailPage = ({
         <h3>대여안내</h3>
         <p style={{ whiteSpace: "pre-line" }}>{guide}</p>
 
-        <p className={styles.refundTitle}>• 이용료 환불 기준</p>
-        <table className={styles.refundTable}>
-          <thead>
-            <tr>
-              <th>취소일</th>
-              <th>환불비율</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>대관일 7일 전</td>
-              <td>100% 환불</td>
-            </tr>
-            <tr>
-              <td>대관일 1일 전</td>
-              <td>30% 환불</td>
-            </tr>
-            <tr>
-              <td>당일</td>
-              <td>환불 불가</td>
-            </tr>
-          </tbody>
-        </table>
+        <p className={styles.refundTitle}>• 최대 2시간 대관 가능</p>
       </div>
     </div>
   );
