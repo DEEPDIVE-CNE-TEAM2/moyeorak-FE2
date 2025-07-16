@@ -41,16 +41,11 @@ const ChangeRegion = () => {
       await updateUserInfo(payload);
 
       alert('주소가 수정되었습니다.');
-
       navigate('/mypage/profile');
     } catch (error) {
       console.error('주소 업데이트 실패:', error);
       alert('주소 변경 중 오류가 발생했습니다.');
     }
-  };
-
-  const handleCancel = () => {
-    navigate('/mypage/profile');
   };
 
   return (
@@ -73,14 +68,6 @@ const ChangeRegion = () => {
 
         <button className={styles.submitButton} onClick={handleSubmit}>
           확인
-        </button>
-
-        <button
-          className={styles.submitButton}
-          style={{ backgroundColor: '#888', marginTop: '10px' }}
-          onClick={handleCancel}
-        >
-          취소
         </button>
       </div>
     </>

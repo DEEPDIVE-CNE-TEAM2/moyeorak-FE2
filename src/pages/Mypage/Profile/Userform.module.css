@@ -181,10 +181,9 @@
   padding: 0 12px;
   width: 70px;
   font-size: 14px;
-  font-weight: 600;
   border-radius: 5px;
-  background: #3096E6;
-  color: white;
+  background-color: #e0e0e0;
+  color: 333;
   border: none;
   cursor: pointer;
 }

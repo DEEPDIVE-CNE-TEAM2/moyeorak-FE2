@@ -24,13 +24,13 @@ const ProfileForm = () => {
       try {
         const data = await getUserInfo();
 
+        const updatedPhone = location.state?.updatedPhone || localStorage.getItem('updatedPhone') || data.phone;
+
         setName(data.name || '');
         setGender(data.gender === 'MALE' ? '남' : '여');
         setEmail(data.email || '');
+        setPhone(updatedPhone || '');
         setBirth(data.birth || '');
-
-        const phoneFromNav = location.state?.updatedPhone || data.phone;
-        setPhone(phoneFromNav);
 
         if (location.state?.updatedRegion && location.state?.updatedRegionId !== undefined) {
           setRegionName(location.state.updatedRegion);
@@ -73,19 +73,12 @@ const ProfileForm = () => {
     }
     try {
       const res = await checkEmailDuplicate(email);
-      if (res.isDuplicate) {
-        alert('이미 사용 중인 이메일입니다.');
-        setEmailDuplicate(true);
-      } else {
-        alert('사용 가능한 이메일입니다.');
-        setEmailDuplicate(false);
-      }
+      alert(res.isDuplicate ? '이미 사용 중인 이메일입니다.' : '사용 가능한 이메일입니다.');
       setEmailChecked(true);
+      setEmailDuplicate(res.isDuplicate);
     } catch (err) {
       console.error(err);
       alert('이메일 중복 확인 중 오류가 발생했습니다.');
-      setEmailChecked(false);
-      setEmailDuplicate(false);
     }
   };
 
@@ -130,14 +123,11 @@ const ProfileForm = () => {
         regionId,
       };
 
-      console.log('전송될 데이터 확인:', payload);
-
       await updateUserInfo(payload);
 
       const updated = await getUserInfo();
-      console.log('수정 후 최신 사용자 정보:', updated);
-
       localStorage.setItem('regionId', updated.regionId);
+      localStorage.removeItem('updatedPhone');
 
       if (email !== originalData.email) {
         alert('이메일이 변경되어 다시 로그인해야 합니다.');
@@ -146,15 +136,7 @@ const ProfileForm = () => {
       }
 
       alert('회원 정보가 수정되었습니다.');
-      setOriginalData({
-        name,
-        gender,
-        email,
-        phone,
-        birth,
-        regionName,
-        regionId,
-      });
+      setOriginalData({ name, gender, email, phone, birth, regionName, regionId });
       setEmailChecked(true);
       setEmailDuplicate(false);
     } catch (error) {
@@ -179,20 +161,8 @@ const ProfileForm = () => {
       <div className={styles.field}>
         <label className={styles.label}>성별</label>
         <div className={styles.genderWrapper}>
-          <button
-            type="button"
-            className={`${styles.genderButton} ${gender === '남' ? styles.selected : ''}`}
-            onClick={() => setGender('남')}
-          >
-            남
-          </button>
-          <button
-            type="button"
-            className={`${styles.genderButton} ${gender === '여' ? styles.selected : ''}`}
-            onClick={() => setGender('여')}
-          >
-            여
-          </button>
+          <button type="button" className={`${styles.genderButton} ${gender === '남' ? styles.selected : ''}`} onClick={() => setGender('남')}>남</button>
+          <button type="button" className={`${styles.genderButton} ${gender === '여' ? styles.selected : ''}`} onClick={() => setGender('여')}>여</button>
         </div>
       </div>
 
@@ -204,9 +174,7 @@ const ProfileForm = () => {
       <div className={styles.field}>
         <div className={styles.labelRow}>
           <label className={styles.label}>이메일</label>
-          <button type="button" className={styles.editButton2} onClick={handleCheckEmail}>
-            중복확인
-          </button>
+          <button type="button" className={styles.editButton2} onClick={handleCheckEmail}>중복확인</button>
         </div>
         <input className={styles.input} type="email" value={email} onChange={onEmailChange} />
       </div>
@@ -214,13 +182,7 @@ const ProfileForm = () => {
       <div className={styles.field}>
         <div className={styles.labelRow}>
           <label className={styles.label}>휴대폰 번호</label>
-          <button
-            type="button"
-            className={styles.editButton}
-            onClick={() => navigate('/mypage/profile/phone')}
-          >
-            수정
-          </button>
+          <button type="button" className={styles.editButton} onClick={() => navigate('/mypage/profile/phone')}>수정</button>
         </div>
         <input className={styles.input} type="tel" value={phone} readOnly />
       </div>
@@ -228,34 +190,15 @@ const ProfileForm = () => {
       <div className={styles.field}>
         <div className={styles.labelRow}>
           <label className={styles.label}>주소</label>
-          <button type="button" className={styles.editButton} onClick={handleRegionEditClick}>
-            수정
-          </button>
+          <button type="button" className={styles.editButton} onClick={handleRegionEditClick}>수정</button>
         </div>
-        <input
-          className={styles.input}
-          type="text"
-          value={regionName}
-          readOnly
-          style={{
-            backgroundColor: regionName ? '#fff' : '#f5f5f5',
-            cursor: 'default',
-          }}
-          placeholder="주소가 없습니다."
-        />
+        <input className={styles.input} type="text" value={regionName} readOnly />
       </div>
 
-      <button className={styles.submitButton} onClick={handleSubmit}>
-        확인
-      </button>
+      <button className={styles.submitButton} onClick={handleSubmit}>확인</button>
 
-      <div className={styles.withdraw} onClick={() => navigate('/mypage/profile/password')}>
-        비밀번호변경
-      </div>
-
-      <div className={styles.withdraw} onClick={() => navigate('/mypage/profile/withdraw')}>
-        탈퇴하기
-      </div>
+      <div className={styles.withdraw} onClick={() => navigate('/mypage/profile/password')}>비밀번호변경</div>
+      <div className={styles.withdraw} onClick={() => navigate('/mypage/profile/withdraw')}>탈퇴하기</div>
     </div>
   );
 };
