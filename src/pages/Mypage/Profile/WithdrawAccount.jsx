@@ -20,8 +20,16 @@ const WithdrawAccount = () => {
 
     try {
       await deleteUser(currentPassword, confirmPassword);
+
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+
       alert('회원 탈퇴가 완료되었습니다.');
+
       navigate('/');
+
+      // 페이지 새로고침하여 상태 초기화
+      window.location.reload();
     } catch (error) {
       alert('회원 탈퇴에 실패했습니다.');
       console.error(error);

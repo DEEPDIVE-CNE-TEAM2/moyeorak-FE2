@@ -168,8 +168,14 @@ const ProfileForm = () => {
 
       <div className={styles.field}>
         <label className={styles.label}>생년월일</label>
-        <input className={styles.input} type="date" value={birth} onChange={(e) => setBirth(e.target.value)} />
+        <input
+          className={`${styles.input} ${styles.birthInput}`}
+          type="date"
+          value={birth}
+          readOnly
+        />
       </div>
+
 
       <div className={styles.field}>
         <div className={styles.labelRow}>

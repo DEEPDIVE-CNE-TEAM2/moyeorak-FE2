@@ -237,7 +237,11 @@ const ReservePage = () => {
                   <div className={styles.timeGrid}>
                     {Array.from({ length: endHour - startHour }, (_, i) => startHour + i).map((hour) => {
                       const timeStr = `${hour.toString().padStart(2, "0")}:00`;
-                      const isDisabled = disabledTimes.includes(timeStr);
+                      const isDisabled =
+                        disabledTimes.includes(timeStr) ||
+                        (selectedDate &&
+                          isSameDate(selectedDate, today) &&
+                          hour <= today.getHours());
                       const isSelected = selectedTimes.includes(timeStr);
                       return (
                         <button
@@ -245,6 +249,7 @@ const ReservePage = () => {
                           disabled={isDisabled}
                           className={`${styles.timeBtn} ${isDisabled ? styles.disabled : ""} ${isSelected ? styles.selected : ""}`}
                           onClick={() => handleTimeClick(timeStr)}
+                          type="button"
                         >
                           {timeStr}
                         </button>

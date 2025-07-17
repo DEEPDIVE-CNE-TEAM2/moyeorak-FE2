@@ -26,6 +26,7 @@ import VerifyPhone from "./pages/VerifyPhone";
 import RentalDetailContainer from './pages/Rental/RentalDetailContainer';
 import ReservePage from './pages/Rental/ReservePage/ReservePage';
 
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -64,6 +65,8 @@ const App = () => {
         <Route path="/:district/rental/detail/:id" element={<RentalDetailContainer />} />
         <Route path="/:district/rental/reserve/:id" element={<ReservePage />} />
         <Route path="/:district/:id" element={<RentalDetailContainer />} />
+
+
       </Routes>
     </BrowserRouter>
   )
