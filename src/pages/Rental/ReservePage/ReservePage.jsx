@@ -72,7 +72,11 @@ const ReservePage = () => {
   useEffect(() => {
     if (selectedDate && facility?.reservedTimes) {
       const dateStr = getKoreanDateString(selectedDate);
-      setDisabledTimes(facility.reservedTimes[dateStr] || []);
+      const reserved = facility.reservedTimes[dateStr] || [];
+
+      // 초까지 포함된 startTime → HH:mm 형식으로 잘라줌
+      const disabled = reserved.map((r) => r.startTime.slice(0, 5));
+      setDisabledTimes(disabled);
     } else {
       setDisabledTimes([]);
     }
