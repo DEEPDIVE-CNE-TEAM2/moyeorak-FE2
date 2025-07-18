@@ -55,6 +55,7 @@ const PaymentPage = () => {
     const paidAmount = program?.appliedPrice ?? program?.applied_price ?? 0;
 
     const enrollmentData = {
+      programId: program?.id,
       programTitle: program?.title || '',
       location: program?.location || '',
       usagePeriod: program?.usagePeriod || '',
@@ -62,8 +63,17 @@ const PaymentPage = () => {
       paidAmount: paidAmount,
     };
 
+      // 콘솔에 데이터 출력 추가
+  console.log('수강신청 전달 데이터:', enrollmentData);
+
+
     try {
-      await enrollProgram(enrollmentData);
+      const response = await enrollProgram(enrollmentData);
+      console.log("신청 API 응답:", response);
+
+      //await enrollProgram(enrollmentData);
+
+
       alert('신청이 완료되었습니다.');
 
       const regionId = program?.regionId || 1;

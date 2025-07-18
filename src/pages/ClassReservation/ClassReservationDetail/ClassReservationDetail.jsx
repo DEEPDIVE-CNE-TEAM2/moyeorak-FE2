@@ -119,6 +119,13 @@ const ClassReservationDetail = () => {
               <button
                 className={styles.applyBtn}
                 onClick={() => {
+                  const token = localStorage.getItem("accessToken");
+                  if (!token) {
+                    alert("로그인이 필요합니다.");
+                    navigate("/login");
+                    return;
+                  }
+
                   const confirmMessage = `
 강의: ${data.title}
 장소: ${infoValues[1]}

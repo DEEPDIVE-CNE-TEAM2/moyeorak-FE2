@@ -265,6 +265,7 @@ export const getProgramDetail = async (id) => {
 // 수강신청 API (POST)
 export const enrollProgram = async (enrollmentData) => {
   const token = localStorage.getItem('accessToken'); 
+  
   const response = await axios.post(
     `${BASE_URL}/api/enrollments`,
     enrollmentData,
