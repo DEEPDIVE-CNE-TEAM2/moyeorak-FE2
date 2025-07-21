@@ -63,15 +63,11 @@ const PaymentPage = () => {
       paidAmount: paidAmount,
     };
 
-      // 콘솔에 데이터 출력 추가
-  console.log('수강신청 전달 데이터:', enrollmentData);
+
 
 
     try {
-      const response = await enrollProgram(enrollmentData);
-      console.log("신청 API 응답:", response);
-
-      //await enrollProgram(enrollmentData);
+      await enrollProgram(enrollmentData);
 
 
       alert('신청이 완료되었습니다.');
