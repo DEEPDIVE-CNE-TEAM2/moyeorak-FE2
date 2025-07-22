@@ -210,6 +210,7 @@ export const cancelRentalApplication = async (applicationId) => {
 export const getMyEnrollments = async () => {
   try {
     const response = await apiClient.get('/api/enrollments/me');
+    console.log('수강신청 목록 응답:', response.data);
     return response.data; 
   } catch (error) {
     console.error('내 수강신청 목록 조회 실패:', error);
