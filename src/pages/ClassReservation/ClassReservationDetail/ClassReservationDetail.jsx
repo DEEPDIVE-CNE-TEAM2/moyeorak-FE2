@@ -12,11 +12,6 @@ const ClassReservationDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const formatTime = (timeStr) => {
-    if (!timeStr) return null;
-    return timeStr.length >= 5 ? timeStr.slice(0, 5) : timeStr;
-  };
-
   useEffect(() => {
     setLoading(true);
     getProgramDetail(id)
@@ -50,24 +45,22 @@ const ClassReservationDetail = () => {
   const classTime =
     data?.classTime && data.classTime.trim() !== ''
       ? data.classTime.trim()
-      : (formatTime(data?.class_start_time) && formatTime(data?.class_end_time))
-      ? `${formatTime(data.class_start_time)} ~ ${formatTime(data.class_end_time)}`
       : '-';
 
   const feeString = data
     ? (() => {
-        const inPrice = data.in_price ?? data.inPrice ?? null;
-        const outPrice = data.out_price ?? data.outPrice ?? null;
-        const oldFee = data.fee ?? null;
+        const inPrice = data.inPrice;
+        const outPrice = data.outPrice;
+        const appliedPrice = data.appliedPrice;
 
-        const inPriceStr = inPrice != null ? `${inPrice.toLocaleString()}원(관내)` : null;
-        const outPriceStr = outPrice != null ? `${outPrice.toLocaleString()}원(관외)` : null;
-        const oldFeeStr = oldFee != null ? `${oldFee.toLocaleString()}원` : null;
-
-        if (inPriceStr && outPriceStr) return `${inPriceStr} / ${outPriceStr}`;
-        if (inPriceStr) return inPriceStr;
-        if (outPriceStr) return outPriceStr;
-        if (oldFeeStr) return oldFeeStr;
+        if (inPrice != null && outPrice != null)
+          return `${inPrice.toLocaleString()}원(관내) / ${outPrice.toLocaleString()}원(관외)`;
+        if (inPrice != null)
+          return `${inPrice.toLocaleString()}원(관내)`;
+        if (outPrice != null)
+          return `${outPrice.toLocaleString()}원(관외)`;
+        if (appliedPrice != null)
+          return `${appliedPrice.toLocaleString()}원`;
         return '-';
       })()
     : '-';
