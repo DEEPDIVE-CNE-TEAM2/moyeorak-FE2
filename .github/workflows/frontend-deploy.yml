@@ -33,14 +33,25 @@ jobs:
           npm ci
           npm run build
 
-      # 4) Snyk 보안 취약점 검사
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@0.4.0  # 최신 버전 유지 중
+      # 4-1) Snyk 테스트 실행
+      - name: Run Snyk test
+        uses: snyk/actions@v3
+        with:
+          command: test
+          args: --debug
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
+
+      # 4-2) Snyk 모니터링 (옵션)
+      - name: Run Snyk monitor
+        uses: snyk/actions@v3
         with:
-          args: test --debug && snyk monitor      # 디버깅 로그 추가
-        continue-on-error: true        # Snyk 실패해도 배포 계속
+          command: monitor
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
+
 
       # 5) S3에 정적 파일 동기화
       - name: Sync build to S3
