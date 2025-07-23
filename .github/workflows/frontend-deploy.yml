@@ -46,7 +46,7 @@ jobs:
           SOURCE_DIR: build       
 
 
-      # 5) CloudFront 캐시 무효화
+      # 5) CloudFront 캐시 무효화.
       - name: Invalidate CloudFront Cache
         uses: chetan/invalidate-cloudfront-action@v2
         with:
