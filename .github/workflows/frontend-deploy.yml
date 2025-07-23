@@ -35,7 +35,7 @@ jobs:
 
       # 4-1) Snyk 테스트 실행
       - name: Run Snyk test
-        uses: snyk/actions@v3
+        uses: snyk/actions/node@0.4.0
         with:
           command: test
           args: --debug
@@ -45,7 +45,7 @@ jobs:
 
       # 4-2) Snyk 모니터링 (옵션)
       - name: Run Snyk monitor
-        uses: snyk/actions@v3
+        uses: snyk/actions/node@0.4.0
         with:
           command: monitor
         env:
