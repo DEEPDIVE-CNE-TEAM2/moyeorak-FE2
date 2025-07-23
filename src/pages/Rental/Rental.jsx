@@ -10,7 +10,7 @@ import { RiPingPongFill } from "react-icons/ri";
 import { getRentalFacilitiesByRegion } from "../../Api";
 import styles from "./RentalPage.module.css";
 
-// 종목 아이콘 목록
+// 종목 아이콘 목록 (필터링 제거해도 UI 유지용)
 const sportOptions = [
   { name: "축구", icon: <PiSoccerBallFill size={60} /> },
   { name: "야구", icon: <CiBaseball size={60} /> },
@@ -39,6 +39,7 @@ const Rental = () => {
 
       try {
         const data = await getRentalFacilitiesByRegion(regionId);
+        console.log("API data:", data); // 여기서 API 호출 결과 로그 찍음
         setFacilities(data);
       } catch (error) {
         console.error("시설 정보를 불러오는 중 오류 발생:", error);
@@ -52,10 +53,8 @@ const Rental = () => {
     setSelectedSport(value === selectedSport ? null : value);
   };
 
-  // 시설명에 종목명이 포함된 경우 필터링
-  const filteredFacilities = facilities.filter((f) =>
-    !selectedSport || f.location.includes(selectedSport)
-  );
+  // 필터링 제거 (API에 종목 정보가 없으므로)
+  const filteredFacilities = facilities;
 
   const regionId = parseInt(localStorage.getItem("selectedRegionId"), 10);
   const regionName = regionNameMap[regionId] || "jung";
@@ -119,8 +118,12 @@ const Rental = () => {
                   {facility.usageTime}
                 </p>
                 <p className={styles.info}>
-                  <strong>정원 </strong>
-                  {facility.capacity}명
+                  <strong>면적 </strong>
+                  {facility.area}㎡
+                </p>
+                <p className={styles.info}>
+                  <strong>문의 </strong>
+                  {facility.contact}
                 </p>
               </div>
             </div>

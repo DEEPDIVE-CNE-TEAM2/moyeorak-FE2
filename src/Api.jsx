@@ -4,6 +4,7 @@ const BASE_URL = process.env.REACT_APP_API_URL;
 
 // Access Token 저장 및 가져오기 헬퍼 함수
 export const setAccessToken = (token) => {
+  // token은 '순수 토큰 문자열'만 저장
   localStorage.setItem("accessToken", token);
 };
 
@@ -13,6 +14,7 @@ export const getAccessToken = () => {
 };
 
 export const setRefreshToken = (token) => {
+  // token은 '순수 토큰 문자열'만 저장
   localStorage.setItem("refreshToken", token);
 };
 
@@ -40,39 +42,96 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// 응답 인터셉터 - 401시 토큰 재발급
+// 응답 인터셉터 - 401시 토큰 재발급 처리
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach(prom => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
+
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    if (error.response?.status === 401 && !originalRequest._retry) {
+
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      getRefreshToken()
+    ) {
       originalRequest._retry = true;
+
+      if (isRefreshing) {
+        return new Promise(function (resolve, reject) {
+          failedQueue.push({ resolve, reject });
+        })
+          .then(token => {
+            originalRequest.headers.Authorization = token;
+            return apiClient(originalRequest);
+          })
+          .catch(err => {
+            return Promise.reject(err);
+          });
+      }
+
+      isRefreshing = true;
+
       try {
         const refreshToken = getRefreshToken();
         if (!refreshToken) throw new Error("Refresh token is missing.");
 
+        // 토큰 리프레시 API 호출: 바디 없이, 헤더에만 토큰 포함
         const response = await axios.post(
           `${BASE_URL}/api/users/refresh`,
-          { refreshToken },
+          {},  // 바디 비움
           {
             headers: {
-              accessToken: localStorage.getItem("accessToken"),
+              Authorization: `Bearer ${refreshToken}`, // 헤더에만 Bearer 포함
             },
           }
         );
 
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data;
 
-        setAccessToken(newAccessToken);
-        if (newRefreshToken) setRefreshToken(newRefreshToken);
+        if (!newAccessToken) {
+          throw new Error("New access token is missing in refresh response.");
+        }
 
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        setAccessToken(newAccessToken.startsWith('Bearer ') ? newAccessToken.slice(7) : newAccessToken);
+
+        if (newRefreshToken) {
+          setRefreshToken(newRefreshToken.startsWith('Bearer ') ? newRefreshToken.slice(7) : newRefreshToken);
+        }
+
+        const bearerNewAccessToken = `Bearer ${newAccessToken.startsWith('Bearer ') ? newAccessToken.slice(7) : newAccessToken}`;
+
+        processQueue(null, bearerNewAccessToken);
+
+        originalRequest.headers.Authorization = bearerNewAccessToken;
         return apiClient(originalRequest);
       } catch (refreshError) {
+        processQueue(refreshError, null);
         console.error("Token refresh failed:", refreshError);
+
+        // 토큰 삭제 및 강제 로그아웃 처리
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        window.location.href = "/login";
+
         return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
       }
     }
+
     return Promise.reject(error);
   }
 );
@@ -80,15 +139,19 @@ apiClient.interceptors.response.use(
 // 로그인
 export const login = async (email, password) => {
   const response = await apiClient.post('/api/users/login', { email, password });
+
   if (response.data.accessToken) {
-    const token = response.data.accessToken.startsWith('Bearer ')
-      ? response.data.accessToken.slice(7)
-      : response.data.accessToken;
+    let token = response.data.accessToken;
+    if (token.startsWith('Bearer ')) token = token.slice(7);
     setAccessToken(token);
   }
+
   if (response.data.refreshToken) {
-    setRefreshToken(response.data.refreshToken);
+    let refresh = response.data.refreshToken;
+    if (refresh.startsWith('Bearer ')) refresh = refresh.slice(7);
+    setRefreshToken(refresh);
   }
+
   return response.data;
 };
 
@@ -137,14 +200,14 @@ export const changePassword = async ({ currentPassword, newPassword, confirmNewP
 
 // 비밀번호 확인
 export const verifyPassword = async (password) => {
-  const token = localStorage.getItem("accessToken");
+  const token = getAccessToken();
 
   const response = await axios.post(
     `${BASE_URL}/api/users/verify-password`,
     { password },
     {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: token,
         'Content-Type': 'application/json',
       },
     }
@@ -168,15 +231,16 @@ export const getRegionList = async () => {
 
 // 지역별 시설 목록 조회 
 export const getRentalFacilitiesByRegionId = async (regionId) => {
-  const response = await apiClient.get(`/api/rentals/facilities/region/${regionId}`);
+  const response = await apiClient.get(`/api/facilities/region/${regionId}`);
   return response.data;
 };
 
 // 대관신청 (GET)
 export const getRentalFacilitiesByRegion = async (regionId) => {
-  const response = await apiClient.get(`/api/rentals/region/${regionId}`);
+  const response = await apiClient.get(`/api/rentals/facilities/region/${regionId}`);
   return response.data;
 };
+
 
 // 대관 신청 API (POST)
 export const createRentalApplication = async ({
@@ -210,8 +274,7 @@ export const cancelRentalApplication = async (applicationId) => {
 export const getMyEnrollments = async () => {
   try {
     const response = await apiClient.get('/api/enrollments/me');
-    console.log('수강신청 목록 응답:', response.data);
-    return response.data; 
+    return response.data;
   } catch (error) {
     console.error('내 수강신청 목록 조회 실패:', error);
     return [];
@@ -265,16 +328,6 @@ export const getProgramDetail = async (id) => {
 
 // 수강신청 API (POST)
 export const enrollProgram = async (enrollmentData) => {
-  const token = localStorage.getItem('accessToken'); 
-  
-  const response = await axios.post(
-    `${BASE_URL}/api/enrollments`,
-    enrollmentData,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await apiClient.post('/api/enrollments', enrollmentData);
   return response.data;
 };
