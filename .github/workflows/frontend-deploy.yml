@@ -6,9 +6,9 @@ on:
       - dev_fe  # dev_fe 브랜치에 push될 때만 실행
 
 permissions:
-  actions: read         # 워크플로에서 다른 액션 실행 허용 (최소 권한)
+  actions: read         # 워크플로에서 다른 액션 실행 허용
   contents: read        # 리포지토리 코드 읽기
-  id-token: none        # OpenID Connect 비활성화 (필요 시 수정)
+  id-token: none        # OIDC 미사용 시 none
 
 jobs:
   deploy:
@@ -35,12 +35,12 @@ jobs:
 
       # 4) Snyk 보안 취약점 검사
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@v1
+        uses: snyk/actions/node@0.4.0
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           args: test
-        continue-on-error: true  # 실패해도 배포 계속할지 여부
+        continue-on-error: true  # 실패해도 계속 진행
 
       # 5) S3에 정적 파일 동기화
       - name: Sync build to S3
