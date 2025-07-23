@@ -35,12 +35,12 @@ jobs:
 
       # 4) Snyk 보안 취약점 검사
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@0.4.0
+        uses: snyk/actions/node@0.4.0  # 최신 버전 유지 중
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: test
-        continue-on-error: true  # 실패해도 계속 진행
+          args: test --debug && snyk monitor      # 디버깅 로그 추가
+        continue-on-error: true        # Snyk 실패해도 배포 계속
 
       # 5) S3에 정적 파일 동기화
       - name: Sync build to S3
