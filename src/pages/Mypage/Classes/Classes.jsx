@@ -18,6 +18,7 @@ const Classes = () => {
   const fetchEnrollments = async () => {
     try {
       const rawEnrollments = await getMyEnrollments();
+      const userRegionId = JSON.parse(localStorage.getItem('userInfo'))?.regionId;
 
       const enriched = await Promise.all(
         rawEnrollments.map(async (e) => {
@@ -38,18 +39,26 @@ const Classes = () => {
               statusText = e.status;
           }
 
+          const inOrOut =
+            userRegionId && program?.regionId
+              ? userRegionId === program.regionId
+                ? '관내'
+                : '관외'
+              : '-';
+
+
           return {
             id: e.id,
             title: program?.title || '제목 없음',
             period: program?.usagePeriod?.replace(/~/g, '~').trim() || '-',
-            schedule: program?.classTime || `${e.classStartTime?.slice(0, 5)} ~ ${e.classEndTime?.slice(0, 5)}` || '-',
+            schedule: program?.classTime || '-',
             facility: program?.location || '-',
-            instructor: e.instructorName || '-',
+            instructor: program?.instructorName || '-',
             status: statusText,
             applyDate: e.enrolledAt?.split('T')[0].replace(/-/g, '.') || '-',
             price: e.paidAmount ? `${e.paidAmount.toLocaleString()}원` : '-',
             cancelAvailable: e.status === 'enrolled' ? '가능' : '불가',
-            inOrOut: e.regionLabel || '-', 
+            inOrOut: inOrOut,
           };
         })
       );
@@ -159,7 +168,7 @@ const Classes = () => {
                         <td align="center" className="mini-title">신청일</td>
                         <td align="center">{row.applyDate}</td>
                         <td align="center" className="mini-title">관내/관외 여부</td>
-                        <td align="center">{row.inOrOut || '-'}</td>
+                        <td align="center">{row.inOrOut}</td>
                         <td rowSpan="2" colSpan="2" align="center">
                           <button
                             className="cancel-button"

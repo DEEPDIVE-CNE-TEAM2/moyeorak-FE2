@@ -26,15 +26,14 @@ const Login = () => {
 
       const userInfo = await getUserInfo();
 
-      if (userInfo?.regionId) {
-        localStorage.setItem("regionId", userInfo.regionId);
+      if (userInfo) {
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
       } else {
-        localStorage.setItem("regionId", "1");
+        localStorage.setItem("userInfo", JSON.stringify({ regionId: 1 }));
       }
-
-      alert("로그인 성공!");
-
-      const localRegionId = Number(localStorage.getItem("regionId")) || 1; // 기본 1(중구)
+      
+      const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"));
+      const localRegionId = storedUserInfo?.regionId || 1;
 
       const regionMap = {
         1: "jung",
