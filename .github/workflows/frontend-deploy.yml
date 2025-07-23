@@ -1,23 +1,21 @@
 # .github/workflows/frontend-deploy.yml
 name: Frontend CI/CD to S3 & CloudFront
 
-#  브랜치에 변경이 생길 때만 배포하도록 제한
 on:
   push:
     branches:
-      - dev_fe
+      - dev_fe  # dev_fe 브랜치에 push될 때만 실행
 
 jobs:
   deploy:
     name: Build & Deploy Frontend
     runs-on: ubuntu-latest
-    environment: production  
+    environment: production
 
     steps:
       # 1) 코드 가져오기
       - name: Checkout repository
         uses: actions/checkout@v3
-
 
       # 2) Node.js 설치
       - name: Setup Node.js
@@ -25,35 +23,30 @@ jobs:
         with:
           node-version: '18'
 
-
-      # 3) 의존성 설치 & 프로덕션 빌드
+      # 3) 의존성 설치 & 빌드
       - name: Install dependencies & Build
         run: |
-          npm ci                    
-          npm run build            
-
+          npm ci
+          npm run build
 
       # 4) S3에 정적 파일 동기화
       - name: Sync build to S3
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
-          args: --delete     
+          args: --delete
         env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}  
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           AWS_REGION: ap-northeast-2
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
-          SOURCE_DIR: build       
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SOURCE_DIR: build
 
-
-      # 5) CloudFront 캐시 무효화.
+      # 5) CloudFront 캐시 무효화
       - name: Invalidate CloudFront Cache
         uses: chetan/invalidate-cloudfront-action@v2
         with:
           distribution-id: ${{ secrets.CLOUDFRONT_DISTRO_ID }}
           paths: "/*"
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
-
-
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
