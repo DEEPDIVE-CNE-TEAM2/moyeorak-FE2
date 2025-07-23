@@ -24,7 +24,7 @@ const JoinMembership = () => {
     regionId: "",
   });
 
-  // ✅ 중복확인 여부 상태 추가
+  // 중복확인 여부 상태 추가
   const [emailChecked, setEmailChecked] = useState(false);
   const [phoneChecked, setPhoneChecked] = useState(false);
 
@@ -44,7 +44,7 @@ const JoinMembership = () => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
 
-    // ✅ 이메일/전화번호 변경 시 중복확인 상태 초기화
+    // 이메일/전화번호 변경 시 중복확인 상태 초기화
     if (name === "email") setEmailChecked(false);
     if (name === "phone") setPhoneChecked(false);
   };
@@ -90,7 +90,7 @@ const JoinMembership = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ✅ 1. 빈 값 확인
+    // 빈 값 확인
     if (
       !form.email.trim() ||
       !form.password.trim() ||
@@ -105,7 +105,7 @@ const JoinMembership = () => {
       return;
     }
 
-    // ✅ 2. 중복확인 여부 검사
+    // 중복확인 여부 검사
     if (!emailChecked) {
       alert("이메일 중복 확인이 필요합니다.");
       return;
@@ -235,7 +235,7 @@ const JoinMembership = () => {
           className={styles.input}
           required
         >
-          <option value="">지역을 선택해주세요</option>
+          <option value="">지역 선택</option>
           {regionOptions.map(region => (
             <option key={region.id} value={region.id}>
               {region.name}

@@ -19,7 +19,6 @@ const districtToId = {
   "송파구": 3,
 };
 
-// ... (생략된 import 부분은 동일)
 
 const Navbar = ({ onDistrictChange, onLogoClick }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -132,32 +131,6 @@ const Navbar = ({ onDistrictChange, onLogoClick }) => {
               </a>
             </li>
 
-            <li>
-              <a
-                href={`/rental?selectedRegionId=${selectedRegionId}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate(`/rental?selectedRegionId=${selectedRegionId}`);
-                }}
-                className={`${styles.menuLink} ${location.pathname.startsWith('/rental') ? styles.activeMenu : ''}`}
-              >
-                대관신청
-              </a>
-            </li>
-
-            <li>
-              <a
-                href={`/announcement?selectedRegionId=${selectedRegionId}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate(`/announcement?selectedRegionId=${selectedRegionId}`);
-                }}
-                className={`${styles.menuLink} ${location.pathname === '/announcement' ? styles.activeMenu : ''}`}
-              >
-                공지사항
-              </a>
-            </li>
-
             <li
               className={styles.mypageWrapper}
               onMouseEnter={() => setShowSubmenu(true)}
@@ -240,7 +213,7 @@ const Navbar = ({ onDistrictChange, onLogoClick }) => {
               }
               navigate(`/mypage/profile?selectedRegionId=${selectedRegionId}`);
             }}
-            className={styles.submenuLink}
+            className={`${styles.submenuLink} ${location.pathname.includes('/mypage/profile') ? styles.activeMenu : ''}`}
           >
             회원정보수정
           </button>
@@ -258,28 +231,11 @@ const Navbar = ({ onDistrictChange, onLogoClick }) => {
               }
               navigate(`/mypage/classes?selectedRegionId=${selectedRegionId}`);
             }}
-            className={styles.submenuLink}
+            className={`${styles.submenuLink} ${location.pathname.includes('/mypage/classes') ? styles.activeMenu : ''}`}
           >
             수강신청내역
           </button>
-          <button
-            type="button"
-            onClick={() => {
-              if (!isLoggedIn) {
-                const goToLogin = window.confirm(
-                  "로그인 후 이용가능합니다.\n로그인 페이지로 이동하시겠습니까?"
-                );
-                if (goToLogin) {
-                  navigate("/login");
-                }
-                return;
-              }
-              navigate(`/mypage/rentals?selectedRegionId=${selectedRegionId}`);
-            }}
-            className={styles.submenuLink}
-          >
-            대관신청내역
-          </button>
+
         </div>
       )}
     </>

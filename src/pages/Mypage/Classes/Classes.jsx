@@ -18,11 +18,13 @@ const Classes = () => {
   const fetchEnrollments = async () => {
     try {
       const rawEnrollments = await getMyEnrollments();
-      const userRegionId = JSON.parse(localStorage.getItem('userInfo'))?.regionId;
-
+    
       const enriched = await Promise.all(
         rawEnrollments.map(async (e) => {
           const program = await getProgramDetail(e.programId);
+
+          const userRegionId = JSON.parse(localStorage.getItem('userInfo'))?.regionId;
+
 
           let statusText = '';
           switch (e.status) {
