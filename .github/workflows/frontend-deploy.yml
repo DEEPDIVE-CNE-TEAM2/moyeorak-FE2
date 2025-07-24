@@ -27,6 +27,11 @@ jobs:
         with:
           node-version: '18'
 
+       # 로컬 이미지 삭제
+      - name: Delete local facility images before build
+        run: |
+          rm -rf public/img
+
       # 3) 의존성 설치 & 빌드
       - name: Install dependencies & Build
         run: |

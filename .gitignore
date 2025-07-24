@@ -19,6 +19,9 @@
 .env.production.local
 .env
 
+# Prevent re-upload
+public/img/
+
 
 npm-debug.log*
 yarn-debug.log*
