@@ -63,7 +63,7 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config;
 
     if (
-      error.response?.status === 401 &&
+      error.response?.status === 403 &&
       !originalRequest._retry &&
       getRefreshToken()
     ) {
@@ -90,14 +90,17 @@ apiClient.interceptors.response.use(
 
         // 토큰 리프레시 API 호출: 바디 없이, 헤더에만 토큰 포함
         const response = await axios.post(
-          `${BASE_URL}/api/users/refresh`,
-          {},  // 바디 비움
-          {
-            headers: {
-              Authorization: `Bearer ${refreshToken}`, // 헤더에만 Bearer 포함
-            },
+        `${BASE_URL}/api/users/refresh`,
+        {
+          refreshToken: refreshToken
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
           }
-        );
+        }
+      );
+
 
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data;
 
@@ -154,6 +157,8 @@ export const login = async (email, password) => {
 
   return response.data;
 };
+
+export { apiClient };
 
 // 회원가입
 export const signup = async (data) => {
