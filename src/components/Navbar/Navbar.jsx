@@ -4,6 +4,7 @@ import styles from './Navbar.module.css';
 import { CiLogin, CiLogout } from "react-icons/ci";
 import { FaUserPlus } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
+import Logo from "../../img/아이콘최종.png";
 
 const districts = ["중구", "성동구", "송파구"];
 
@@ -77,7 +78,7 @@ const Navbar = ({ onDistrictChange, onLogoClick }) => {
               else navigate(`/${districtToPath[currentDistrict]}`);
             }}
           >
-            <img src="/img/아이콘최종.png" alt="로고" className={styles.logo} />
+            <img src={Logo} alt="로고" className={styles.logo} />
           </a>
 
           <div className={styles.locationWrapper}>
