@@ -4,6 +4,7 @@ import { FaUser } from "react-icons/fa";
 import { TbLockPassword } from "react-icons/tb";
 import { login, getUserInfo } from "../Api";
 import { useNavigate } from "react-router-dom";
+import Logo from "../img/아이콘최종.png";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -55,7 +56,7 @@ const Login = () => {
 
   return (
     <div className={styles.container}>
-      <img src="/img/아이콘최종.png" alt="모여락" className={styles.logo} />
+      <img src={Logo} alt="모여락" className={styles.logo} />
 
       <form className={styles.form} onSubmit={handleSubmit}>
         <label className={styles.label}>이메일</label>
