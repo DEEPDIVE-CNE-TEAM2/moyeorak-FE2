@@ -18,16 +18,15 @@ const Classes = () => {
   const fetchEnrollments = async () => {
     try {
       const rawEnrollments = await getMyEnrollments();
-    
+
       const enriched = await Promise.all(
         rawEnrollments.map(async (e) => {
           const program = await getProgramDetail(e.programId);
-
           const userRegionId = JSON.parse(localStorage.getItem('userInfo'))?.regionId;
 
-
+          // 상태 텍스트 변환 (백엔드 상태 문자열에 맞게 소문자 사용)
           let statusText = '';
-          switch (e.status) {
+          switch (e.status.toLowerCase()) {
             case 'enrolled':
               statusText = '신청완료';
               break;
@@ -48,6 +47,9 @@ const Classes = () => {
                 : '관외'
               : '-';
 
+          const formattedCancelEndDate = e.cancelEndDate
+            ? e.cancelEndDate.replace(/-/g, '.')
+            : '-';
 
           return {
             id: e.id,
@@ -59,7 +61,9 @@ const Classes = () => {
             status: statusText,
             applyDate: e.enrolledAt?.split('T')[0].replace(/-/g, '.') || '-',
             price: e.paidAmount ? `${e.paidAmount.toLocaleString()}원` : '-',
-            cancelAvailable: e.status === 'enrolled' ? '가능' : '불가',
+            cancelEndDate: formattedCancelEndDate,
+            cancelEndRaw: e.cancelEndDate || null,
+            paidAmount: e.paidAmount || 0,
             inOrOut: inOrOut,
           };
         })
@@ -89,12 +93,22 @@ const Classes = () => {
   };
 
   const handleCancel = async (row) => {
+    const today = new Date();
+    const cancelEndDate = row.cancelEndRaw ? new Date(row.cancelEndRaw) : null;
+    const isWithinCancelPeriod = cancelEndDate && today <= cancelEndDate;
+    const refundRate = isWithinCancelPeriod ? 0.3 : 0;
+    const refundAmount = Math.floor(row.paidAmount * refundRate);
+    const formattedRefund = refundAmount.toLocaleString();
+
     const confirmMessage = `
 강의: ${row.title}
 기간: ${row.period}
 요일/시간: ${row.schedule}
 결제금액: ${row.price || '-'}
-환불금액: ${row.refund || '-'}
+
+📌 환불 규정 안내:
+- ${isWithinCancelPeriod ? '취소기간 내 취소' : '취소기간 이후 취소'}
+- ${isWithinCancelPeriod ? `환불 금액: ${formattedRefund}원` : '환불 불가'}
 
 수강 신청을 취소하시겠습니까?
     `.trim();
@@ -105,7 +119,7 @@ const Classes = () => {
     try {
       await cancelEnrollment(row.id);
       alert(`${row.title} 수강 신청이 취소되었습니다.`);
-      fetchEnrollments(); // 갱신
+      fetchEnrollments(); // 목록 갱신
     } catch (error) {
       alert('수강신청 취소 중 오류가 발생했습니다.');
       console.error(error);
@@ -113,8 +127,15 @@ const Classes = () => {
   };
 
   const sortedRows = [...enrollments].sort((a, b) => {
-    const aDate = new Date(a.period.split(' - ')[0]);
-    const bDate = new Date(b.period.split(' - ')[0]);
+    // 기간이 "YYYY.MM.DD ~ YYYY.MM.DD" 형식일 경우 첫 날짜 기준 정렬
+    // '-' 또는 비정상 문자열 처리
+    const parseDate = (str) => {
+      if (!str || str === '-') return new Date(0);
+      const firstDateStr = str.split('~')[0].trim().replace(/\./g, '-');
+      return new Date(firstDateStr);
+    };
+    const aDate = parseDate(a.period);
+    const bDate = parseDate(b.period);
     return sortOrder === 'desc' ? bDate - aDate : aDate - bDate;
   });
 
@@ -134,8 +155,24 @@ const Classes = () => {
             </button>
             {dropdownOpen && (
               <div className="dropdown-menu">
-                <div className="dropdown-item" onClick={() => { setSortOrder('desc'); setDropdownOpen(false); }}>최근날짜순</div>
-                <div className="dropdown-item" onClick={() => { setSortOrder('asc'); setDropdownOpen(false); }}>오래된날짜순</div>
+                <div
+                  className="dropdown-item"
+                  onClick={() => {
+                    setSortOrder('desc');
+                    setDropdownOpen(false);
+                  }}
+                >
+                  최근날짜순
+                </div>
+                <div
+                  className="dropdown-item"
+                  onClick={() => {
+                    setSortOrder('asc');
+                    setDropdownOpen(false);
+                  }}
+                >
+                  오래된날짜순
+                </div>
               </div>
             )}
           </div>
@@ -153,8 +190,11 @@ const Classes = () => {
             </thead>
             <tbody>
               {sortedRows.map((row, idx) => (
-                <React.Fragment key={idx}>
-                  <tr className="clickable-row" onClick={() => row.status === '신청완료' && toggleRow(idx)}>
+                <React.Fragment key={row.id}>
+                  <tr
+                    className="clickable-row"
+                    onClick={() => row.status === '신청완료' && toggleRow(idx)}
+                  >
                     <td align="center">{row.period}</td>
                     <td align="center">{row.title}</td>
                     <td align="center">{row.schedule}</td>
@@ -167,9 +207,13 @@ const Classes = () => {
                   {expandedRowIndex === idx && row.status === '신청완료' && (
                     <>
                       <tr className="detail-row">
-                        <td align="center" className="mini-title">신청일</td>
+                        <td align="center" className="mini-title">
+                          신청일
+                        </td>
                         <td align="center">{row.applyDate}</td>
-                        <td align="center" className="mini-title">관내/관외 여부</td>
+                        <td align="center" className="mini-title">
+                          관내/관외 여부
+                        </td>
                         <td align="center">{row.inOrOut}</td>
                         <td rowSpan="2" colSpan="2" align="center">
                           <button
@@ -181,10 +225,14 @@ const Classes = () => {
                         </td>
                       </tr>
                       <tr className="detail-row">
-                        <td align="center" className="mini-title">결제금액</td>
+                        <td align="center" className="mini-title">
+                          결제금액
+                        </td>
                         <td align="center">{row.price}</td>
-                        <td align="center" className="mini-title">취소 가능 여부</td>
-                        <td align="center">{row.cancelAvailable}</td>
+                        <td align="center" className="mini-title">
+                          취소기간
+                        </td>
+                        <td align="center">{row.cancelEndDate}</td>
                       </tr>
                     </>
                   )}

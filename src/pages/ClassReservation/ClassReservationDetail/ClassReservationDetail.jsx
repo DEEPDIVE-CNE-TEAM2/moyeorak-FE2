@@ -169,7 +169,7 @@ const ClassReservationDetail = () => {
             <tbody>
               <tr>
                 <td>취소기간까지</td>
-                <td>환불수수료 10% 공제</td>
+                <td>30% 환불</td>
               </tr>
               <tr>
                 <td>취소기간 이후</td>

@@ -64,6 +64,10 @@ const PaymentPage = () => {
     };
 
     try {
+
+      console.log('[handlePayment] enrollProgram 호출 직전:', enrollmentData);
+
+
       await enrollProgram(enrollmentData);
 
       alert('신청이 완료되었습니다.');
@@ -119,3 +123,4 @@ const PaymentPage = () => {
 };
 
 export default PaymentPage;
+
