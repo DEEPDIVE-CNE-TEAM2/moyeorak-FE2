@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../../../components/Navbar/Navbar';
 import styles from './ClassReservationDetail.module.css';
 import { getProgramDetail } from '../../../Api';
+import { getFullImageUrl } from '../../../utils/imageUtils';
 
 const ClassReservationDetail = () => {
   const { id } = useParams();
@@ -90,7 +91,7 @@ const ClassReservationDetail = () => {
 
         <div className={styles.infoSection}>
           <img
-            src={data?.imageUrl || '/img/default.jpg'}
+            src={getFullImageUrl(data?.imageUrl) || '/img/default.jpg'}
             alt="클래스 이미지"
             className={styles.image}
             onError={(e) => (e.target.src = '/img/default.jpg')}
