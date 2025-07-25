@@ -57,6 +57,7 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
+
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -237,41 +238,6 @@ export const getRegionList = async () => {
 // 지역별 시설 목록 조회 
 export const getRentalFacilitiesByRegionId = async (regionId) => {
   const response = await apiClient.get(`/api/facilities/region/${regionId}`);
-  return response.data;
-};
-
-// 대관신청 (GET)
-export const getRentalFacilitiesByRegion = async (regionId) => {
-  const response = await apiClient.get(`/api/rentals/facilities/region/${regionId}`);
-  return response.data;
-};
-
-
-// 대관 신청 API (POST)
-export const createRentalApplication = async ({
-  rentalId, requestedDate, requestedStartTime, requestedEndTime, note, peopleCount
-}) => {
-  const response = await apiClient.post('/api/rental-applications', {
-    rentalId, requestedDate, requestedStartTime, requestedEndTime, note, peopleCount
-  });
-  return response.data;
-};
-
-// 대관신청 상세화면
-export const fetchRentalDetail = async (regionId, rentalId) => {
-  const response = await axios.get(`${BASE_URL}/api/rentals/region/${regionId}/${rentalId}`);
-  return response.data;
-};
-
-// 마이페이지 내 대관 신청 목록 조회
-export const getMyRentalApplications = async () => {
-  const response = await apiClient.get('/api/rental-applications/me');
-  return response.data;
-};
-
-// 마이페이지 대관신청 취소
-export const cancelRentalApplication = async (applicationId) => {
-  const response = await apiClient.delete(`/api/rental-applications/${applicationId}`);
   return response.data;
 };
 

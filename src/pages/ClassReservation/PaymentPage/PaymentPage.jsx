@@ -63,12 +63,8 @@ const PaymentPage = () => {
       paidAmount: paidAmount,
     };
 
-
-
-
     try {
       await enrollProgram(enrollmentData);
-
 
       alert('신청이 완료되었습니다.');
 

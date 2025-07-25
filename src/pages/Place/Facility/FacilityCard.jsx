@@ -6,6 +6,7 @@ import { LuSquareArrowOutUpRight } from "react-icons/lu";
 import styles from "./FacilityCard.module.css";
 
 const FacilityCard = ({ facility }) => {
+
   return (
     <div className={styles.card}>
       <img src={facility.imageUrl} alt={facility.location} className={styles.image} />

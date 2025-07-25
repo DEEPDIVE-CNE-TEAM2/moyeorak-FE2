@@ -27,7 +27,6 @@ const Place = () => {
       setLoading(true);
       try {
         const data = await getRentalFacilitiesByRegionId(selectedRegionId);
-        console.log("시설 목록 데이터 (API 응답):", data);
         
         setFacilities(data);
       } catch (err) {
