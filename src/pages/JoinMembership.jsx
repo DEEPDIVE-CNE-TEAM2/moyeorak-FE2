@@ -139,7 +139,6 @@ const JoinMembership = () => {
 
     try {
       await signup(payload);
-      alert("회원가입 성공!");
       navigate('/login');
     } catch (err) {
       console.error("회원가입 에러 전체:", err);
@@ -266,7 +265,7 @@ const JoinMembership = () => {
           <input
             type="tel"
             name="phone"
-            placeholder="xxx-xxxx-xxxx"
+            placeholder="- 포함해서 입력"
             value={form.phone}
             onChange={handleChange}
             className={styles.phoneInput}
