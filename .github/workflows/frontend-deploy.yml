@@ -3,7 +3,7 @@ name: Frontend CI/CD to S3 & CloudFront
 on:
   push:
     branches:
-      - dev_fe  # dev_fe 브랜치에 push될 때만 실행
+      - vite-migration  # dev_fe 브랜치에 push될 때만 실행
 
 permissions:
   actions: read         # 워크플로에서 다른 액션 실행 허용
@@ -25,7 +25,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
 
        # 로컬 이미지 삭제
       - name: Delete local facility images before build

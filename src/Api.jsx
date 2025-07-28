@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = process.env.REACT_APP_API_URL;
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 // Access Token 저장 및 가져오기 헬퍼 함수
 export const setAccessToken = (token) => {
