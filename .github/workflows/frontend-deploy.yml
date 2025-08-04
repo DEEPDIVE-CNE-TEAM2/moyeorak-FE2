@@ -80,8 +80,15 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       # 8) OWASP ZAP 동적 분석 실행
-      - name: Run OWASP ZAP Baseline Scan
-        uses: zaproxy/action-baseline@v0.7.0
+      - name: Run OWASP ZAP Baseline Scan (HTML Report)
+        run: |
+          docker run --rm -v $(pwd):/zap/wrk:rw -t owasp/zap2docker-stable zap-baseline.py \
+            -t https://${{ secrets.CLOUDFRONT_DOMAIN }} \
+            -r zap_report.html || true
+
+      # 9) 리포트 업로드
+      - name: Upload ZAP Report
+        uses: actions/upload-artifact@v3
         with:
-          target: 'https://${{ secrets.CLOUDFRONT_DOMAIN }}'
-          fail_action: false
+          name: zap-report
+          path: zap_report.html
