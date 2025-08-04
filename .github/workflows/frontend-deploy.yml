@@ -96,8 +96,8 @@ jobs:
 
 
       # 9) 리포트 업로드
-      - name: Upload ZAP Report
+      - name: Upload ZAP HTML Report
         uses: actions/upload-artifact@v4
         with:
-          name: zap-report
-          path: zap_report.html
+          name: zap-report-html
+          path: zap-reports/zap_report.html
