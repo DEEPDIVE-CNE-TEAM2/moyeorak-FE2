@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import styles from "./PromotionBanner.module.css";
 import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
-import { useLocation } from "react-router-dom"; // 현재 경로 확인
+import { useLocation } from "react-router-dom";
+
+import jungFacility from "../../img/중구체육시설.png";
+import songpaFacility from "../../img/송파구체육시설.png";
+import seongdongFacility from "../../img/성동구체육시설.png";
 
 const bannerData = {
   jung: [
     {
-      image: "/img/중구체육시설.png",
+      image: jungFacility,
       text: (
         <>
           중구 공공 체육시설 예약 서비스에<br />
@@ -25,7 +29,7 @@ const bannerData = {
   ],
   songpa: [
     {
-      image: "/img/송파구체육시설.png",
+      image: songpaFacility,
       text: (
         <>
           송파구 공공 체육시설 예약 서비스에<br />
@@ -44,7 +48,7 @@ const bannerData = {
   ],
   seongdong: [
     {
-      image: "/img/성동구체육시설.png",
+      image: seongdongFacility,
       text: (
         <>
           성동구 공공 체육시설 예약 서비스에<br />
