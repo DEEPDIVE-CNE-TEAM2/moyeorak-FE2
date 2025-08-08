@@ -1,0 +1,76 @@
+.container {
+  max-width: 1000px;
+  margin: 40px auto;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.buttonGroup button {
+  margin-left: 10px;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  border: none;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+.saveBtn {
+  background-color: #3096e6;
+  color: white;
+}
+
+.cancelBtn {
+  background-color: #ccc;
+  color: black;
+}
+
+/* 테이블 */
+.detailTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+.detailTable th {
+  background-color: #f7f7f7;
+  width: 160px;
+  text-align: left;
+  padding: 12px;
+  border: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+.detailTable td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+/* input, textarea 스타일 */
+.textInput,
+.textareaInput {
+  width: 100%;
+  font-size: 15px;
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: inherit;
+  color: #333;
+  transition: border-color 0.2s ease;
+}
+
+.textareaInput {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.4;
+}

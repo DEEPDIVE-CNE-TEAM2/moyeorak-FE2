@@ -1,0 +1,58 @@
+.container {
+  max-width: 1000px;
+  margin: 40px auto;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.buttonGroup button {
+  margin-left: 10px;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  border: none;
+}
+
+.editBtn {
+  background-color: #3096E6;
+  color: white;
+}
+
+.deleteBtn {
+  background-color: #FF6969;
+  color: white;
+}
+
+.detailTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+.detailTable th {
+  background-color: #f7f7f7;
+  width: 160px;
+  text-align: left;
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+
+.detailTable td {
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+
+.programImage {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+}

@@ -1,0 +1,290 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modalContent {
+  background: white;
+  padding: 40px 50px;
+  width: 600px;
+  max-width: 100%;
+  border-radius: 12px;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+
+.loadingModal {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 30px 40px;
+  width: 200px;
+  text-align: center;
+  font-size: 16px;
+  color: #333;
+}
+
+.closeIcon {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-size: 26px;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.2s ease;
+}
+
+.closeIcon:hover {
+  color: #3096E6;
+}
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #222;
+}
+
+.tabContainer {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 25px;
+}
+
+.tabButton {
+  padding: 12px 26px;
+  border: 1px solid #ccc;
+  background: #f7f9fc;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-right: none;
+  color: #555;
+}
+
+.tabButton:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.tabButton:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-right: 1px solid #ccc;
+}
+
+.active {
+  background: #3096E6;
+  color: white;
+  border-color: #3096E6;
+}
+
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 25px 30px;
+  border-radius: 10px;
+  background-color: #fcfcfc;
+}
+
+.readonlyField,
+.editableField {
+  display: flex;
+  flex-direction: column;
+}
+
+.readonlyField label,
+.editableField label {
+  font-size: 15px;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+}
+
+.readonlyField input,
+.editableField input,
+.editableField select {
+  padding: 10px 12px;
+  font-size: 15px;
+  width: 100%;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+  outline: none;
+}
+
+.readonlyField input:read-only {
+  background-color: #f2f4f8;
+  color: #777;
+  cursor: not-allowed;
+}
+
+.editableField input:focus,
+.editableField select:focus {
+  border-color: #3096E6;
+}
+
+.saveButton {
+  margin-top: 20px;
+  height: 45px;
+  width: 100%;
+  background-color: #3096E6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 17px;
+  transition: background-color 0.3s ease;
+}
+
+.saveButton:hover {
+  background-color: #1f73c9;
+}
+
+.enrollTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  margin-top: 20px;
+}
+
+.enrollTable th,
+.enrollTable td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.enrollTable th {
+  background-color: #f0f0f0;
+  font-weight: 700;
+  color: #222;
+}
+
+.statusWrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cancelButton {
+  background-color: #FF6969;
+  color: white;
+  border: none;
+  padding: 5px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.cancelButton:hover {
+  background-color: #e55757;
+}
+
+.pagination {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  background-color: #f0f0f0;
+  color: #555;
+  cursor: pointer;
+  min-width: 30px;
+  font-weight: normal;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination button:hover:not(.activePage) {
+  background-color: #ddd;
+}
+
+.pagination button.activePage {
+  background-color: #3096E6;
+  color: white;
+  font-weight: 700;
+  cursor: default;
+}
+
+.noData {
+  text-align: center;
+  padding: 20px;
+  font-size: 15px;
+  color: #666;
+}
+
+/* Custom Confirm Modal */
+.confirmModal {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  text-align: center;
+  width: 350px;
+  max-width: 90%;
+  z-index: 1001;
+}
+
+.confirmModal p {
+  margin-bottom: 20px;
+  font-size: 17px;
+  color: #333;
+  font-weight: 500;
+}
+
+.confirmButtons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.confirmYes,
+.confirmNo {
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.confirmYes {
+  background-color: #FF6969;
+  color: white;
+}
+
+.confirmYes:hover {
+  background-color: #e55757;
+}
+
+.confirmNo {
+  background-color: #f0f0f0;
+  color: #555;
+}
+
+.confirmNo:hover {
+  background-color: #ddd;
+}

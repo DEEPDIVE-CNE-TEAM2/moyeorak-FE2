@@ -1,0 +1,124 @@
+.container {
+  max-width: 480px;
+  margin: 60px auto;
+  padding: 0;
+  font-family: "Arial", sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.formGroup {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.input {
+  width: 100%;
+  padding: 10px 14px; 
+  font-size: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.emailCheckRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.checkBtn {
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  font-weight: normal;
+  font-size: 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.greyBtn {
+  background-color: #eee;
+  color: #333;
+  border: none;
+}
+
+.blueBtn {
+  background-color: #3096E6;
+  color: white;
+  border: none;
+}
+
+.genderGroup {
+  display: flex;
+  gap: 20px;
+}
+
+.genderBtn {
+  flex: 1;
+  padding: 10px 0; 
+  font-size: 15px; 
+  font-weight: normal; 
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.genderBtn.selected {
+  background-color: #3096E6;
+  color: white;
+  border-color: #3096E6;
+}
+
+.btnGroup {
+  width: 100%;
+  margin-top: 30px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.saveBtn,
+.cancelBtn {
+  flex: 1;
+  padding: 12px 0;  
+  font-weight: 600;
+  font-size: 15px; 
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.saveBtn.blueBtn {
+  background-color: #3096E6;
+  color: white;
+  border: none;
+}
+
+.cancelBtn.greyBtn {
+  background-color: #eee;
+  color: #333;
+  border: none;
+}

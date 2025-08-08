@@ -1,0 +1,70 @@
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  font-family: Arial, sans-serif;
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.title {
+  margin: 0;
+  font-size: 28px;
+  color: #333;
+}
+
+.buttonGroup button {
+  margin-left: 10px;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.editBtn {
+  background-color: #3096e6;
+  color: white;
+}
+
+.deleteBtn {
+  background-color: #ff6969;
+  color: white;
+}
+
+.detailTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+  table-layout: fixed;
+}
+
+.detailTable th {
+  background-color: #f7f7f7;
+  width: 160px;
+  text-align: left;
+  padding: 12px;
+  border: 1px solid #ddd;
+  vertical-align: top;
+}
+
+.detailTable td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  word-wrap: break-word;
+}
+
+.facilityImage {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+  display: block;
+}

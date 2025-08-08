@@ -1,0 +1,91 @@
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  font-family: Arial, sans-serif;
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.buttonGroup button {
+  margin-left: 10px;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.saveBtn {
+  background-color: #3096e6;
+  color: white;
+}
+
+.cancelBtn {
+  background-color: #999999;
+  color: white;
+}
+
+.detailTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+  table-layout: fixed;
+}
+
+.detailTable th {
+  background-color: #f7f7f7;
+  width: 160px;
+  text-align: left;
+  padding: 12px;
+  border: 1px solid #ddd;
+  vertical-align: top;
+}
+
+.detailTable td {
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+
+.detailTable input,
+.detailTable textarea {
+  width: 100%;
+  padding: 8px 0px;
+  font-size: 15px;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.facilityImage {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.imageBtnGroup {
+  margin-top: 10px;
+}
+
+.imageBtn {
+  background: none;
+  border: 1.5px solid #666;
+  padding: 5px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  height: 32px;
+  white-space: nowrap;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}

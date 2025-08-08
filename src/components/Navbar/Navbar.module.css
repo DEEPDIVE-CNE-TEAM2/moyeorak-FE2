@@ -1,0 +1,219 @@
+.topBar {
+  width: 100vw; /* 뷰포트 전체 너비 */
+  position: fixed; /* 필요시 고정 */
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 8px 0;
+  background-color: #3096E6;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  user-select: none;
+  box-sizing: border-box;
+  z-index: 1000; /* 다른 요소 위에 보이게 */
+}
+
+.navbar {
+  padding: 42px 32px 12px 32px; /* 위쪽 padding만 52px로 늘림 (예: topBar 높이 40px + 기존 12px) */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+  padding-left: 30px;
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.menu {
+  display: flex;
+  gap: 110px;
+  font-weight: bold;
+  list-style: none;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+  font-size: 18px;
+}
+
+.menuLink {
+  color: inherit;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.locationWrapper {
+  position: relative;
+  margin-right: 70px;
+  font-size: 14px;
+}
+
+.locationDisplay {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #f5f8fc, #e0e7f1);
+  border: 1px solid #a3b1cc;
+  border-radius: 24px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #2c3e50;
+  box-shadow: 0 2px 6px rgba(163, 177, 204, 0.3);
+  border: none;
+}
+
+.locationDisplay:hover, .locationDisplay.active {
+  background: #dbe9fc;
+  box-shadow: 0 4px 12px rgba(48, 150, 230, 0.2);
+  color: #1a2a57;
+}
+
+.iconRotated {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
+
+.dropdownList {
+  position: absolute;
+  top: 120%;
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 6px 0;
+  z-index: 100;
+  min-width: 100px;
+  list-style: none;
+  margin: 0;
+}
+
+.dropdownList li {
+  padding: 8px 16px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: black;
+}
+
+.dropdownList li:hover {
+  background-color: #ebf0fb;
+}
+
+.authButtons {
+  display: flex;
+  gap: 8px;
+  font-size: 16px;
+  padding-right: 30px;
+  align-items: center;
+  flex-grow: 1;
+  justify-content: flex-end;
+  position: relative;
+  z-index: 1100;
+}
+
+.authLink {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  font-size: 16px;
+  padding: 6px 12px;
+  text-decoration: none;
+  line-height: 1;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.authLink svg {
+  vertical-align: middle;
+  position: relative;
+  top: 2px;
+}
+
+.divider {
+  width: 1px;
+  height: 22px;
+  background-color: #ccc;
+  margin: 0 4px;
+  align-self: center;
+}
+
+
+.mypageWrapper {
+  position: relative;
+}
+
+.submenuBar {
+  position: absolute;
+  top: 105px;
+  left: 0px;
+  width: 100%;
+  padding: 12px 80px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  z-index: 9;
+}
+
+.mypageWrapper:hover .submenuBar {
+  display: flex;
+}
+
+.submenuLink {
+  all: unset;
+  color: inherit;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  padding-left: 12px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.activeMenu {
+  color: #3096E6;
+  font-weight: 600;
+}
+
+
+.authLink {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 6px 12px;
+  text-decoration: none;
+  line-height: 1;
+  white-space: nowrap;
+  user-select: none;
+  color: #000; 
+}
+

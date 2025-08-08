@@ -1,0 +1,77 @@
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.buttonGroup button {
+  margin-left: 10px;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  border: none;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+.editBtn {
+  background-color: #3096e6;
+  color: white;
+}
+
+.deleteBtn {
+  background-color: #ccc;
+  color: black;
+}
+
+.detailTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+  border: 1px solid #ddd;
+}
+
+.detailTable th {
+  background-color: #f7f7f7;
+  width: 140px;
+  text-align: left;
+  padding: 12px;
+  border: 1px solid #ddd;
+  vertical-align: middle;
+  font-weight: 600;
+}
+
+.detailTable td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+.imagePreview {
+  width: 100px;
+  height: auto;
+}
+
+.deleteIconBtn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  transition: color 0.2s ease;
+}
