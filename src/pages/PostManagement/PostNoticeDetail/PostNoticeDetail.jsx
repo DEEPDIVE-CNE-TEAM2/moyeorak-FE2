@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";  // useParams 추가
+import { useNavigate, useParams } from "react-router-dom";
 import AdminNavbar from "../../../components/Navbar/Navbar";
 import styles from "./PostNoticeDetail.module.css";
-import { getNoticeDetail } from "../../../Api"; // api 함수 import
+import { getNoticeDetail, deleteNotice } from "../../../Api";
 
 export default function PostNoticeDetail() {
-  const { noticeId } = useParams();  // url 파라미터에서 noticeId 받기
+  const { noticeId } = useParams();
   const [notice, setNotice] = useState(null);
   const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ export default function PostNoticeDetail() {
           title: data.title,
           author: data.authorName,
           views: data.viewCount,
-          date: data.createdAt ? data.createdAt.slice(0, 10) : "", // ISO → YYYY-MM-DD
+          date: data.createdAt ? data.createdAt.slice(0, 10) : "",
           description: data.content,
         });
       }
@@ -32,9 +32,15 @@ export default function PostNoticeDetail() {
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
-      alert("삭제 기능 구현 예정");
+      const success = await deleteNotice(noticeId);
+      if (success) {
+        alert("공지사항이 삭제되었습니다.");
+        navigate("/admin/post/notice");
+      } else {
+        alert("삭제에 실패했습니다. 다시 시도해주세요.");
+      }
     }
   };
 

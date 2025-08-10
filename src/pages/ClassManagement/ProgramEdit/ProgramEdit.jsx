@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./ProgramEdit.module.css";
 import AdminNavbar from "../../../components/Navbar/Navbar";
-import { getAccessToken, fetchAdminProgramDetail, updateAdminProgram } from "../../../Api";
+import { getAccessToken, getRefreshToken, fetchAdminProgramDetail, updateAdminProgram } from "../../../Api";
 
 const ProgramEdit = () => {
   const navigate = useNavigate();
   const { programId } = useParams();
 
-  // 시간 객체를 "HH:mm" 문자열로 변환하는 함수
+  // 시간 객체를 "HH:mm" 문자열로 변환하는 함수 (input[type="time"]용)
   const timeObjToString = (time) => {
     const h = time?.hour ?? 0;
     const m = time?.minute ?? 0;
@@ -24,6 +24,14 @@ const ProgramEdit = () => {
       second: 0,
       nano: 0,
     };
+  };
+
+  // 시간 객체를 "HH:mm:ss" 문자열로 변환하는 함수 (서버 전송용)
+  const timeObjToServerString = (time) => {
+    const h = time?.hour ?? 0;
+    const m = time?.minute ?? 0;
+    const s = time?.second ?? 0;
+    return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   };
 
   const [formData, setFormData] = useState({
@@ -55,18 +63,14 @@ const ProgramEdit = () => {
           data.facilityId = String(data.facilityId);
         }
 
-        const classStartTime = stringToTimeObj(data.classStartTime || "00:00:00");
-        const classEndTime = stringToTimeObj(data.classEndTime || "00:00:00");
-
         setFormData({
           ...data,
-          classStartTime,
-          classEndTime,
+          classStartTime: data.classStartTime || { hour: 0, minute: 0, second: 0, nano: 0 },
+          classEndTime: data.classEndTime || { hour: 0, minute: 0, second: 0, nano: 0 },
         });
       })
       .catch(() => alert("프로그램 정보를 불러오는데 실패했습니다."));
   }, [programId]);
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -97,18 +101,35 @@ const ProgramEdit = () => {
     setFormData((prev) => ({ ...prev, imageUrl: "" }));
   };
 
-  /*
   const handleSave = async () => {
+    const classStartTimeObj = typeof formData.classStartTime === "string"
+      ? stringToTimeObj(formData.classStartTime)
+      : formData.classStartTime;
 
-    console.log("저장 요청 직전 토큰:", localStorage.getItem("accessToken"));
-    console.log("getAccessToken() 반환값:", getAccessToken());
-
+    const classEndTimeObj = typeof formData.classEndTime === "string"
+      ? stringToTimeObj(formData.classEndTime)
+      : formData.classEndTime;
 
     const payload = {
-      ...formData,
+      title: formData.title,
       facilityId: Number(formData.facilityId),
-      classStartTime: formData.classStartTime,
-      classEndTime: formData.classEndTime,
+      category: formData.category,
+      target: formData.target,
+      instructorName: formData.instructorName,
+      status: formData.status,
+      usageStartDate: formData.usageStartDate,
+      usageEndDate: formData.usageEndDate,
+      classStartTime: timeObjToServerString(classStartTimeObj),
+      classEndTime: timeObjToServerString(classEndTimeObj),
+      registrationStartDate: formData.registrationStartDate,
+      registrationEndDate: formData.registrationEndDate,
+      cancelEndDate: formData.cancelEndDate,
+      inPrice: formData.inPrice,
+      outPrice: formData.outPrice,
+      capacity: formData.capacity,
+      contact: formData.contact,
+      imageUrl: formData.imageUrl,
+      description: formData.description,
     };
 
     try {
@@ -120,31 +141,6 @@ const ProgramEdit = () => {
       console.error(error);
     }
   };
-*/
-// ProgramEdit.jsx
-
-// ... (다른 코드 동일) ...
-
-  const handleSave = async () => {
-    const payload = {
-      ...formData,
-      facilityId: Number(formData.facilityId),
-      classStartTime: formData.classStartTime,
-      classEndTime: formData.classEndTime,
-    };
-
-    try {
-      await updateAdminProgram(programId, payload);
-      alert("프로그램이 수정되었습니다.");
-      navigate(`/admin/program/${programId}`);
-    } catch (error) {
-      alert("프로그램 수정에 실패했습니다.");
-      console.error(error);
-    }
-  };
-
-
-
 
   const handleCancel = () => {
     navigate(`/admin/program/${programId}`);

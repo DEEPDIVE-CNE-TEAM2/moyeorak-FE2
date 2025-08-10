@@ -50,7 +50,7 @@ export default function PostNoticeEdit() {
         title: notice.title,
         content: notice.content,
       });
-      alert("공지사항이 성공적으로 수정되었습니다.");
+      alert("공지사항이 수정되었습니다.");
       navigate("/admin/post/notice");
     } catch (error) {
       alert("공지사항 수정에 실패했습니다.");

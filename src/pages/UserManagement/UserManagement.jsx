@@ -7,10 +7,9 @@ import { fetchAdminUsers, fetchAdminUserDetail } from "../../Api";
 
 const ITEMS_PER_PAGE = 10;
 
-// 날짜 표시 통일 함수
 const formatDate = (dateString) => {
   if (!dateString) return "-";
-  return dateString.slice(0, 10); // YYYY.MM.DD 형식으로 자르기
+  return dateString.slice(0, 10);
 };
 
 export default function UserManagement() {
@@ -36,8 +35,7 @@ export default function UserManagement() {
           email: user.email,
           address: user.region || "-",
           joinDate: formatDate(user.createdAt),
-          phone: user.phone || "-", // 전화번호 추가
-          regionId: user.regionId || 0, // 지역 ID 추가
+          regionId: user.regionId || 0,
         }));
         setMembers(transformed);
       } catch (e) {
@@ -79,19 +77,15 @@ export default function UserManagement() {
   };
 
   const handleUpdateUser = (updatedUser) => {
-    // updatedUser 객체에 phone, regionId 등 추가 정보가 포함되어야 합니다.
     setMembers((prev) =>
       prev.map((m) => (m.id === updatedUser.id ? updatedUser : m))
     );
-    // 모달을 닫고, selectedMember 상태도 초기화
     setSelectedMember(null);
   };
 
-  // 회원 이름 클릭 시 상세 정보 모달을 띄우는 함수
   const handleMemberClick = async (member) => {
     try {
       const detail = await fetchAdminUserDetail(member.id);
-      // 상세 정보를 가져와서 selectedMember 상태에 저장
       setSelectedMember({
         ...member,
         ...detail,

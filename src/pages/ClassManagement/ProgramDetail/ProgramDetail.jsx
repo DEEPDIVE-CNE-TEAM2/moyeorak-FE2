@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./ProgramDetail.module.css";
 import AdminNavbar from "../../../components/Navbar/Navbar";
-import { fetchAdminProgramDetail, deleteProgram } from "../../../Api"; // 삭제 API 포함
+import { fetchAdminProgramDetail, deleteProgram } from "../../../Api";
 
 const ProgramDetail = () => {
   const navigate = useNavigate();
@@ -29,16 +29,16 @@ const ProgramDetail = () => {
   };
 
   const handleDelete = async () => {
-    const confirmed = window.confirm("정말로 이 프로그램을 삭제하시겠습니까?");
+    const confirmed = window.confirm("프로그램을 삭제하시겠습니까?");
     if (!confirmed) return;
 
     try {
       const res = await deleteProgram(programId);
       alert(res.message || "프로그램이 삭제되었습니다.");
-      navigate("/admin/programs"); // 삭제 후 목록 페이지로 이동
+      navigate("/admin/program/list");
     } catch (err) {
       console.error(err);
-      alert("삭제에 실패했습니다. 다시 시도해주세요.");
+      alert("프로그램 삭제에 실패했습니다.");
     }
   };
 

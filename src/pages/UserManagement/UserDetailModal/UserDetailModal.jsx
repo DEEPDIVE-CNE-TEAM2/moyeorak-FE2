@@ -19,7 +19,7 @@ export default function UserDetailModal({ member, onClose, onSave }) {
   const [selectedTab, setSelectedTab] = useState("info");
   const [email, setEmail] = useState(member.email || "");
   const [phone, setPhone] = useState(member.phone || "");
-  const [regionId, setRegionId] = useState(member.regionId || 0); // regionId로 상태 관리
+  const [regionId, setRegionId] = useState(member.regionId || 0); 
   const [enrollments, setEnrollments] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -27,7 +27,6 @@ export default function UserDetailModal({ member, onClose, onSave }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [enrollmentToCancel, setEnrollmentToCancel] = useState(null);
 
-  // 모달이 열릴 때 회원 상세 정보 로딩
   useEffect(() => {
     const loadUserDetail = async () => {
       setLoading(true);
@@ -47,7 +46,6 @@ export default function UserDetailModal({ member, onClose, onSave }) {
     if (member.id) loadUserDetail();
   }, [member.id]);
 
-  // 탭이 '수강신청 관리'로 변경되면 수강 내역 로딩
   useEffect(() => {
     const loadEnrollments = async () => {
       if (selectedTab === "enroll") {
@@ -80,11 +78,10 @@ export default function UserDetailModal({ member, onClose, onSave }) {
         regionId: Number(regionId),
       });
 
-      // UserManagement 컴포넌트의 onSave prop에 업데이트된 전체 사용자 객체를 전달
       onSave({
         ...member,
         ...updatedData,
-        address: updatedData.region, // 업데이트된 지역명으로 변경
+        address: updatedData.region,
       });
 
       alert("회원 정보가 수정되었습니다.");
@@ -110,7 +107,6 @@ export default function UserDetailModal({ member, onClose, onSave }) {
         headers: { Authorization: token },
       });
 
-      // 로컬 상태 업데이트
       setEnrollments(prev =>
         prev.map(e => e.enrollmentId === enrollmentToCancel ? { ...e, status: '취소', canCancel: false } : e)
       );
