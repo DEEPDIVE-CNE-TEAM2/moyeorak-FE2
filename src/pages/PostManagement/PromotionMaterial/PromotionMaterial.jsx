@@ -1,26 +1,25 @@
-// src/pages/Admin/PromotionMaterial/PromotionMaterial.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './PromotionMaterial.module.css';
 import Navbar from '../../../components/Navbar/Navbar';
 import PromotionAddEditPopup from '../PromotionAddPopup/PromotionAddPopup';
-import { getPromotionImages } from '../../../Api'; // API 호출 함수 import
+import { getPromotionImages } from '../../../Api';
 
 const PromotionMaterial = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState(null); // 수정 중인 아이템(null=추가)
+  const [editingItem, setEditingItem] = useState(null);
 
-  // ✅ 페이지 로드 시 홍보물 리스트 API 호출
+  // ✅ 조회 API
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await getPromotionImages();
         const formattedData = res.map(item => ({
           id: item.id,
-          image: item.imageUrl, // API 필드명: imageUrl
-          visible: item.active, // API 필드명: active
+          image: item.imageUrl,
+          visible: item.active,
           displayOrder: item.displayOrder
         }));
         setData(formattedData);
@@ -32,36 +31,30 @@ const PromotionMaterial = () => {
     fetchData();
   }, []);
 
+  // ✅ 표시 여부 변경 (프론트 상태만 변경)
   const handleVisibilityChange = (id) => {
-    const updatedData = data.map(item =>
-      item.id === id ? { ...item, visible: !item.visible } : item
+    setData(prevData =>
+      prevData.map(item =>
+        item.id === id ? { ...item, visible: !item.visible } : item
+      )
     );
-    setData(updatedData);
-    // 필요하면 여기서 표시 여부 변경 API 호출(PATCH) 추가 가능
   };
 
+  // ✅ 추가 버튼 → 팝업 열기
   const openAddPopup = () => {
     setEditingItem(null);
     setIsPopupOpen(true);
   };
 
+  // ✅ 수정 버튼 → 수정 페이지 이동
   const openEditPage = () => {
     navigate('/admin/post/promotion/edit');
   };
 
-  const handleSave = (image) => {
-    if (editingItem) {
-      // 수정
-      const updatedData = data.map(item =>
-        item.id === editingItem.id ? { ...item, image } : item
-      );
-      setData(updatedData);
-    } else {
-      // 추가 (프론트에서만 반영 — 실제 API 호출 필요)
-      const newId = data.length ? Math.max(...data.map(d => d.id)) + 1 : 1;
-      const newItem = { id: newId, image, visible: false };
-      setData([...data, newItem]);
-    }
+  // ✅ 팝업 저장 후 처리 (여기서는 단순히 닫기만)
+  const handleSave = () => {
+    setIsPopupOpen(false);
+    // 저장 후 다시 조회 필요하면 여기서 fetchData() 호출 가능
   };
 
   return (
@@ -108,6 +101,7 @@ const PromotionMaterial = () => {
         </table>
       </div>
 
+      {/* 추가 팝업 */}
       {isPopupOpen && (
         <PromotionAddEditPopup
           onClose={() => setIsPopupOpen(false)}

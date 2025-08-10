@@ -245,20 +245,8 @@ export const updateAdminProgram = async (programId, data) => {
 
 // 프로그램 삭제
 export const deleteProgram = async (programId) => {
-  const token = localStorage.getItem("accessToken") || "";
-  const response = await fetch(`${BASE_URL}/api/admin/programs/${programId}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error("프로그램 삭제 실패");
-  }
-
-  return await response.json();
+  const response = await apiClient.delete(`/api/admin/programs/${programId}`);
+  return response.data;
 };
 
 // 공지사항 조회
