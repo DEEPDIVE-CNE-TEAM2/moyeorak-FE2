@@ -3,45 +3,62 @@ import { useNavigate } from "react-router-dom";
 import styles from "./FacilityAdd.module.css";
 import AdminNavbar from "../../../components/Navbar/Navbar";
 
-const FacilityAdd = ({ addFacility }) => {
+const FacilityAdd = () => {
   const navigate = useNavigate();
 
-  const [facility, setFacility] = useState({
-    name: "",
-    address: "",
-    hours: "",
-    phone: "",
-    capacity: "",
-    description: "",
-    imageUrl: "",
-  });
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFacility((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleImageDelete = () => {
-    setFacility((prev) => ({ ...prev, imageUrl: "" }));
-  };
-
+  // 이미지 업로드
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    const imageUrl = URL.createObjectURL(file);
-    setFacility((prev) => ({ ...prev, imageUrl }));
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
   };
 
-  const handleSave = () => {
-    if (!facility.name.trim()) {
-      alert("시설명을 입력해주세요.");
+  // 이미지 삭제
+  const handleImageDelete = () => {
+    setImageFile(null);
+    setImagePreview("");
+  };
+
+  // 저장 버튼 클릭
+  const handleSave = async () => {
+    if (!imageFile) {
+      alert("이미지를 업로드해주세요.");
       return;
     }
-    // 실제 API 저장 시 addFacility 함수 대체
 
-    alert("저장되었습니다.");
-    navigate("/admin/facility");
+    const formData = new FormData();
+    formData.append("image", imageFile);
+
+    // 요청 값 콘솔에 출력
+    console.log("📢 홍보물 생성 요청(FormData):", formData.get("image"));
+
+    try {
+      // 실제 API 호출 예시
+      /*
+      const response = await axios.post(
+        "https://api.moyeorak.cloud/api/admin/main-img",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // 토큰 필요 시 추가
+          },
+        }
+      );
+      console.log("서버 응답:", response.data);
+      */
+
+      alert("저장되었습니다.");
+      navigate("/admin/facility");
+    } catch (error) {
+      console.error("이미지 업로드 실패:", error);
+      alert("업로드에 실패했습니다.");
+    }
   };
 
   const handleCancel = () => {
@@ -68,80 +85,13 @@ const FacilityAdd = ({ addFacility }) => {
         <table className={styles.detailTable}>
           <tbody>
             <tr>
-              <th>시설</th>
-              <td>
-                <input
-                  type="text"
-                  name="name"
-                  value={facility.name}
-                  onChange={handleChange}
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>주소</th>
-              <td>
-                <input
-                  type="text"
-                  name="address"
-                  value={facility.address}
-                  onChange={handleChange}
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>운영시간</th>
-              <td>
-                <input
-                  type="text"
-                  name="hours"
-                  value={facility.hours}
-                  onChange={handleChange}
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>문의</th>
-              <td>
-                <input
-                  type="text"
-                  name="phone"
-                  value={facility.phone}
-                  onChange={handleChange}
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>수용인원</th>
-              <td>
-                <input
-                  type="number"
-                  name="capacity"
-                  value={facility.capacity}
-                  onChange={handleChange}
-                  min="0"
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>상세 설명</th>
-              <td>
-                <textarea
-                  name="description"
-                  value={facility.description}
-                  onChange={handleChange}
-                  rows={4}
-                />
-              </td>
-            </tr>
-            <tr>
               <th>이미지</th>
               <td>
-                {facility.imageUrl ? (
+                {imagePreview ? (
                   <>
                     <img
-                      src={facility.imageUrl}
-                      alt="시설 이미지"
+                      src={imagePreview}
+                      alt="홍보물 이미지"
                       className={styles.facilityImage}
                     />
                     <div className={styles.imageBtnGroup}>

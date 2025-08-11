@@ -11,7 +11,7 @@ const ProgramAdd = () => {
   const [formData, setFormData] = useState({
     title: "",
     target: "",
-    facilityName: "",
+    facilityId: "",
     instructorName: "",
     usageStartDate: "",
     usageEndDate: "",
@@ -88,7 +88,7 @@ const ProgramAdd = () => {
       const payload = {
         title: formData.title,
         target: formData.target,
-        facilityName: formData.facilityName,
+        facilityId: Number(formData.facilityId),
         instructorName: formData.instructorName,
         usageStartDate: formData.usageStartDate,
         usageEndDate: formData.usageEndDate,
@@ -102,7 +102,6 @@ const ProgramAdd = () => {
         description: formData.description,
         imageUrl: formData.images[0] || "",
         category: formData.category,
-        // LocalTime은 문자열로 전달
         classStartTime: formData.classStartTime ? `${formData.classStartTime}:00` : null,
         classEndTime: formData.classEndTime ? `${formData.classEndTime}:00` : null,
         regionId: formData.regionId,
@@ -110,7 +109,7 @@ const ProgramAdd = () => {
 
       await createProgram(payload);
       alert("프로그램이 등록되었습니다.");
-      navigate("/admin/program");
+      navigate("/admin/program/list");
     } catch (error) {
       alert("프로그램 등록 중 오류가 발생했습니다.");
       console.error(error);
@@ -166,11 +165,12 @@ const ProgramAdd = () => {
               <th>시설</th>
               <td>
                 <input
-                  type="text"
-                  name="facilityName"
-                  value={formData.facilityName}
+                  type="number"
+                  name="facilityId"
+                  value={formData.facilityId}
                   onChange={handleChange}
                   className={styles.textInput}
+                  min="1"
                 />
               </td>
               <th>강사</th>

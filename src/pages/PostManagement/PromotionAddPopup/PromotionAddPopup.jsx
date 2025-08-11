@@ -37,7 +37,8 @@ const PromotionAddPopup = ({ onClose, onSave }) => {
     try {
       const result = await uploadPromotionImage(file);
       alert('홍보물이 등록되었습니다.');
-      if (onSave) onSave(result.imageUrl); // 부모 컴포넌트로 업로드된 URL 전달
+      // result 전체가 아니라, imageUrl만 부모 콜백으로 전달
+      if (onSave) onSave(result.imageUrl);
       onClose();
     } catch (error) {
       console.error(error);

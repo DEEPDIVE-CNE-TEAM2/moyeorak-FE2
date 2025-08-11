@@ -292,14 +292,6 @@ export const deleteNotice = async (noticeId) => {
   throw new Error("삭제 실패");
 };
 
-
-
-
-
-
-
-
-
 // 홍보물 리스트 조회
 export const getPromotionImages = async () => {
   const res = await apiClient.get('/api/admin/main-img');
@@ -307,15 +299,40 @@ export const getPromotionImages = async () => {
 };
 
 // 홍보물 생성
+/*
 export const uploadPromotionImage = async (file) => {
   const formData = new FormData();
   formData.append("image", file);
   const response = await apiClient.post('/api/admin/main-img', formData);
+  return response.data; // { imageUrl: "..." }
+};
+*/
+export const uploadPromotionImage = async (file) => {
+  const token = localStorage.getItem('accessToken');  // 토큰 키 이름 변경
+  if (!token) {
+    throw new Error('인증 토큰이 없습니다. 로그인 후 다시 시도해주세요.');
+  }
+
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const response = await apiClient.post('/api/admin/main-img', formData, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
   return response.data;
 };
 
 // 홍보물 수정
 export const patchMainImage = async (payload) => {
   const response = await apiClient.patch('/api/admin/main-img', payload);
+  return response.data;
+};
+
+//홍보물 삭제
+export const deleteMainImage = async (id) => {
+  const response = await apiClient.delete(`/api/admin/main-img/${id}`);
   return response.data;
 };
