@@ -81,16 +81,16 @@ export default function UserDetailModal({ member, onClose, onSave }) {
       onSave({
         ...member,
         ...updatedData,
-        address: updatedData.region,
       });
 
-      alert("회원 정보가 수정되었습니다.");
+      alert("회원 정보 수정되었습니다.");
       onClose();
     } catch (err) {
       alert("회원 정보 수정에 실패했습니다.");
       console.error(err);
     }
   };
+
 
   const handleCancelEnrollment = (enrollmentId) => {
     setEnrollmentToCancel(enrollmentId);
@@ -111,7 +111,7 @@ export default function UserDetailModal({ member, onClose, onSave }) {
         prev.map(e => e.enrollmentId === enrollmentToCancel ? { ...e, status: '취소', canCancel: false } : e)
       );
 
-      alert("수강이 취소되었습니다.");
+      alert("수강 취소되었습니다.");
     } catch (error) {
       console.error("수강 취소 실패:", error);
       alert("수강 취소 중 오류가 발생했습니다.");

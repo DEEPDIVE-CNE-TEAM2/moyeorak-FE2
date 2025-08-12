@@ -170,7 +170,7 @@ export const fetchAdminUserDetail = async (userId) => {
 
 // 회원 정보 수정
 export const updateAdminUser = async (userId, updatedData) => {
-  const response = await apiClient.put(`/api/admin/users/${userId}`, updatedData);
+  const response = await apiClient.patch(`/api/admin/users/${userId}`, updatedData);
   return response.data;
 };
 
@@ -307,6 +307,7 @@ export const uploadPromotionImage = async (file) => {
   return response.data; // { imageUrl: "..." }
 };
 */
+/*
 export const uploadPromotionImage = async (file) => {
   const token = localStorage.getItem('accessToken');  // 토큰 키 이름 변경
   if (!token) {
@@ -324,6 +325,106 @@ export const uploadPromotionImage = async (file) => {
 
   return response.data;
 };
+*/
+// Presigned URL 요청 함수
+/*
+export const getPresignedUrl = async (fileName, fileType) => {
+  const response = await apiClient.get('/api/admin/main-img/presigned-url', {
+    params: { filename: fileName, filetype: fileType },
+  });
+  return response.data; // { uploadUrl, imageUrl }
+};
+
+// S3에 직접 PUT 요청으로 업로드
+export const uploadFileToS3 = async (uploadUrl, file) => {
+  await axios.put(uploadUrl, file, {
+    headers: {
+      'Content-Type': file.type,
+    },
+  });
+};
+*/
+export const getPresignedUrl = async (fileName, fileType) => {
+  console.log('[getPresignedUrl] 호출:', fileName, fileType);
+
+  try {
+    const token = getAccessToken();
+    console.log('[getPresignedUrl] 토큰:', token);
+
+    const response = await apiClient.get('/api/admin/main-img/presigned-url', {
+      params: { filename: fileName, filetype: fileType },
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    console.log('[getPresignedUrl] 응답:', response.data);
+
+    return response.data;
+  } catch (err) {
+    console.error('[getPresignedUrl] 에러:', err);
+    throw err;
+  }
+};
+
+
+
+
+
+
+
+// 프론트에서 호출하는 메인 업로드 함수
+/*
+export const uploadPromotionImage = async (file) => {
+  // 1. presigned URL 받아오기
+  const { uploadUrl, imageUrl } = await getPresignedUrl(file.name, file.type);
+
+  // 2. S3에 직접 업로드
+  await uploadFileToS3(uploadUrl, file);
+
+  // 3. 필요 시 백엔드에 imageUrl 등록 API 호출 (아래 주석 참고)
+  // await apiClient.post('/api/admin/main-img', { imageUrl });
+
+  // 4. 최종 imageUrl 반환
+  return { imageUrl };
+};
+*/
+export const uploadPromotionImage = async (file) => {
+  console.log("[uploadPromotionImage] 파일명:", file.name, "타입:", file.type);
+
+  // 1. presigned URL 받기
+  const { uploadUrl, imageUrl } = await getPresignedUrl(file.name, file.type);
+  console.log("[uploadPromotionImage] presigned URL 받음:", uploadUrl);
+
+  // 2. S3에 업로드
+  try {
+    await axios.put(uploadUrl, file, {
+      headers: {
+        'Content-Type': file.type,
+      },
+    });
+    console.log("[uploadPromotionImage] S3 업로드 성공");
+  } catch (err) {
+    console.error("[uploadPromotionImage] S3 업로드 실패", err);
+    throw err;
+  }
+
+  // 3. 백엔드 DB에 imageUrl 등록 (주석 해제 및 에러 처리 추가)
+  try {
+    const response = await apiClient.post('/api/admin/main-img', { imageUrl });
+    console.log("[uploadPromotionImage] 백엔드 이미지 URL 등록 완료", response.data);
+  } catch (err) {
+    console.error("[uploadPromotionImage] 백엔드 이미지 URL 등록 실패", err);
+    throw err;  // 꼭 throw해서 호출한 곳에서 알 수 있게
+  }
+
+  // 4. 최종 imageUrl 반환
+  return { imageUrl };
+};
+
+
+
+
 
 // 홍보물 수정
 export const patchMainImage = async (payload) => {

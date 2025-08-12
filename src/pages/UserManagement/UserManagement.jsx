@@ -26,7 +26,6 @@ export default function UserManagement() {
     const loadMembers = async () => {
       try {
         const data = await fetchAdminUsers();
-        console.log("회원 목록 API 응답:", data);
 
         const transformed = data.map((user) => ({
           id: user.id,

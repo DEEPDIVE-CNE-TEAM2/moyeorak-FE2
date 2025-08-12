@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import styles from './PromotionAddPopup.module.css';
-import { uploadPromotionImage } from '../../../Api'; // 경로 맞춰주세요
+import { uploadPromotionImage } from '../../../Api'; // 경로 맞게 수정하세요
 
 const PromotionAddPopup = ({ onClose, onSave }) => {
   const [file, setFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  // 이미지 선택 시 미리보기 및 파일 저장
+  // 이미지 선택 시 미리보기 설정
   const handleImageChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
       setFile(selectedFile);
 
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
+      reader.onloadend = () => setImagePreview(reader.result);
       reader.readAsDataURL(selectedFile);
+
+      setMessage('');
     }
   };
 
@@ -27,22 +29,28 @@ const PromotionAddPopup = ({ onClose, onSave }) => {
     setImagePreview(null);
   };
 
-  // 저장 (API 호출)
+  // 저장 버튼 클릭 시
   const handleSave = async () => {
     if (!file) {
-      alert('이미지를 등록해주세요.');
+      setMessage('이미지를 등록해주세요.');
       return;
     }
 
+    setIsLoading(true);
     try {
       const result = await uploadPromotionImage(file);
-      alert('홍보물이 등록되었습니다.');
-      // result 전체가 아니라, imageUrl만 부모 콜백으로 전달
+      setMessage('홍보물이 등록되었습니다.');
+
       if (onSave) onSave(result.imageUrl);
-      onClose();
+
+      setTimeout(() => {
+        onClose();
+      }, 1000);
     } catch (error) {
       console.error(error);
-      alert('등록 실패. 다시 시도해주세요.');
+      setMessage('등록 실패. 다시 시도해주세요.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -71,14 +79,52 @@ const PromotionAddPopup = ({ onClose, onSave }) => {
           />
         )}
 
+        {message && (
+          <div
+            className={`${styles.message} ${
+              message.includes('성공') ? styles.success : styles.error
+            }`}
+          >
+            {message}
+          </div>
+        )}
+
         <div className={styles.btnRow}>
-          <button className={styles.deleteBtn} onClick={handleDelete}>
+          <button
+            className={styles.deleteBtn}
+            onClick={handleDelete}
+            disabled={isLoading}
+          >
             삭제
           </button>
         </div>
 
-        <button className={styles.saveBtn} onClick={handleSave}>
-          저장
+        <button
+          className={`${styles.saveBtn} ${isLoading ? styles.loading : ''}`}
+          onClick={handleSave}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <span className={styles.spinner}>
+              <svg viewBox="0 0 24 24" className={styles.spinnerIcon}>
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  fill="none"
+                />
+                <path
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                  fill="currentColor"
+                />
+              </svg>
+              등록 중...
+            </span>
+          ) : (
+            '저장'
+          )}
         </button>
       </div>
     </>
