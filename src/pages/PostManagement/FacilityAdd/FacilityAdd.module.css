@@ -57,7 +57,7 @@
 .detailTable input,
 .detailTable textarea {
   width: 100%;
-  padding: 8px 0px;
+  padding: px 0px;
   font-size: 15px;
   border: 1.5px solid #ccc;
   border-radius: 6px;
@@ -66,9 +66,8 @@
 }
 
 .facilityImage {
-  max-width: 100%;
+  max-width: 50%;
   height: auto;
-  border-radius: 8px;
   margin-top: 10px;
 }
 
@@ -79,12 +78,11 @@
 .imageBtn {
   background: none;
   border: 1.5px solid #666;  
-  padding: 5px 12px;
+  padding: 6px 14px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
   font-size: 14px;
-  height: 25px;
   white-space: nowrap;
   user-select: none;
   transition: background-color 0.2s ease;

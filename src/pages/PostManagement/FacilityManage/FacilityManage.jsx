@@ -1,33 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./FacilityManage.module.css";
 import AdminNavbar from "../../../components/Navbar/Navbar";
 import { useNavigate } from "react-router-dom";
-
-const dummyFacilities = Array.from({ length: 23 }, (_, i) => ({
-  id: i + 1,
-  name: `시설명 ${i + 1}`,
-  address: `서울시 중구 예시로 ${i + 1}길`,
-  phone: `02-1234-56${String(i).padStart(2, "0")}`,
-  capacity: Math.floor(Math.random() * 100) + 20,
-}));
+import { fetchFacilities } from "../../../Api";
 
 const FacilityManage = () => {
+  const [facilities, setFacilities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedId, setSelectedId] = useState(null);
   const itemsPerPage = 10;
   const navigate = useNavigate();
 
-  const totalPages = Math.ceil(dummyFacilities.length / itemsPerPage);
+  useEffect(() => {
+    const getFacilities = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchFacilities();
+        setFacilities(data);
+      } catch (err) {
+        setError("시설 목록을 불러오는 데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getFacilities();
+  }, []);
+
+  const totalPages = Math.ceil(facilities.length / itemsPerPage);
   const startIdx = (currentPage - 1) * itemsPerPage;
-  const currentItems = dummyFacilities.slice(startIdx, startIdx + itemsPerPage);
+  const currentItems = facilities.slice(startIdx, startIdx + itemsPerPage);
 
   const handleRowClick = (id) => {
     setSelectedId(id);
   };
 
   const handleWriteClick = () => {
-    navigate("/admin/facility/add"); // 글쓰기 페이지 경로 예시
+    navigate("/admin/facility/add");
   };
+
+  if (loading) return <div>로딩중...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <>
@@ -60,14 +75,14 @@ const FacilityManage = () => {
                 <td
                   className={styles.facilityName}
                   onClick={(e) => {
-                    e.stopPropagation(); // 트리거가 부모 <tr> 클릭 핸들러로 전파되지 않도록 방지
+                    e.stopPropagation();
                     navigate(`/admin/facility/${facility.id}`);
                   }}
                 >
                   {facility.name}
                 </td>
                 <td>{facility.address}</td>
-                <td>{facility.phone}</td>
+                <td>{facility.contact}</td>
                 <td>{facility.capacity}</td>
               </tr>
             ))}

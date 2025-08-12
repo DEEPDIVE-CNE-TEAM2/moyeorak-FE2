@@ -1,39 +1,55 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./FacilityDetail.module.css";
 import AdminNavbar from "../../../components/Navbar/Navbar";
-
-// 더미 데이터 (실제 API 연동 시 수정)
-const dummyFacility = {
-  id: 1,
-  name: "중구 체육관",
-  address: "서울특별시 중구 예시로 123",
-  hours: "09:00 ~ 22:00",
-  phone: "02-1234-5678",
-  capacity: 150,
-  description:
-    "중구에 위치한 대형 체육관입니다. 농구, 배드민턴 등 다양한 종목 이용 가능하며 최신 시설 완비.",
-  imageUrl: "https://via.placeholder.com/600x400?text=시설+이미지",
-};
+import { getFacilityDetail, deleteFacility } from "../../../Api"; // deleteFacility 추가 import
 
 const FacilityDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  // 실제 API로 id에 맞는 시설 정보 불러오기 구현 예정
-  // 지금은 dummyFacility 사용
+  const [facility, setFacility] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const fetchFacility = async () => {
+      try {
+        const data = await getFacilityDetail(id);
+        setFacility(data);
+      } catch (err) {
+        setError("시설 정보를 불러오는 데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFacility();
+  }, [id]);
 
   const handleEdit = () => {
     navigate(`/admin/facility/${id}/edit`);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
-      // 삭제 처리 구현 예정
-      alert("삭제 처리 완료 (더미)");
-      navigate("/admin/facility");
+      try {
+        setDeleting(true);
+        await deleteFacility(id);
+        alert("삭제되었습니다.");
+        navigate("/admin/post/facility");
+      } catch (err) {
+        alert("삭제에 실패했습니다.");
+        navigate("/admin/post/facility");
+      } finally {
+        setDeleting(false);
+      }
     }
   };
+
+  if (loading) return <p>로딩 중...</p>;
+  if (error) return <p>{error}</p>;
+  if (!facility) return <p>시설 정보가 없습니다.</p>;
 
   return (
     <>
@@ -43,11 +59,11 @@ const FacilityDetail = () => {
         <div className={styles.header}>
           <div></div>
           <div className={styles.buttonGroup}>
-            <button className={styles.editBtn} onClick={handleEdit}>
+            <button className={styles.editBtn} onClick={handleEdit} disabled={deleting}>
               수정
             </button>
-            <button className={styles.deleteBtn} onClick={handleDelete}>
-              삭제
+            <button className={styles.deleteBtn} onClick={handleDelete} disabled={deleting}>
+              {deleting ? "삭제 중..." : "삭제"}
             </button>
           </div>
         </div>
@@ -56,34 +72,36 @@ const FacilityDetail = () => {
           <tbody>
             <tr>
               <th>시설</th>
-              <td>{dummyFacility.name}</td>
+              <td>{facility.name}</td>
             </tr>
             <tr>
               <th>주소</th>
-              <td>{dummyFacility.address}</td>
+              <td>{facility.address}</td>
             </tr>
             <tr>
               <th>운영시간</th>
-              <td>{dummyFacility.hours}</td>
+              <td>
+                {facility.usageStartTime} ~ {facility.usageEndTime}
+              </td>
             </tr>
             <tr>
               <th>문의</th>
-              <td>{dummyFacility.phone}</td>
+              <td>{facility.contact}</td>
             </tr>
             <tr>
               <th>수용인원</th>
-              <td>{dummyFacility.capacity}명</td>
+              <td>{facility.capacity}명</td>
             </tr>
             <tr>
               <th>상세 설명</th>
-              <td>{dummyFacility.description}</td>
+              <td>{facility.description}</td>
             </tr>
             <tr>
               <th>이미지</th>
               <td>
                 <img
-                  src={dummyFacility.imageUrl}
-                  alt={`${dummyFacility.name} 이미지`}
+                  src={facility.imageUrl}
+                  alt={`${facility.name} 이미지`}
                   className={styles.facilityImage}
                 />
               </td>

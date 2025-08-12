@@ -89,12 +89,9 @@
 }
 
 .programImage {
-  max-width: 150px;
-  max-height: 90px;
-  border-radius: 8px;
+  max-width: 50%;
   object-fit: cover;
   border: 1px solid #ddd;
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 .imageBtnGroup {
@@ -105,15 +102,14 @@
 
 .imageBtn {
   background: none;
-  border: 1.5px solid #666;
-  color: #666;
-  padding: 6px 12px;
+  border: 1.5px solid #666;  
+  padding: 6px 14px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
   font-size: 14px;
-  height: 32px;
   white-space: nowrap;
   user-select: none;
   transition: background-color 0.2s ease;
 }
+

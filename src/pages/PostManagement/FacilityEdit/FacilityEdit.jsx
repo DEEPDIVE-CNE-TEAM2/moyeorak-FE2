@@ -1,26 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./FacilityEdit.module.css";
 import AdminNavbar from "../../../components/Navbar/Navbar";
-
-const dummyFacility = {
-  id: 1,
-  name: "중구 체육관",
-  address: "서울특별시 중구 예시로 123",
-  hours: "09:00 ~ 22:00",
-  phone: "02-1234-5678",
-  capacity: 150,
-  description:
-    "중구에 위치한 대형 체육관입니다. 농구, 배드민턴 등 다양한 종목 이용 가능하며 최신 시설 완비.",
-  imageUrl: "https://via.placeholder.com/600x400?text=시설+이미지",
-};
+import { getFacilityDetail, updateFacility } from "../../../Api";
 
 const FacilityEdit = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  // 실제 API 연동 시 id로 데이터 받아오기, 여기선 dummyFacility 사용
-  const [facility, setFacility] = useState(dummyFacility);
+  const [facility, setFacility] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchFacility = async () => {
+      try {
+        const data = await getFacilityDetail(id);
+        setFacility(data);
+      } catch (err) {
+        setError("시설 정보를 불러오는 데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFacility();
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,21 +38,39 @@ const FacilityEdit = () => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
-    // 이미지 미리보기용 URL 생성
     const imageUrl = URL.createObjectURL(file);
     setFacility((prev) => ({ ...prev, imageUrl }));
   };
 
-  const handleSave = () => {
-    // 실제 저장 로직 API 호출 등 구현 필요
-    alert("저장되었습니다.");
-    navigate(`/admin/facility/${id}`);
+  const handleSave = async () => {
+    if (!facility) return;
+    try {
+      const updatedData = {
+        name: facility.name,
+        address: facility.address,
+        usageStartTime: facility.usageStartTime ?? facility.hours?.split("~")[0].trim() ?? "",
+        usageEndTime: facility.usageEndTime ?? facility.hours?.split("~")[1]?.trim() ?? "",
+        contact: facility.contact ?? facility.phone ?? "",
+        capacity: Number(facility.capacity),
+        description: facility.description,
+        imageUrl: facility.imageUrl,
+      };
+
+      await updateFacility(id, updatedData);
+      alert("수정되었습니다.");
+      navigate(`/admin/facility/${id}`);
+    } catch (err) {
+      alert("수정 실패했습니다.");
+    }
   };
 
   const handleCancel = () => {
     navigate(`/admin/facility/${id}`);
   };
+
+  if (loading) return <p>로딩 중...</p>;
+  if (error) return <p>{error}</p>;
+  if (!facility) return <p>시설 정보를 불러올 수 없습니다.</p>;
 
   return (
     <>
@@ -56,7 +78,7 @@ const FacilityEdit = () => {
 
       <div className={styles.container}>
         <div className={styles.header}>
-          <div></div> {/* 왼쪽 빈 공간 */}
+          <div></div>
           <div className={styles.buttonGroup}>
             <button className={styles.saveBtn} onClick={handleSave}>
               저장
@@ -92,12 +114,23 @@ const FacilityEdit = () => {
               </td>
             </tr>
             <tr>
-              <th>운영시간</th>
+              <th>운영 시작 시간</th>
               <td>
                 <input
-                  type="text"
-                  name="hours"
-                  value={facility.hours}
+                  type="time"
+                  name="usageStartTime"
+                  value={facility.usageStartTime || ""}
+                  onChange={handleChange}
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>운영 종료 시간</th>
+              <td>
+                <input
+                  type="time"
+                  name="usageEndTime"
+                  value={facility.usageEndTime || ""}
                   onChange={handleChange}
                 />
               </td>
@@ -107,8 +140,8 @@ const FacilityEdit = () => {
               <td>
                 <input
                   type="text"
-                  name="phone"
-                  value={facility.phone}
+                  name="contact"
+                  value={facility.contact || ""}
                   onChange={handleChange}
                 />
               </td>

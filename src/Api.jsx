@@ -437,3 +437,38 @@ export const deleteMainImage = async (id) => {
   const response = await apiClient.delete(`/api/admin/main-img/${id}`);
   return response.data;
 };
+
+// 시설 목록 조회
+export const fetchFacilities = async () => {
+  try {
+    const response = await apiClient.get("/api/admin/facility");
+    return response.data;
+  } catch (error) {
+    console.error("시설 목록 조회 실패:", error);
+    throw error;
+  }
+};
+
+// 시설 상세 조회
+export const getFacilityDetail = async (facilityId) => {
+  const response = await apiClient.get(`/api/admin/facility/${facilityId}`);
+  return response.data;
+};
+
+// 시설 수정
+export const updateFacility = async (facilityId, updatedData) => {
+  const response = await apiClient.put(`/api/admin/facility/${facilityId}`, updatedData);
+  return response.data;
+};
+
+// 시설 삭제
+export const deleteFacility = async (facilityId) => {
+  const response = await apiClient.delete(`/api/admin/facility/${facilityId}`);
+  return response.data;
+};
+
+// 시설 등록
+export const createFacility = async (facilityData) => {
+  const response = await apiClient.post('/api/admin/facility', facilityData);
+  return response.data;
+};

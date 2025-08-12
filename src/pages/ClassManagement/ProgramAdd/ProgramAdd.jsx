@@ -36,17 +36,6 @@ const ProgramAdd = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const parseTimeStringToObj = (timeStr) => {
-    if (!timeStr) return { hour: 0, minute: 0, second: 0, nano: 0 };
-    const parts = timeStr.split(":");
-    return {
-      hour: Number(parts[0]) || 0,
-      minute: Number(parts[1]) || 0,
-      second: Number(parts[2]) || 0,
-      nano: 0,
-    };
-  };
-
   const handleAddImageClick = () => {
     fileInputRef.current?.click();
   };
@@ -58,7 +47,7 @@ const ProgramAdd = () => {
     const url = URL.createObjectURL(file);
 
     setFormData((prev) => {
-      const newImages = [...prev.images, url];
+      const newImages = [url];
       return {
         ...prev,
         images: newImages,
@@ -73,14 +62,11 @@ const ProgramAdd = () => {
       alert("삭제할 이미지가 없습니다.");
       return;
     }
-    setFormData((prev) => {
-      const newImages = prev.images.slice(0, -1);
-      return {
-        ...prev,
-        images: newImages,
-        imageUrl: newImages[0] || "",
-      };
-    });
+    setFormData((prev) => ({
+      ...prev,
+      images: [],
+      imageUrl: "",
+    }));
   };
 
   const handleSave = async () => {
@@ -333,7 +319,6 @@ const ProgramAdd = () => {
               <th>이미지</th>
               <td colSpan="3">
                 <div className={styles.imageContainer}>
-                  {formData.images.length === 0 && <p>등록된 이미지가 없습니다.</p>}
                   {formData.images.map((url, idx) => (
                     <div key={idx} className={styles.imageRow}>
                       <img
@@ -341,7 +326,6 @@ const ProgramAdd = () => {
                         alt={`프로그램 이미지 ${idx + 1}`}
                         className={styles.programImage}
                       />
-                      <span>{url}</span>
                     </div>
                   ))}
                 </div>
@@ -353,20 +337,24 @@ const ProgramAdd = () => {
                     ref={fileInputRef}
                     onChange={handleFileChange}
                   />
-                  <button
-                    type="button"
-                    className={styles.imageBtn}
-                    onClick={handleAddImageClick}
-                  >
-                    등록
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.imageBtn}
-                    onClick={handleDeleteLastImage}
-                  >
-                    삭제
-                  </button>
+
+                  {formData.images.length === 0 ? (
+                    <button
+                      type="button"
+                      className={styles.imageBtn}
+                      onClick={handleAddImageClick}
+                    >
+                      등록
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className={styles.imageBtn}
+                      onClick={handleDeleteLastImage}
+                    >
+                      삭제
+                    </button>
+                  )}
                 </div>
               </td>
             </tr>

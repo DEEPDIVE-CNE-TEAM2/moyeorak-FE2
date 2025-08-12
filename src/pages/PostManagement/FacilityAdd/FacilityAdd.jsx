@@ -2,12 +2,35 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./FacilityAdd.module.css";
 import AdminNavbar from "../../../components/Navbar/Navbar";
+import { createFacility } from "../../../Api";
 
 const FacilityAdd = () => {
   const navigate = useNavigate();
 
+  const [form, setForm] = useState({
+    name: "",
+    address: "",
+    location: "",
+    area: "",
+    usageStartTime: "",
+    usageEndTime: "",
+    contact: "",
+    capacity: "",
+    description: "",
+    imageUrl: "",
+  });
+
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
+
+  // 입력값 변경 처리
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   // 이미지 업로드
   const handleImageUpload = (e) => {
@@ -22,47 +45,38 @@ const FacilityAdd = () => {
   const handleImageDelete = () => {
     setImageFile(null);
     setImagePreview("");
+    setForm((prev) => ({ ...prev, imageUrl: "" }));
   };
 
-  // 저장 버튼 클릭
+  // 저장 버튼
   const handleSave = async () => {
     if (!imageFile) {
       alert("이미지를 업로드해주세요.");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("image", imageFile);
-
-    // 요청 값 콘솔에 출력
-    console.log("📢 홍보물 생성 요청(FormData):", formData.get("image"));
-
     try {
-      // 실제 API 호출 예시
-      /*
-      const response = await axios.post(
-        "https://api.moyeorak.cloud/api/admin/main-img",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // 토큰 필요 시 추가
-          },
-        }
-      );
-      console.log("서버 응답:", response.data);
-      */
+      const imageUrl = imagePreview;
 
-      alert("저장되었습니다.");
-      navigate("/admin/facility");
+      const facilityData = {
+        ...form,
+        area: Number(form.area),
+        capacity: Number(form.capacity),
+        imageUrl,
+      };
+
+      await createFacility(facilityData);
+
+      alert("시설이 등록되었습니다.");
+      navigate("/admin/post/facility");
     } catch (error) {
-      console.error("이미지 업로드 실패:", error);
-      alert("업로드에 실패했습니다.");
+      console.error("시설 등록 실패:", error);
+      alert("시설 등록에 실패했습니다.");
     }
   };
 
   const handleCancel = () => {
-    navigate("/admin/facility");
+    navigate("/admin/post/facility");
   };
 
   return (
@@ -85,13 +99,101 @@ const FacilityAdd = () => {
         <table className={styles.detailTable}>
           <tbody>
             <tr>
-              <th>이미지</th>
+              <th>시설</th>
+              <td colSpan={3}>
+                <input
+                  type="text"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  required
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>주소</th>
+              <td colSpan={3}>
+                <input
+                  type="text"
+                  name="address"
+                  value={form.address}
+                  onChange={handleChange}
+                  required
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>면적</th>
+              <td colSpan={3}>
+                <input
+                  type="number"
+                  name="area"
+                  value={form.area}
+                  onChange={handleChange}
+                  min="0"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>운영 시작 시간</th>
               <td>
+                <input
+                  type="time"
+                  name="usageStartTime"
+                  value={form.usageStartTime}
+                  onChange={handleChange}
+                />
+              </td>
+              <th>운영 종료 시간</th>
+              <td>
+                <input
+                  type="time"
+                  name="usageEndTime"
+                  value={form.usageEndTime}
+                  onChange={handleChange}
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>문의</th>
+              <td>
+                <input
+                  type="text"
+                  name="contact"
+                  value={form.contact}
+                  onChange={handleChange}
+                />
+              </td>
+              <th>수용 인원</th>
+              <td>
+                <input
+                  type="number"
+                  name="capacity"
+                  value={form.capacity}
+                  onChange={handleChange}
+                  min="0"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>상세 설명</th>
+              <td colSpan={3}>
+                <textarea
+                  name="description"
+                  value={form.description}
+                  onChange={handleChange}
+                  rows={4}
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>이미지</th>
+              <td colSpan={3}>
                 {imagePreview ? (
                   <>
                     <img
                       src={imagePreview}
-                      alt="홍보물 이미지"
+                      alt="시설 이미지"
                       className={styles.facilityImage}
                     />
                     <div className={styles.imageBtnGroup}>
@@ -126,6 +228,7 @@ const FacilityAdd = () => {
             </tr>
           </tbody>
         </table>
+
       </div>
     </>
   );
