@@ -57,18 +57,18 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         continue-on-error: true
 
-      # 6) S3에 정적 파일 동기화 (강제 실패 테스트)
+      # 6) S3에 정적 파일 동기화 (실패 시 fail.log 기록)
       - name: Sync build to S3
         run: |
-          echo "강제 실패 테스트: S3 동기화 실패 처리"
-          echo "배포 실패: S3 동기화에 실패했습니다." >> fail.log
-          exit 1
+          if ! aws s3 sync build s3://${{ secrets.AWS_S3_BUCKET }} --region ap-northeast-2; then
+            echo "배포 실패: S3 동기화에 실패했습니다." >> fail.log
+            exit 1
+          fi
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           AWS_REGION: ap-northeast-2
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
 
       # 7) CloudFront 캐시 무효화 (실패 시 fail.log 기록)
       - name: Invalidate CloudFront Cache
