@@ -1,3 +1,4 @@
+// ProgramManagement.jsx
 import React, { useState, useEffect } from "react";
 import styles from "./ProgramManagement.module.css";
 import AdminNavbar from "../../../components/Navbar/Navbar";
@@ -10,6 +11,12 @@ const statusColorMap = {
   "수업 예정": "#e6c533ff",
 };
 
+const regionMap = {
+  "중구": 1,
+  "성동구": 2,
+  "송파구": 3,
+};
+
 export default function ProgramManagement() {
   const navigate = useNavigate();
 
@@ -19,57 +26,48 @@ export default function ProgramManagement() {
 
   const [regionFilter, setRegionFilter] = useState("");
   const [searchText, setSearchText] = useState("");
-  const [filteredPrograms, setFilteredPrograms] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const programsPerPage = 10;
 
-  useEffect(() => {
-    async function loadPrograms() {
-      setLoading(true);
-      setError(null);
-      try {
-        const data = await fetchPrograms();
+  // API 호출
+  const loadPrograms = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const regionId = regionMap[regionFilter] || "";
+      const data = await fetchPrograms({ regionId, title: searchText });
 
-        const mapped = data.map((p) => ({
-          id: p.id,
-          name: p.title,
-          period: p.usagePeriod,
-          facility: p.facilityName,
-          capacity: p.capacity,
-          currentEnrollment: p.currentEnrollment,
-          status: p.progressStatus,
-        }));
+      const mapped = data.map((p) => ({
+        id: p.id,
+        name: p.title,
+        period: p.usagePeriod,
+        facility: p.facilityName,
+        capacity: p.capacity,
+        currentEnrollment: p.currentEnrollment,
+        status: p.progressStatus,
+      }));
 
-        setPrograms(mapped);
-      } catch (e) {
-        console.error("프로그램 불러오기 에러:", e);
-        setError(e.message);
-      } finally {
-        setLoading(false);
-      }
+      setPrograms(mapped);
+      setCurrentPage(1);
+    } catch (e) {
+      console.error("프로그램 불러오기 에러:", e);
+      setError(e.message);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
     loadPrograms();
-  }, []);
-
-  useEffect(() => {
-    let filtered = programs;
-    if (regionFilter) {
-      filtered = filtered.filter((p) => p.facility.includes(regionFilter));
-    }
-    if (searchText.trim()) {
-      filtered = filtered.filter((p) => p.name.includes(searchText));
-    }
-    setFilteredPrograms(filtered);
-    setCurrentPage(1);
-  }, [regionFilter, searchText, programs]);
+  }, [regionFilter, searchText]);
 
   const indexOfLast = currentPage * programsPerPage;
   const indexOfFirst = indexOfLast - programsPerPage;
-  const currentPrograms = filteredPrograms.slice(indexOfFirst, indexOfLast);
+  const currentPrograms = programs.slice(indexOfFirst, indexOfLast);
 
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(filteredPrograms.length / programsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(programs.length / programsPerPage); i++) {
     pageNumbers.push(i);
   }
 
@@ -131,7 +129,9 @@ export default function ProgramManagement() {
                   <td>
                     <span
                       className={styles.statusBadge}
-                      style={{ backgroundColor: statusColorMap[p.status] || "#777" }}
+                      style={{
+                        backgroundColor: statusColorMap[p.status] || "#777",
+                      }}
                     >
                       {p.status}
                     </span>
@@ -153,7 +153,9 @@ export default function ProgramManagement() {
             <button
               key={number}
               onClick={() => setCurrentPage(number)}
-              className={`${styles.pageBtn} ${currentPage === number ? styles.activePage : ""}`}
+              className={`${styles.pageBtn} ${
+                currentPage === number ? styles.activePage : ""
+              }`}
             >
               {number}
             </button>

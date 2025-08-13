@@ -213,12 +213,20 @@ export const createProgram = async (programData) => {
 };
 
 // 프로그램 조회
-export async function fetchPrograms() {
+export async function fetchPrograms({ regionId = "", title = "" } = {}) {
   const token = getAccessToken();
   const headers = { "Content-Type": "application/json" };
   if (token) headers["Authorization"] = token;
 
-  const response = await fetch(`${BASE_URL}/api/admin/programs`, {
+  const queryParams = new URLSearchParams();
+  if (regionId) queryParams.append("regionId", regionId);
+  if (title) queryParams.append("title", title);
+
+  const url = `${BASE_URL}/api/admin/programs${
+    queryParams.toString() ? `?${queryParams.toString()}` : ""
+  }`;
+
+  const response = await fetch(url, {
     method: "GET",
     headers,
   });
@@ -230,6 +238,7 @@ export async function fetchPrograms() {
 
   return await response.json();
 }
+
 
 // 프로그램 상세 조회
 export const fetchAdminProgramDetail = async (programId) => {
