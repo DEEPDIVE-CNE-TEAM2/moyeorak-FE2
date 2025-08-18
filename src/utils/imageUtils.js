@@ -1,5 +1,5 @@
 // CloudFront CDN 도메인으로 교체
-const CDN_BASE_URL = "https://moyeorak.cloud";
+const CDN_BASE_URL = "https://www.moyeorak.cloud";
 
 export const getFullImageUrl = (relativePath) => {
   if (!relativePath) return "";
