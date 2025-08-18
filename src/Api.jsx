@@ -1,6 +1,10 @@
 import axios from 'axios';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
+console.log("PromotionBanner BASE_URL:", BASE_URL);
+
+
+
 
 // Access Token 저장 및 가져오기 헬퍼 함수
 export const setAccessToken = (token) => {
@@ -302,3 +306,18 @@ export const enrollProgram = async (enrollmentData) => {
   const response = await apiClient.post('/api/enrollments', enrollmentData);
   return response.data;
 };
+
+// 지역별 메인 이미지 조회
+export const fetchRegionMainImages = async (regionId) => {
+  try {
+    console.log("Fetching URL:", `${BASE_URL}/api/main-images/region/${regionId}`); // 여기에 추가
+  
+    const response = await apiClient.get(`/api/main-images/region/${regionId}`);
+    return response.data;
+    
+  } catch (error) {
+    console.error("지역별 메인 이미지 조회 에러:", error);
+    throw error;
+  }
+};
+
