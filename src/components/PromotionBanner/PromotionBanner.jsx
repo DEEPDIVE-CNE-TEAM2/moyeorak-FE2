@@ -2,70 +2,15 @@ import { useState, useEffect } from "react";
 import styles from "./PromotionBanner.module.css";
 import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
 import { useLocation } from "react-router-dom";
+import { fetchRegionMainImages } from "../../Api";
 
-import jungFacility from "../../img/중구체육시설.png";
-import songpaFacility from "../../img/송파구체육시설.png";
-import seongdongFacility from "../../img/성동구체육시설.png";
-
-const bannerData = {
-  jung: [
-    {
-      image: jungFacility,
-      text: (
-        <>
-          중구 공공 체육시설 예약 서비스에<br />
-          오신 것을 환영합니다!
-        </>
-      ),
-    },
-    {
-      image: "/img/수영강습2.png",
-      text: "수영 초급반 접수 중!",
-    },
-    {
-      image: "/img/탁구강의홍보.png",
-      text: "탁구 초급반 10월 개강 확정",
-    },
-  ],
-  songpa: [
-    {
-      image: songpaFacility,
-      text: (
-        <>
-          송파구 공공 체육시설 예약 서비스에<br />
-          오신 것을 환영합니다!
-        </>
-      ),
-    },
-    {
-      image: "/img/어린이야구강습.png",
-      text: "어린이 야구 강습 신청 가능!",
-    },
-    {
-      image: "/img/테니스강습.png",
-      text: "테니스 초급반 10월 개강 확정",
-    },
-  ],
-  seongdong: [
-    {
-      image: seongdongFacility,
-      text: (
-        <>
-          성동구 공공 체육시설 예약 서비스에<br />
-          오신 것을 환영합니다!
-        </>
-      ),
-    },
-    {
-      image: "/img/어린이축구강습.png",
-      text: "어린이 축구 강습 접수 중!",
-    },
-    {
-      image: "/img/배드민턴강습.png",
-      text: "배드민턴 중급반 신규 오픈",
-    },
-  ],
+const regionIdMap = {
+  jung: 1,
+  seongdong: 2,
+  songpa: 3,
 };
+
+const BASE_URL = import.meta.env.VITE_API_URL; // .env에서 API URL 받아오기
 
 const PromotionBanner = () => {
   const location = useLocation();
@@ -74,14 +19,31 @@ const PromotionBanner = () => {
 
   useEffect(() => {
     const path = location.pathname;
-    let district = "";
+    let districtKey = "";
 
-    if (path.includes("/jung")) district = "jung";
-    else if (path.includes("/songpa")) district = "songpa";
-    else if (path.includes("/seongdong")) district = "seongdong";
+    if (path.includes("/jung")) districtKey = "jung";
+    else if (path.includes("/songpa")) districtKey = "songpa";
+    else if (path.includes("/seongdong")) districtKey = "seongdong";
 
-    setBanners(bannerData[district] || []);
-    setCurrentIndex(0);
+    const regionId = regionIdMap[districtKey];
+    if (!regionId) return;
+
+    fetchRegionMainImages(regionId)
+      .then((data) => {
+        const mapped = data.map((item) => ({
+          // imageUrl이 상대경로일 경우 BASE_URL 붙여주기
+          image: item.imageUrl.startsWith("http")
+            ? item.imageUrl
+            : `${BASE_URL}${item.imageUrl}`,
+          text: item.title,
+        }));
+        setBanners(mapped);
+        setCurrentIndex(0);
+      })
+      .catch((err) => {
+        console.error("지역별 이미지 조회 실패:", err);
+        setBanners([]);
+      });
   }, [location]);
 
   if (banners.length === 0) return null;

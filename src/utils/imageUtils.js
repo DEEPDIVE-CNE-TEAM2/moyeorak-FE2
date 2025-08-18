@@ -1,4 +1,5 @@
-const S3_BASE_URL = "https://s3-goorm-frontend.s3.ap-northeast-2.amazonaws.com";
+// CloudFront CDN 도메인으로 교체
+const CDN_BASE_URL = "https://moyeorak.cloud";
 
 export const getFullImageUrl = (relativePath) => {
   if (!relativePath) return "";
@@ -11,10 +12,9 @@ export const getFullImageUrl = (relativePath) => {
     return encodeURI(relativePath);
   }
 
-  // 상대경로가 '/img/' 로 시작할 때는 S3_BASE_URL과 결합 (중복 슬래시 방지)
+  // 상대경로가 '/img/' 로 시작할 때는 CDN_BASE_URL과 결합 (중복 슬래시 방지)
   if (relativePath.startsWith("/img/")) {
-    // S3_BASE_URL 끝에 슬래시 없으면 붙임, relativePath는 그대로 붙임
-    return encodeURI(`${S3_BASE_URL}${relativePath}`);
+    return encodeURI(`${CDN_BASE_URL}${relativePath}`);
   }
 
   // '/' 없으면 추가
@@ -22,5 +22,5 @@ export const getFullImageUrl = (relativePath) => {
     relativePath = "/" + relativePath;
   }
 
-  return encodeURI(S3_BASE_URL + relativePath);
+  return encodeURI(CDN_BASE_URL + relativePath);
 };

@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-
 import Navbar from '../components/Navbar/Navbar.jsx';
 import PromotionBanner from "../components/PromotionBanner/PromotionBanner";
 import RecommendProgramSection from '../components/RecommendProgramSection/RecommendProgramSection';
 import RecommendProgramListAfterLogin from '../components/RecommendProgramListAfterLogin/RecommendProgramListAfterLogin';
 import PopupModal from '../components/popupmodal/PopupModal';
-
-import { getAccessToken } from "../Api"; // 토큰 가져오는 함수
+import { getAccessToken } from "../Api";
 
 const districtToPath = {
   "송파구": "songpa",
