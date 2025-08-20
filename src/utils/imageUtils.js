@@ -1,26 +1,32 @@
-// CloudFront CDN 도메인으로 교체
-const CDN_BASE_URL = "https://moyeorak.cloud";
+// CloudFront CDN 도메인
+const CDN_BASE_URL = "https://www.moyeorak.cloud";
 
-export const getFullImageUrl = (relativePath) => {
-  if (!relativePath) return "";
+/**
+ * 이미지 경로를 CloudFront URL로 변환
+ * - S3 URL, 상대경로, 절대경로 모두 CloudFront를 사용
+ * - S3 경로는 파일명만 추출하여 CloudFront /img/ 경로로 매핑
+ */
+export const getFullImageUrl = (path) => {
+  if (!path) return "";
 
-  // 절대 경로면 그대로 반환 (중복 방지)
-  if (
-    relativePath.startsWith("http://") ||
-    relativePath.startsWith("https://")
-  ) {
-    return encodeURI(relativePath);
+  // 이미 절대경로이면 처리
+  if (path.startsWith("http://") || path.startsWith("https://")) {
+    // S3 URL이면 CloudFront로 변환
+    if (path.includes("s3-goorm-frontend.s3.ap-northeast-2.amazonaws.com")) {
+      const filename = path.split("/").pop();
+      return `${CDN_BASE_URL}/img/${filename}`;
+    }
+    // 이미 CloudFront나 다른 외부 URL이면 그대로 반환
+    return encodeURI(path);
   }
 
-  // 상대경로가 '/img/' 로 시작할 때는 CDN_BASE_URL과 결합 (중복 슬래시 방지)
-  if (relativePath.startsWith("/img/")) {
-    return encodeURI(`${CDN_BASE_URL}${relativePath}`);
+  // '/img/' 로 시작하면 CDN_BASE_URL과 결합
+  if (path.startsWith("/img/")) {
+    return encodeURI(`${CDN_BASE_URL}${path}`);
   }
 
-  // '/' 없으면 추가
-  if (!relativePath.startsWith("/")) {
-    relativePath = "/" + relativePath;
-  }
-
-  return encodeURI(CDN_BASE_URL + relativePath);
+  // '/' 없는 상대경로면 '/' 추가 후 파일명만 사용
+  const filename = path.split("/").pop();
+  return encodeURI(`${CDN_BASE_URL}/img/${filename}`);
 };
+

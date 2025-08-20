@@ -143,41 +143,12 @@ const ClassReservationDetail = () => {
             </div>
           </div>
         </div>
-
+        
         <div className={styles.noticeSection}>
-          <h3>준수사항</h3>
-          <p>
-            • 모든 서비스의 이용은 담당 기관의 규정에 따름
-            <br />
-            • 각 관리기관의 시설물과 부대시설을 이용할 때는 담당자들의 협의 후 사용 가능
-            <br />
-            • 각 관리기관의 사고 발생시 책임을 지지 않음
-            <br />
-            • 본 사이트와 각 관리기관의 규정을 위반할 시 시설 이용 취소 및 불허의 조치를 취할 수 있음
-          </p>
-
-          <h3>주의사항</h3>
-          <p>• 환불 기준은 아래와 같습니다</p>
-
-          <table className={styles.refundTable}>
-            <thead>
-              <tr>
-                <th>취소일</th>
-                <th>환불비율</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>취소기간까지</td>
-                <td>30% 환불</td>
-              </tr>
-              <tr>
-                <td>취소기간 이후</td>
-                <td>환불 불가</td>
-              </tr>
-            </tbody>
-          </table>
+          <h3>상세설명</h3>
+          <p>{data?.description || '상세설명이 없습니다.'}</p>
         </div>
+
       </div>
     </>
   );

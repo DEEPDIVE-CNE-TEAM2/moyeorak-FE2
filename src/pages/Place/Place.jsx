@@ -92,7 +92,7 @@ const Place = () => {
           filteredFacilities.map((facility) => (
             <FacilityCard
               key={facility.id}
-              facility={facility}  // 전체 객체 전달
+              facility={facility}
             />
           ))
         )}
