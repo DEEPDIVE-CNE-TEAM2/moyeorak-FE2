@@ -26,7 +26,7 @@ const Login = () => {
       await login(form.email, form.password);
 
       const userInfo = await getUserInfo();
-
+/*
       if (userInfo) {
         localStorage.setItem("userInfo", JSON.stringify(userInfo));
       } else {
@@ -34,6 +34,15 @@ const Login = () => {
       }
       
       const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"));
+      */
+      if (userInfo) {
+        sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
+      } else {
+        sessionStorage.setItem("userInfo", JSON.stringify({ regionId: 1 }));
+      }
+
+      const storedUserInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+
       const localRegionId = storedUserInfo?.regionId || 1;
 
       const regionMap = {

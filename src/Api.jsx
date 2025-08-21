@@ -5,7 +5,7 @@ console.log("PromotionBanner BASE_URL:", BASE_URL);
 
 
 
-
+/*
 // Access Token 저장 및 가져오기 헬퍼 함수
 export const setAccessToken = (token) => {
   // token은 '순수 토큰 문자열'만 저장
@@ -25,6 +25,25 @@ export const setRefreshToken = (token) => {
 export const getRefreshToken = () => {
   return localStorage.getItem("refreshToken");
 };
+*/
+// Access Token 저장 및 가져오기 헬퍼 함수
+export const setAccessToken = (token) => {
+  sessionStorage.setItem("accessToken", token);
+};
+
+export const getAccessToken = () => {
+  const token = sessionStorage.getItem("accessToken");
+  return token ? `Bearer ${token}` : null;
+};
+
+export const setRefreshToken = (token) => {
+  sessionStorage.setItem("refreshToken", token);
+};
+
+export const getRefreshToken = () => {
+  return sessionStorage.getItem("refreshToken");
+};
+
 
 // Axios 인스턴스 생성
 const apiClient = axios.create({

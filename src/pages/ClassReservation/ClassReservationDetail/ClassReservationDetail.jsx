@@ -113,22 +113,20 @@ const ClassReservationDetail = () => {
               <button
                 className={styles.applyBtn}
                 onClick={() => {
-                  const token = localStorage.getItem("accessToken");
+                  const token = sessionStorage.getItem("accessToken");
                   if (!token) {
                     alert("로그인이 필요합니다.");
                     navigate("/login");
                     return;
                   }
 
-                  const confirmMessage = `
-강의: ${data.title}
-장소: ${infoValues[1]}
-강의기간: ${infoValues[2]}
-강의시간: ${infoValues[3]}
-수강료: ${infoValues[6]}
-
-위 내용으로 신청하시겠습니까?
-                  `.trim();
+                  const confirmMessage =
+                  "강의: " + data.title + "\n" +
+                  "장소: " + infoValues[1] + "\n" +
+                  "강의기간: " + infoValues[2] + "\n" +
+                  "강의시간: " + infoValues[3] + "\n" +
+                  "수강료: " + infoValues[6] + "\n\n" +
+                  "위 내용으로 신청하시겠습니까?";
 
                   if (window.confirm(confirmMessage)) {
                     navigate(`/classreservation/payment/${id}`);
@@ -137,6 +135,7 @@ const ClassReservationDetail = () => {
               >
                 신청하기
               </button>
+
               <button className={styles.backBtn} onClick={() => navigate(-1)}>
                 목록보기
               </button>

@@ -20,7 +20,6 @@ const districtToId = {
   "송파구": 3,
 };
 
-
 const Navbar = ({ onDistrictChange, onLogoClick }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showSubmenu, setShowSubmenu] = useState(false);
@@ -28,20 +27,20 @@ const Navbar = ({ onDistrictChange, onLogoClick }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [currentDistrict, setCurrentDistrict] = useState(
-    localStorage.getItem("selectedRegionName") || "중구"
+    sessionStorage.getItem("selectedRegionName") || "중구"
   );
 
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
+    const token = sessionStorage.getItem("accessToken");
     setIsLoggedIn(!!token);
-  }, []);
+  }, [location]); // 경로 변경될 때마다 상태 다시 체크
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+    sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("refreshToken");
     setIsLoggedIn(false);
     navigate("/");
   };
@@ -52,15 +51,15 @@ const Navbar = ({ onDistrictChange, onLogoClick }) => {
     const regionPath = districtToPath[district];
     const selectedRegionId = districtToId[district];
 
-    localStorage.setItem("selectedRegionName", district);
-    localStorage.setItem("selectedRegionId", selectedRegionId);
+    sessionStorage.setItem("selectedRegionName", district);
+    sessionStorage.setItem("selectedRegionId", selectedRegionId);
 
     setCurrentDistrict(district);
     setDropdownOpen(false);
     navigate(`/${regionPath}`);
   };
 
-  const selectedRegionId = localStorage.getItem("selectedRegionId") || 1;
+  const selectedRegionId = sessionStorage.getItem("selectedRegionId") || 1;
 
   return (
     <>
@@ -236,7 +235,6 @@ const Navbar = ({ onDistrictChange, onLogoClick }) => {
           >
             수강신청내역
           </button>
-
         </div>
       )}
     </>
