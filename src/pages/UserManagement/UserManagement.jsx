@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./UserManagement.module.css";
 import AdminNavbar from "../../components/Navbar/Navbar";
-import AddUser from "./AddUser/AddUser";
 import UserDetailModal from "./UserDetailModal/UserDetailModal";
 import { fetchAdminUsers, fetchAdminUserDetail } from "../../Api";
 
@@ -13,37 +13,39 @@ const formatDate = (dateString) => {
 };
 
 export default function UserManagement() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [members, setMembers] = useState([]);
   const [regionFilter, setRegionFilter] = useState("");
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredMembers, setFilteredMembers] = useState([]);
-
-  const [showAddUser, setShowAddUser] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
 
+  // 회원 목록 불러오기
+  const loadMembers = async () => {
+    try {
+      const data = await fetchAdminUsers();
+      const transformed = data.map((user) => ({
+        id: user.id,
+        name: user.name,
+        gender: user.gender,
+        email: user.email,
+        address: user.region || "-",
+        joinDate: formatDate(user.createdAt),
+        regionId: user.regionId || 0,
+      }));
+      setMembers(transformed);
+    } catch (e) {
+      alert("회원 정보를 불러오는 데 실패했습니다.");
+    }
+  };
+
+  // 마운트 시, 또는 reload state 변경 시 목록 불러오기
   useEffect(() => {
-    const loadMembers = async () => {
-      try {
-        const data = await fetchAdminUsers();
-
-        const transformed = data.map((user) => ({
-          id: user.id,
-          name: user.name,
-          gender: user.gender,
-          email: user.email,
-          address: user.region || "-",
-          joinDate: formatDate(user.createdAt),
-          regionId: user.regionId || 0,
-        }));
-        setMembers(transformed);
-      } catch (e) {
-        alert("회원 정보를 불러오는 데 실패했습니다.");
-      }
-    };
-
     loadMembers();
-  }, []);
+  }, [location.state?.reload]);
 
   // 필터링 로직
   useEffect(() => {
@@ -66,14 +68,6 @@ export default function UserManagement() {
   const totalPages = Math.ceil(filteredMembers.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentMembers = filteredMembers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-
-  const handleAddUser = (newUser) => {
-    setMembers((prev) => [
-      ...prev,
-      { id: prev.length ? Math.max(...prev.map((m) => m.id)) + 1 : 1, ...newUser },
-    ]);
-    setShowAddUser(false);
-  };
 
   const handleUpdateUser = (updatedUser) => {
     setMembers((prev) =>
@@ -121,7 +115,10 @@ export default function UserManagement() {
             onChange={(e) => setSearchText(e.target.value)}
           />
 
-          <button className={styles.newUserBtn} onClick={() => setShowAddUser(true)}>
+          <button
+            className={styles.newUserBtn}
+            onClick={() => navigate("/admin/member/add")}
+          >
             신규등록
           </button>
         </div>
@@ -182,10 +179,6 @@ export default function UserManagement() {
           })}
         </div>
       </div>
-
-      {showAddUser && (
-        <AddUser onCancel={() => setShowAddUser(false)} onSave={handleAddUser} />
-      )}
 
       {selectedMember && (
         <UserDetailModal

@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./AddUser.module.css";
 import { createUser } from "../../../Api"; 
 
-export default function AddUser({ onSave, onCancel }) {
+export default function AddUser() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [isEmailChecked, setIsEmailChecked] = useState(false);
   const [password, setPassword] = useState("");
@@ -37,19 +40,13 @@ export default function AddUser({ onSave, onCancel }) {
       return;
     }
 
-    const newUser = {
-      email,
-      password,
-      name,
-      gender,
-      birth,
-      phone,
-    };
+    const newUser = { email, password, name, gender, birth, phone };
 
     try {
-      const res = await createUser(newUser);
+      await createUser(newUser);
       alert("회원 신규 등록되었습니다.");
-      if (onSave) onSave(res);
+
+      navigate("/admin/member", { state: { reload: true } });
     } catch (error) {
       alert("회원 등록에 실패했습니다.");
       console.error(error);
@@ -176,7 +173,7 @@ export default function AddUser({ onSave, onCancel }) {
         <button
           type="button"
           className={`${styles.cancelBtn} ${styles.greyBtn}`}
-          onClick={onCancel}
+          onClick={() => navigate("/admin/member")}
         >
           취소
         </button>

@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home'
 import Login from './pages/Login/Login'
 import UserManagement from "./pages/UserManagement/UserManagement";
+import AddUser from "./pages/UserManagement/AddUser/AddUser";
 import ProgramManagement from "./pages/ClassManagement/ProgramManagement/ProgramManagement";
 import ProgramDetail from './pages/ClassManagement/ProgramDetail/ProgramDetail';
 import ProgramEdit from "./pages/ClassManagement/ProgramEdit/ProgramEdit";
@@ -28,7 +29,7 @@ const App = () => {
         <Route path='/' element={<Home/>} />
         <Route path="/admin/login" element={<Login />} />
         <Route path="/admin/member" element={<UserManagement />} />
-        <Route path="/admin" element={<Navigate to="/admin/member" replace />} />
+        <Route path="/admin/member/add" element={<AddUser />} />
         <Route path="/admin/program/list" element={<ProgramManagement />} />
         <Route path="/admin/program/:programId" element={<ProgramDetail />} />
         <Route path="/admin/program/:programId/edit" element={<ProgramEdit />} />

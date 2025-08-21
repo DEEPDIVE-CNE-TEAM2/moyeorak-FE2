@@ -16,9 +16,10 @@ const Navbar = () => {
 
   // 컴포넌트 마운트 시 accessToken 확인해서 로그인 상태 초기화
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
+    const token = sessionStorage.getItem("accessToken");
     setIsLoggedIn(!!token);
   }, []);
+
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");

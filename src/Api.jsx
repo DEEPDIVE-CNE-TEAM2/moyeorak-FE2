@@ -5,23 +5,23 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 // 'Bearer ' 접두사 제거 후 저장
 export const setAccessToken = (token) => {
   const cleanedToken = token.startsWith('Bearer ') ? token.slice(7) : token;
-  localStorage.setItem("accessToken", cleanedToken);
+  sessionStorage.setItem("accessToken", cleanedToken);
 };
 
 // 저장된 토큰에 'Bearer ' 붙여서 반환
 export const getAccessToken = () => {
-  const token = localStorage.getItem("accessToken");
+  const token = sessionStorage.getItem("accessToken");
   return token ? `Bearer ${token}` : null;
 };
 
 // 'Bearer ' 접두사 제거 후 저장
 export const setRefreshToken = (token) => {
   const cleanedToken = token.startsWith('Bearer ') ? token.slice(7) : token;
-  localStorage.setItem("refreshToken", cleanedToken);
+  sessionStorage.setItem("refreshToken", cleanedToken);
 };
 
 // 저장된 리프레시 토큰 반환
-export const getRefreshToken = () => localStorage.getItem("refreshToken");
+export const getRefreshToken = () => sessionStorage.getItem("refreshToken");
 
 // axios 인스턴스 생성
 const apiClient = axios.create({
@@ -62,6 +62,8 @@ const processQueue = (error, token = null) => {
 apiClient.interceptors.response.use(
   response => response,
   async error => {
+    console.log("응답 인터셉터 진입:", error.response?.status, error.config?.url);
+
     const originalRequest = error.config;
 
     if (
